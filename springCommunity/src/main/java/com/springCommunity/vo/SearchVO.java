@@ -3,15 +3,16 @@ package com.springCommunity.vo;
 import com.springCommunity.util.PagingUtil;
 
 public class SearchVO extends PagingUtil {
-	private String searchType;
-	private String searchValue;
-	private String USER_ID;
+	private String search_type;
+	private String search_value;
+	private String user_id;
 	
-	public String getSearchType()  { return searchType;  }
-	public String getSearchValue() { return searchValue; }
-	public String getUSER_ID()     { return USER_ID;     }
+	public String getSearch_type()  { return search_type;  }
+	public String getSearch_value() { return search_value; }
+	public String getUser_id()      { return user_id;      }
 	
-	public void setSearchType(String searchType)   { this.searchType = searchType;   }
-	public void setSearchValue(String searchValue) { this.searchValue = searchValue; }
-	public void setUSER_ID(String uSER_ID)         { USER_ID = uSER_ID;              }
+	public void setSearch_type(String search_type)   { this.search_type = search_type;   }
+	public void setSearch_value(String search_value) { this.search_value = search_value; }
+	public void setUser_id(String user_id)           { this.user_id = user_id;           }
+	
 }

@@ -21,7 +21,7 @@ public class UserAuthenticationService implements UserDetailsService {
 	public UserAuthenticationService(SqlSession sqlSession) {
 		this.sqlSession = sqlSession;
 	}
-	//UserDetails -> User -> UserVO
+	
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		//String username == 사용자 아이디

@@ -2,6 +2,11 @@
 <!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0/EN" 
 				"http://mybatis.org/dtd/mybatis-3-config.dtd">
 <configuration>
+	<!-- MyBatis 설정 -->
+    <settings>
+        <!-- 언더스코어 표기법을 CamelCase로 자동 매핑 -->
+        <setting name="mapUnderscoreToCamelCase" value="true"/>
+    </settings>
 	<!-- vo 별칭 지정 -->
 	<typeAliases>
 		<!-- 별칭 지정시 반드시 클래스부터 선언 후 별칭 지정! -->

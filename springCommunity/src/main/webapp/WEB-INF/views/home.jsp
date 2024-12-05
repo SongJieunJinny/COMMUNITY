@@ -16,11 +16,11 @@
 		</div>
 	</sec:authorize>
 	<sec:authorize access="isAuthenticated()"><!-- 로그인 O -->
-		<sec:authentication property="principal.authority"/>
+		<sec:authentication property="principal.user_authority"/>
 		<div style="font-size:18px; text-decoration: none; color:black; font-weight: bold;">
 			<a href="logout.do">로그아웃</a><br>
 			<sec:authorize access="hasAnyRole('ROLE_ADMIN')">
-				<a href="admin/upload-users.do">유저등록</a>
+				<!-- 관리자 페이지 -->
 			</sec:authorize>
 		</div>
 	</sec:authorize>

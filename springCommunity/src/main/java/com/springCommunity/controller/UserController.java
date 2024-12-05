@@ -31,9 +31,10 @@ public class UserController {
 	
 	@RequestMapping(value="/joinOk.do", method = RequestMethod.POST)
 	public String joinOk(UserInfoVO userInfoVO) {
+		System.out.println("user_id:" + userInfoVO.getUser_id());
 		BCryptPasswordEncoder epwe = new BCryptPasswordEncoder();
-		String encodedPassword = epwe.encode(userInfoVO.getUSER_PASSWORD());
-		userInfoVO.setUSER_PASSWORD(encodedPassword);
+		String encodedPassword = epwe.encode(userInfoVO.getUser_password());
+		userInfoVO.setUser_password(encodedPassword);
 		System.out.println("암호화된 비밀번호: " + encodedPassword);
 		
 		int result = sqlSession.insert("com.springCommunity.mapper.userMapper.insert", userInfoVO);

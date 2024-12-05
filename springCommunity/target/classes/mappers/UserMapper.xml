@@ -9,7 +9,7 @@
 			 ,USER_ENABLED 
 			 ,USER_AUTHORITY 
 		 FROM USER  
-		 WHERE USER_ID = #{USER_ID} 
+		 WHERE USER_ID = #{user_id} 
 	</select>
 	
 	<insert id="insert" parameterType="userInfoVO">
@@ -28,17 +28,17 @@
 			, USER_AUTHORITY
 			) 
 			VALUES (
-			 #{USER_ID}
-			,#{USER_PASSWORD}
-			,#{USER_NAME}
-			,#{USER_EMAIL}
-			,#{USER_PHONE}
-			,#{DEPARTMENT_ID}
-			,#{JOB_POSITION_ID}
-			,#{USER_JOIN_DATE}
-			,#{BANK_ID}
-			,#{USER_ACCOUNT}
-			,#{USER_ADDRESS}
+			 #{user_id}
+			,#{user_password}
+			,#{user_name}
+			,#{user_email}
+			,#{user_phone}
+			,#{department_id}
+			,#{job_position_id}
+			,#{user_join_date}
+			,#{bank_id}
+			,#{user_account}
+			,#{user_address}
 			,'ROLE_ADMIN'
 			);
 	</insert>

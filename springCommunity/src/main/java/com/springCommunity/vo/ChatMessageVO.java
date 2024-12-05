@@ -1,40 +1,18 @@
 package com.springCommunity.vo;
 
 public class ChatMessageVO {
-    private int CHAT_MESSAGE_NO;
-    private int CHAT_NO;
-    private String CHAT_MESSAGE_CONTENT;
-    private String USER_ID;
-
-    public int getCHAT_MESSAGE_NO() {
-        return CHAT_MESSAGE_NO;
-    }
-
-    public void setCHAT_MESSAGE_NO(int CHAT_MESSAGE_NO) {
-        this.CHAT_MESSAGE_NO = CHAT_MESSAGE_NO;
-    }
-
-    public int getCHAT_NO() {
-        return CHAT_NO;
-    }
-
-    public void setCHAT_NO(int CHAT_NO) {
-        this.CHAT_NO = CHAT_NO;
-    }
-
-    public String getCHAT_MESSAGE_CONTENT() {
-        return CHAT_MESSAGE_CONTENT;
-    }
-
-    public void setCHAT_MESSAGE_CONTENT(String CHAT_MESSAGE_CONTENT) {
-        this.CHAT_MESSAGE_CONTENT = CHAT_MESSAGE_CONTENT;
-    }
-
-    public String getUSER_ID() {
-        return USER_ID;
-    }
-
-    public void setUSER_ID(String USER_ID) {
-        this.USER_ID = USER_ID;
-    }
+	private int chat_no;
+    private int chat_message_no;
+    private String chat_message_content;
+    private String user_id;
+    
+	public int getChat_no()         { return chat_no; }
+	public int getChat_message_no() { return chat_message_no; }
+	public String getChat_message_content() { return chat_message_content;}
+	public String getUser_id()      { return user_id; }
+	
+	public void setChat_no(int chat_no)                 { this.chat_no = chat_no; }
+	public void setChat_message_no(int chat_message_no) { this.chat_message_no = chat_message_no; }
+	public void setChat_message_content(String chat_message_content) { this.chat_message_content = chat_message_content;}
+	public void setUser_id(String user_id)              { this.user_id = user_id; }
 }

@@ -7,57 +7,24 @@ import org.springframework.security.core.userdetails.User;
 
 
 public class ChatVO{
-	private int CHAT_NO;
-	private String CHAT_NAME;
-	private String CHAT_DATE;
-	private String CHAT_STATE;
-	private int CHAT_GROUP;
-	private String USER_ID;
+	private int chat_no;
+	private String chat_name;
+	private String chat_date;
+	private String chat_state;
+	private int chat_group;
+	private String user_id;
 	
-	public ChatVO() {}
-
-    public ChatVO(int CHAT_NO, String USER_ID) {
-        this.CHAT_NO = CHAT_NO;
-        this.USER_ID = USER_ID;
-    }
+	public int getChat_no()       {return chat_no;    }
+	public String getChat_name()  {return chat_name;  }
+	public String getChat_date()  {return chat_date;  }
+	public String getChat_state() {return chat_state; }
+	public int getChat_group()    {return chat_group; }
+	public String getUser_id()    {return user_id;    }
 	
-	public int getCHAT_NO() {
-		return CHAT_NO;
-	}
-	public String getCHAT_NAME() {
-		return CHAT_NAME;
-	}
-	public String getCHAT_DATE() {
-		return CHAT_DATE;
-	}
-	public String getCHAT_STATE() {
-		return CHAT_STATE;
-	}
-	public int getCHAT_GROUP() {
-		return CHAT_GROUP;
-	}
-	public String getUSER_ID() {
-		return USER_ID;
-	}
-	
-	public void setCHAT_NO(int cHAT_NO) {
-		CHAT_NO = cHAT_NO;
-	}
-	public void setCHAT_NAME(String cHAT_NAME) {
-		CHAT_NAME = cHAT_NAME;
-	}
-	public void setCHAT_DATE(String cHAT_DATE) {
-		CHAT_DATE = cHAT_DATE;
-	}
-	public void setCHAT_STATE(String cHAT_STATE) {
-		CHAT_STATE = cHAT_STATE;
-	}
-	public void setCHAT_GROUP(int cHAT_GROUP) {
-		CHAT_GROUP = cHAT_GROUP;
-	}
-	public void setUSER_ID(String uSER_ID) {
-		USER_ID = uSER_ID;
-	}
-	
-	
+	public void setChat_no(int chat_no)          { this.chat_no = chat_no;       }
+	public void setChat_name(String chat_name)   { this.chat_name = chat_name;   }
+	public void setChat_date(String chat_date)   { this.chat_date = chat_date;   }
+	public void setChat_state(String chat_state) { this.chat_state = chat_state; }
+	public void setChat_group(int chat_group)    { this.chat_group = chat_group; }
+	public void setUser_id(String user_id)       { this.user_id = user_id;       }
 }

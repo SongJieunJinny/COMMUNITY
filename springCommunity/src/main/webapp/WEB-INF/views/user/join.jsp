@@ -14,29 +14,29 @@
 			<tr>
 				<th>아이디 : </th>
 				<td>
-					<input type="text" name="USER_ID">
+					<input type="text" name="user_id">
 				</td>
 			</tr>
 			<tr>
 				<th>비밀번호 : </th>
-				<td><input type="password" name="USER_PASSWORD"></td>
+				<td><input type="password" name="user_password"></td>
 			</tr>
 			<tr>
 				<th>이름 : </th>
-				<td><input type="text" name="USER_NAME"></td>
+				<td><input type="text" name="user_name"></td>
 			</tr>
 			<tr>
 				<th>이메일 : </th>
-				<td><input type="text" name="USER_EMAIL"></td>
+				<td><input type="text" name="user_email"></td>
 			</tr>
 			<tr>
 				<th>연락처 : </th>
-				<td><input type="text" name="USER_PHONE"></td>
+				<td><input type="text" name="user_phone"></td>
 			</tr>
 			<tr>
 				<th>부서 : </th>
 				<td>
-					<select name="DEPARTMENT_ID" id="DEPARTMENT_ID">
+					<select name="department_id" id="department_id">
 						<option value="1">경영지원팀</option>
 						<option value="2">인사팀</option>
 						<option value="3">마케팅팀</option>
@@ -51,7 +51,7 @@
 			<tr>
 				<th>직책 : </th>
 				<td>
-					<select name="JOB_POSITION_ID" id="JOB_POSITION_ID">
+					<select name="job_position_id" id="job_position_id">
 						<option value="1">사원</option>
 						<option value="2">주임</option>
 						<option value="3">대리</option>
@@ -65,12 +65,12 @@
 			</tr>
 			<tr>
 				<th>입사일 : </th>
-				<td><input type="date" name="USER_JOIN_DATE"></td>
+				<td><input type="date" name="user_join_date"></td>
 			</tr>
 			<tr>
 				<th>은행 : </th>
 				<td>
-					<select name="BANK_ID" id="BANK_ID">
+					<select name="bank_id" id="bank_id">
 						<option value="1">국민은행</option>
 						<option value="2">농협은행</option>
 						<option value="3">신한은행</option>
@@ -89,11 +89,11 @@
 			</tr>
 			<tr>
 				<th>계좌번호 : </th>
-				<td><input type="text" name="USER_ACCOUNT"></td>
+				<td><input type="text" name="user_account"></td>
 			</tr>
 			<tr>
 				<th>주소 : </th>
-				<td><input type="text" name="USER_ADDRESS"></td>
+				<td><input type="text" name="user_address"></td>
 			</tr>
 		</table>
 		<br>
