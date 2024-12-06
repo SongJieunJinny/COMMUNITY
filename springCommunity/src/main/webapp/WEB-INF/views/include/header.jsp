@@ -175,9 +175,9 @@ $(document).on("click", "#completeChatButton", function () {
 	                console.error("채팅방 생성 실패");
 	            },
 	        });
-	    }else {
-	        alert("채팅방 이름과 사용자를 선택해주세요.");
 	    }	
+    }else {
+        alert("채팅에 초대할 직원을 선택해주세요.");
     }
 });
 </script>
