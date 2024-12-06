@@ -58,6 +58,10 @@ function closeModal() {
 }
 
 function chatModal(){
+	if(user_id === ""){
+		alert("로그인 후 이용가능합니다.");
+		return;
+	}
     $("#modal").fadeIn(); // 모달 창 보이게 하기
     $.ajax({
         url: "<%= request.getContextPath() %>/chat/chat.do",
