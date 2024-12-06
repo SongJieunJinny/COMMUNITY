@@ -81,6 +81,27 @@
     }
     th{
       background-color: lightgray;
+      width: 120px;
+    }
+    select{
+      width: 100px;
+      height: 25px;
+      text-align: center;
+    }
+    input{
+      width: 100px;
+      height: 20px;
+    }
+    #btn{
+      width: 80px;
+      height: 90px;
+      text-align: center;
+      font-size: medium;
+    }
+    #date_input{
+      width: 120px;
+      height: 25px;
+      text-align: center;
     }
   </style>
 </head>
@@ -116,11 +137,12 @@
     </div>
 	</div>
   <div id="list_search">
+
     <table id="membership_table">
       <tr>
         <th>재직상태</th>
-        <td style="width: 80px;">
-          <select style="width: 70px;">
+        <td style="width: 120px;">
+          <select>
             <option>선택</option>
             <option>재직</option>
             <option>휴직</option>
@@ -128,15 +150,15 @@
           </select>
         </td>
         <th>사원번호</th>
-        <td><input type="text" style="width: 100px;"></td>
+        <td><input type="text"></td>
         <th>사원명</th>
-        <td><input type="text" style="width: 100px;"></td>
-        <td rowspan="3"><input style="height: 70px; width: 50px;" type="button" value="검색"></td>
+        <td><input type="text"></td>
+        <td rowspan="3" style="text-align: left;"><input id="btn" type="button" value="검색"></td>
       </tr>
       <tr>
         <th>부서</th>
-        <td style="width: 90px;">
-          <select style="width: 80px;">
+        <td style="width: 120px;">
+          <select>
             <option>선택</option>
             <option>경영</option>
             <option>개발</option>
@@ -150,7 +172,7 @@
         </td>
         <th>팀</th>
         <td>
-          <select style="width: 70px;">
+          <select>
             <option>선택</option>
             <option>1팀</option>
             <option>2팀</option>
@@ -159,20 +181,9 @@
             <option>5팀</option>
           </select>
         </td>
-        <th>유형</th>
+        <th>직책</th>
         <td>
           <select>
-            <option>선택</option>
-            <option>일반정규직</option>
-            <option>현장계약직</option>
-            <option>인턴십</option>
-          </select>
-        </td>
-      </tr>
-      <tr>
-        <th>직책</th>
-        <td colspan="2">
-          <select style="width: 70px;">
             <option>선택</option>
             <option>이사</option>
             <option>부장</option>
@@ -183,10 +194,21 @@
             <option>사원</option>
           </select>
         </td>
+      </tr>
+      <tr>
+        <th>유형</th>
+        <td colspan="2">
+          <select style="width: 150px;">
+            <option>선택</option>
+            <option>일반정규직</option>
+            <option>현장계약직</option>
+            <option>인턴십</option>
+          </select>
+        </td>
         <th>입사일</th>
         <td colspan="2">
-          <label><input type="date"></label>~
-          <label><input type="date"></label>
+          <label><input id="date_input" type="date"></label>~
+          <label><input id="date_input" type="date"></label>
         </td>
       </tr>
     </table>
