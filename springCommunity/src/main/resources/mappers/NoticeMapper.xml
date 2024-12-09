@@ -8,11 +8,11 @@
 		 WHERE p.USER_ID = u.USER_ID
 		   AND p.POST_STATE != '0'
 		   AND p.POST_TYPE != '0'
-		 <if test="searchType != null and searchType.equals('POST_TITLE')">
-		   AND p.POST_TITLE like concat('%',#{searchValue},'%')
+		 <if test="search_type != null and search_type.equals('POST_TITLE')">
+		   AND p.POST_TITLE like concat('%',#{search_value},'%')
 		 </if>
-		 <if test="searchType != null and searchType.equals('USER_ID')">
-		   AND u.USER_ID like concat('%',#{searchValue},'%')
+		 <if test="search_type != null and search_type.equals('USER_ID')">
+		   AND u.USER_ID like concat('%',#{search_value},'%')
 		 </if>
 		 limit #{start},#{perPage}
 	</select>
@@ -22,11 +22,11 @@
 		  FROM POST p, USER u
 		 WHERE p.USER_ID = u.USER_ID
 		   AND p.POST_STATE != '0'
-		 <if test="searchType != null and searchType.equals('POST_TITLE')">
-		   AND p.POST_TITLE like concat('%',#{searchValue},'%')
+		 <if test="search_type != null and search_type.equals('POST_TITLE')">
+		   AND p.POST_TITLE like concat('%',#{search_value},'%')
 		 </if>
-		 <if test="searchType != null and searchType.equals('USER_ID')">
-		   AND u.USER_ID like concat('%',#{searchValue},'%')
+		 <if test="search_type != null and search_type.equals('USER_ID')">
+		   AND u.USER_ID like concat('%',#{search_value},'%')
 		 </if>
 		 
 	</select>
