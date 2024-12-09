@@ -25,7 +25,7 @@ public class NoticeController {
 	@Autowired
 	public NoticeService noticeService;
 	
-	@RequestMapping(value="/board/list.do")
+	@RequestMapping(value="/notice/list.do")
 	public String list(Model model,SearchVO searchVO
 			,@RequestParam(value="nowpage"
 						,required = false
@@ -47,7 +47,7 @@ public class NoticeController {
 		return "notice/list";
 	}
 	
-	@RequestMapping(value="/board/write.do", method=RequestMethod.GET)
+	@RequestMapping(value="/notice/write.do", method=RequestMethod.GET)
 	public String write(HttpServletRequest request,HttpServletResponse response)
 			throws Exception {
 		
@@ -68,7 +68,7 @@ public class NoticeController {
 	}
 	
 	
-	@RequestMapping(value="/board/writeOk.do",method=RequestMethod.POST)
+	@RequestMapping(value="/notice/writeOk.do",method=RequestMethod.POST)
 	public String write(NoticeVO vo,HttpServletRequest request) {
 		
 		HttpSession session = request.getSession();
@@ -94,7 +94,7 @@ public class NoticeController {
 	
 	}
 	
-	@RequestMapping(value="/board/view.do")
+	@RequestMapping(value="/notice/view.do")
 	public String view(int post_no, Model model) {
 		
 		NoticeVO vo = noticeService.selectOne(post_no);
@@ -104,7 +104,7 @@ public class NoticeController {
 		return "notice/view";
 	}
 	
-	@RequestMapping(value="/board/delete.do",method=RequestMethod.POST)
+	@RequestMapping(value="/notice/delete.do",method=RequestMethod.POST)
 	public String delete(int post_no) {
 		
 		int result = noticeService.changeState(post_no);
