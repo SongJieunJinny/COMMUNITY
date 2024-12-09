@@ -49,4 +49,20 @@
 		INSERT INTO CHAT_USERS (CHAT_NO, USER_ID)
         VALUES (#{chat_no}, #{user_id})
 	</insert>
+	
+	<!-- 채팅참가유저 조회 -->
+	<select id="chatUsers" parameterType="int" resultType="userInfoVO">
+		SELECT u.USER_NAME, DEPARTMENT_NAME, JOB_POSITION_NAME 
+			FROM USER u 
+			INNER JOIN CHAT_USERS cu ON u.USER_ID = cu.USER_ID 
+			INNER JOIN DEPARTMENT d ON u.DEPARTMENT_ID = d.DEPARTMENT_ID 
+			INNER JOIN JOB_POSITION j ON u.JOB_POSITION_ID = j.JOB_POSITION_ID 
+			WHERE cu.CHAT_NO = #{chat_no}
+	</select>
+	
+	<!-- 채팅방 나가기 -->
+	<delete id="leaveChatRoom">
+		DELETE FROM CHAT_USERS 
+		WHERE USER_ID = #{user_id} AND CHAT_NO = #{chat_no}
+	</delete>
 </mapper>

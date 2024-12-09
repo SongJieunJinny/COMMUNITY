@@ -40,4 +40,14 @@ public class ChatServiceImpl implements ChatService {
 	public void insertRoomAfterUser(ChatVO chatVO) {
 		chatDAO.insertRoomAfterUser(chatVO);
 	}
+
+	@Override
+	public List<UserInfoVO> chatUsers(int chat_no) {
+		return chatDAO.chatUsers(chat_no);
+	}
+
+	@Override
+	public int leaveChatRoom(ChatVO chatVO) {
+		return chatDAO.leaveChatRoom(chatVO);
+	}
 }

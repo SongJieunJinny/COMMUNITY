@@ -125,4 +125,30 @@ public class CharController {
             return "0";
         }
     }
+    
+    @ResponseBody
+    @RequestMapping(value = "/chatUsers.do", method = RequestMethod.POST)
+    public List<UserInfoVO> chatUser(int chat_no) {
+    	List<UserInfoVO> list = chatService.chatUsers(chat_no);
+    	
+    	for(UserInfoVO vo : list) {
+    		System.out.println("chatUsers : " + vo.getUser_name());
+    	}
+    	
+    	return list;
+    }
+    
+    @ResponseBody
+    @RequestMapping(value = "/leaveChatRoom.do", method = RequestMethod.POST)
+    public String leaveChatRoom(ChatVO chatVO) {
+    	
+    	int result = chatService.leaveChatRoom(chatVO);
+    	if(result > 0) {
+    		System.out.println("채팅방 나가기 성공");
+    		return "Success";
+    	}else {
+    		System.out.println("채팅방 나가기 실패");
+    		return "Failed";
+    	}
+    }
 }

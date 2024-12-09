@@ -167,7 +167,7 @@ $(document).on("click", "#completeChatButton", function () {
 	                	console.log("채팅방 생성 후 chatModal()실행전 chat_no" + chat_no);
 	                	console.log("채팅방 생성 후 chatModal()실행전 chat_name" + chat_name);
 	                	closeSlider();
-	                	//chatRoomView(chat_no,chat_name);
+	                	chatRoomView(chat_no,chat_name);
 	                	chatModal();
 	                }
 	            },
@@ -180,6 +180,112 @@ $(document).on("click", "#completeChatButton", function () {
         alert("채팅에 초대할 직원을 선택해주세요.");
     }
 });
+
+
+function chatRoomView(chat_no,chat_name){
+	chatUser(chat_no);
+	const modalId = 'chatModal_' + chat_no;
+	console.log("modalId :"+modalId);
+	
+	if($('#' + modalId).length === 0) {
+        const newModalContent = `
+            <div class="chatModal" id="\${modalId}">
+                <div class="chatModalHeader">
+                    <button class="hamburgerMenu" onclick="toggleChatMenu('\${modalId}')">☰</button>
+                    <h2>\${chat_name}</h2>
+                   	<button class="closeBtn" onclick="closeChatModal('\${modalId}')">X</button>
+                </div>
+                <div class="chatContent">
+	                <div id="chatLog_\${chat_no}" class="chatLog wrap">
+	              		<!-- 기존 채팅내용. 추가될 채팅내용 -->
+	                </div>
+	                <input type="text" class="messageInput" id="messageInput_\${chat_no}" 
+	               	onkeydown="if(event.key === 'Enter') sendMessage(\${chat_no});"
+	                style="width: 92%;" placeholder="메시지를 입력하세요" />
+                </div>
+                <div class="chatSidebar" id="chatSidebar_\${modalId}">
+	                <h3>채팅초대</h3>
+	                <ul id="participantList_\${chat_no}">
+	                    <!-- 참가자 목록 -->
+	                </ul>
+	                <button class="leaveChatBtn" onclick="leaveChatRoom(\${chat_no},'\${user_id}')">나가기</button>
+	            </div>
+            </div>
+        `;
+		//console.log(newModalContent);
+        // 새로운 모달을 화면에 추가
+        $("body").append(newModalContent);
+		
+        $("#" + modalId).show();
+        
+        // 모달을 드래그 가능하게 설정
+        $("#" + modalId).draggable({
+            handle: ".chatModalHeader"  // 헤더를 드래그 가능한 영역으로 설정
+        });
+
+        // 모달 CSS
+        $("#" + modalId).css({
+            position: 'absolute',
+            top: '50px', // 화면 상단에서 50px 떨어진 곳에 모달이 보이도록 설정
+            left: '150px', // 화면 왼쪽에서 150px 떨어진 곳에 모달이 보이도록 설정
+            width: '300px',
+            height: '400px',
+            background: '#fff',
+            border: '1px solid #ccc',
+            boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)',
+            zIndex: 9999
+        });
+        $("#chatSidebar_" + modalId).hide();
+    }
+}
+
+//햄버거 메뉴 토글 기능
+function toggleChatMenu(modalId) {
+    const sidebar = $("#chatSidebar_" + modalId);
+    sidebar.toggle("slide", { direction: "right" }, 300); // 오른쪽으로 슬라이드 토글
+}
+
+//채팅방 모달을 닫는 함수
+function closeChatModal(modalId) {
+    $("#" + modalId).remove();  
+}
+
+let user_list = "";
+function chatUser(chat_no){
+	$.ajax({
+		url : "<%= request.getContextPath() %>/chat/chatUsers.do",
+		type: 'post',
+		data : {chat_no : chat_no},
+		success : function(data){
+			for(item of data){
+				console.log(item.user_name);
+				user_list += "<li>" + item.user_name + "</li>";
+			}
+			$("#participantList_"+chat_no).append(user_list);
+			user_list = "";
+		}
+	});
+}
+
+//채팅방 나가기 기능
+function leaveChatRoom(chat_no,user_id) {
+    $.ajax({
+        url: "<%= request.getContextPath() %>/chat/leaveChatRoom.do",
+        type: "POST",
+        data: { chat_no : chat_no, user_id : user_id },
+        success: function(response) {
+            if(response === 'Success'){
+	            chatModal();
+	            $('#chatModal_' + chat_no).remove(); // 모달 닫기
+            }else{
+            	alert("채팅방 나가기에 실패했습니다.");
+            }
+        },
+        error: function() {
+            alert("채팅방 나가기에 실패했습니다.");
+        }
+    });
+}
 </script>
 </head>
 <body>

@@ -11,4 +11,6 @@ public interface ChatService {
 	public List<UserInfoVO> searchUsers(SearchVO searchVO);
 	public int insertRoom(ChatVO chatVO);
 	public void insertRoomAfterUser(ChatVO chatVO);
+	public List<UserInfoVO> chatUsers(int chat_no);
+	public int leaveChatRoom(ChatVO chatVO);
 }

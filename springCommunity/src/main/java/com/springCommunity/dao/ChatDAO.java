@@ -37,4 +37,12 @@ public class ChatDAO {
 	public void insertRoomAfterUser(ChatVO chatVO) {
 		sqlSession.insert(name_space+"insertRoomAfterUser",chatVO);
 	}
+	
+	public List<UserInfoVO> chatUsers(int chat_no){
+		return sqlSession.selectList(name_space+"chatUsers", chat_no);
+	}
+	
+	public int leaveChatRoom(ChatVO chatVO) {
+		return sqlSession.delete(name_space+"leaveChatRoom",chatVO);
+	}
 }
