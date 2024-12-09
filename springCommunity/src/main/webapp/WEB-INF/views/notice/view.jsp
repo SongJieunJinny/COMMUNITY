@@ -6,18 +6,18 @@
 		<table>
 			<tr>
 				<th>제목 : </th>
-				<td>${vo.title }</td>
+				<td>${vo.post_title }</td>
 			</tr>
 			<tr>
 				<th>프로필이미지</th>
 				<%-- <td>${vo. }</td> --%>
 				<th>작성자 : </th>
-				<td>${vo.title }</td>
+				<td>${vo.post_title }</td>
 				<th>댓글 개수 </th>
 			</tr>
 			<tr>
 				<th>내용 : </th>
-				<td>${vo.content}</td>
+				<td>${vo.post_content}</td>
 			</tr>
 		</table>
 		<button onclick="document.modifyfrm.submit();">수정</button>
@@ -27,7 +27,7 @@
 		
 		<button onclick="document.deletefrm.submit();">삭제</button>
 		<form name="deletefrm" action="delete.do" method="post">
-			<input type="hidden" name="nno" value="${vo.nno }">
+			<input type="hidden" name="post_no" value="${vo.post_no }">
 		</form>
 		
 	<button>목록으로</button>

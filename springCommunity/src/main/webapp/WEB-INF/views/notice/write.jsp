@@ -6,11 +6,11 @@
 			<table>
 				<tr>
 					<th>글제목 : </th>
-					<td><input type="text" name="title"></td>
+					<td><input type="text" name="post_title"></td>
 				</tr>
 				<tr>
 					<th>내용 : </th>
-					<td><textarea name="content" cols="40" rows="10"></textarea></td>
+					<td><textarea name="post_content" cols="40" rows="10"></textarea></td>
 				</tr>
 				<tr>
 					<th>첨부파일 : </th>

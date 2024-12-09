@@ -47,7 +47,7 @@ public class NoticeController {
 		return "notice/list";
 	}
 	
-	@RequestMapping(value="board/write.do", method=RequestMethod.GET)
+	@RequestMapping(value="/board/write.do", method=RequestMethod.GET)
 	public String write(HttpServletRequest request,HttpServletResponse response)
 			throws Exception {
 		

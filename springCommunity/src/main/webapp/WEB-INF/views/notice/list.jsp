@@ -5,7 +5,7 @@
 		<h2>공지사항</h2>
 		<form action="list.do" method="get">
 			<select name="searchType">
-				<option value="title"<c:if test="${param.searchType eq 'title'}">selected</c:if>>제목</option>
+				<option value="post_title"<c:if test="${param.searchType eq 'post_title'}">selected</c:if>>제목</option>
 			</select>
 			<input type="text" name="searchValue" value="${param.searchValue}">
 			<button>검색</button>
@@ -19,10 +19,10 @@
 			</tr>
 			<c:forEach items="${list}" var="vo">
 				<tr>
-					<td>${vo.nno }</td>
-					<td><a href="view.do?nno=${vo.nno }">${vo.title }</a></td>
-					<td>${vo.uid }</td>
-					<td>${vo.rdate }</td>
+					<td>${vo.post_no }</td>
+					<td><a href="view.do?post_no=${vo.post_no }">${vo.post_title }</a></td>
+					<td>${vo.user_id }</td>
+					<td>${vo.post_date }</td>
 				</tr>
 			</c:forEach>
 		</table>
@@ -32,7 +32,7 @@
 			<a href="list.do?nowpage=${paging.startPage-1 }">&lt;</a>
 		</c:if>
 		
-		<c:forEach begin="${paging.startPage }" end="${pagin.endPage }" var="cnt">
+		<c:forEach begin="${paging.startPage }" end="${paging.endPage }" var="cnt">
 			<c:if test="${paging.nowPage eq cnt }">
 				<b>${cnt }</b>
 			</c:if>
@@ -41,7 +41,7 @@
 			</c:if>
 		</c:forEach>
 		
-		<c:if test="${pagin.endPage < paging.lastPage }">
+		<c:if test="${paging.endPage < paging.lastPage }">
 			<a href="list.do?nowpage=${paging.endPage+1 }">&gt;</a>
 		</c:if>
 		
