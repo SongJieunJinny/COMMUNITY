@@ -4,5 +4,7 @@
 <%@ taglib uri="http://www.springframework.org/security/tags" prefix="sec" %>
 <%@ include file="./include/header.jsp" %>
 	
+	<a href="board/list.do">공지사항</a>
+	
 </body>
 </html>
