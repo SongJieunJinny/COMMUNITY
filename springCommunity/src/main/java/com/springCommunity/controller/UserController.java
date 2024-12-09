@@ -19,10 +19,6 @@ public class UserController {
 	@Autowired
 	SqlSession sqlSession;
 	
-	@RequestMapping(value="/login.do", method = RequestMethod.GET)
-	public String login() {
-		return "user/login";
-	}
 	
 	@RequestMapping(value="/join.do", method = RequestMethod.GET)
 	public String join() {

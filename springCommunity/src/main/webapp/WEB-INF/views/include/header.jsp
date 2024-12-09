@@ -8,6 +8,7 @@
 <title>커뮤니티</title>
 <link href="<%= request.getContextPath()%>/resources/css/header.css" rel="stylesheet" type="text/css">
 <link rel="stylesheet" type="text/css" href="<%= request.getContextPath() %>/resources/css/chat.css" />
+<link rel="stylesheet" type="text/css" href="<%= request.getContextPath() %>/resources/css/login.css" />
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 <script src="<%= request.getContextPath() %>/resources/js/jquery-3.7.1.js"></script>
 <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css"><!-- jQuery UI CSS -->
@@ -23,6 +24,19 @@ window.onload = function(){
 	console.log("user_id :" + user_id);
 	
 	$("#chatRoomList").css("display","none");
+	
+	
+	// 모달 열기
+	$('#loginBtn').click(function (e) {
+	    $('#loginModal').fadeIn();
+	});
+
+	// 모달 닫기
+	$(window).click(function (event) {
+		if ($(event.target).is("#loginModal")) {
+            $("#loginModal").fadeOut();
+		}
+	});
 }
 
 
@@ -289,50 +303,94 @@ function leaveChatRoom(chat_no,user_id) {
 </script>
 </head>
 <body>
-	<div id="header1">
-		<img id="logo_img" src="<%= request.getContextPath() %>/resources/img/logo.png" alt="회사로고" >
-		<div id = "login_info">
-			<a href="<%= request.getContextPath() %>/user/logout.jsp">로그아웃</a>
-			|
-			<a href="<%= request.getContextPath() %>/user/mypage.jsp">마이페이지</a>
-		</div>
-	</div>
-	<hr>
-	<div id="header2">
-		<div id="bar">
-			<div id="working_info_bar">
-				<div id="working_info">근태정보</div><br>
-				<div id="working_info">2024-12-05 11:51</div><br>
-				<div id="working_info">출근시각 : </div><br>
-				<div id="working_info">퇴근시각 : </div>
-				<div id="alarm"><img id="alarm_icon" src="<%= request.getContextPath() %>/resources/img/icon/alarm.png" alt="알림"></div>
-			</div>
-			<div id="menu_bar">
-				<div id="menu"><img id="menu_icon" src="<%= request.getContextPath() %>/resources/img/icon/groups.png" alt="조직도"></div>
-				<div id="menu"><img id="menu_icon" src="<%= request.getContextPath() %>/resources/img/icon/calendar.png" alt="근태"></div>
-				<div id="menu" style="cursor: pointer;" onclick="chatModal();"><img id="menu_icon" src="<%= request.getContextPath() %>/resources/img/icon/talk.png" alt="대화"></div>
-				<div id="menu"><img id="menu_icon" src="<%= request.getContextPath() %>/resources/img/icon/setting.png" alt="관리자"></div>
-			</div>
-		</div>
-		<div id="member">
-			<img id="member_img" src="<%= request.getContextPath() %>/resources/img/member1.jpeg" alt="회사원1">
-			<div id="member_name">JJ417976 홍길자</div>
-		</div>
-	</div>
-	<hr>
-	<div id="modal">
-		<div id="modalContent">
-		    <div class="modalBody">
-		        <!-- 채팅창 모달 -->
-		    </div>
-		</div>
-	</div>
-	<div id="slider" class="hidden">
-	    <div class="modalHeader">
-	        <h2>채팅방 참가자 검색</h2>
-	        <button class="closeBtn" onclick="closeSlider()">X</button>
+	<!-- 로그인 X -->
+	<sec:authorize access="isAnonymous()">
+		<div class="main_container" style="text-align: center;">
+            <img src="<%= request.getContextPath() %>/resources/img/메인.jpg" alt="메인 이미지" 
+            style="width: 100%; height: 820px;">
+            <div class="log_Info" style="font-size: 18px; text-decoration: none; color: black; font-weight: bold; margin-top: 20px;">
+                <a href="join.do">회원가입</a> | 
+                <a id="loginBtn">로그인</a><br>
+            </div>
+        </div>
+        
+        <!-- 로그인 모달 -->
+	    <div id="loginModal" class="modal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.5);">
+	        <div class="login_Modal_content" 
+	        style="width: 350px; height: 350px; margin: 10% auto; padding: 20px; background-color: white; border-radius: 10px;">
+	        	<h2 style="text-align: center;">로그인</h2>
+				<form action="loginOk.do" method="post">
+					<table>
+						<tr>
+							<td>
+								<div class="user_container">
+		                            <i class="fas fa-user"></i>
+		                            <input type="text" name="user_id" placeholder="아이디">
+		                        </div>
+	                        </td>
+						</tr>
+						<tr>
+							<td>
+								<div class="user_container">
+		                            <i class="fas fa-lock"></i>
+		                            <input type="password" name="user_password" placeholder="비밀번호">
+		                        </div>
+							</td>
+						</tr>
+					</table>
+					<br>
+					<button class="login_modal_btn">로그인</button>
+					<button type="button" class="login_modal_btn">비밀번호 찾기</button>
+				</form>
+	        </div>
 	    </div>
-	    <input type="text" name="search_value" id="user_search" placeholder="이름, 부서, 직책으로 검색하세요">
-	    <ul id="userList" style="display:none;"></ul>
-	    <button id="completeChatButton">완료</button>
-	</div>
+	</sec:authorize>
+	<sec:authorize access="isAuthenticated()"><!-- 로그인 O -->
+		<div id="header1">
+			<img id="logo_img" src="<%= request.getContextPath() %>/resources/img/logo.png" alt="회사로고" >
+			<div id = "login_info">
+				<a href="logout.do">로그아웃</a>
+				|
+				<a href="<%= request.getContextPath() %>/user/mypage.jsp">마이페이지</a>
+			</div>
+		</div>
+		<hr>
+		<div id="header2">
+			<div id="bar">
+				<div id="working_info_bar">
+					<div id="working_info">근태정보</div><br>
+					<div id="working_info">2024-12-05 11:51</div><br>
+					<div id="working_info">출근시각 : </div><br>
+					<div id="working_info">퇴근시각 : </div>
+					<div id="alarm"><img id="alarm_icon" src="<%= request.getContextPath() %>/resources/img/icon/alarm.png" alt="알림"></div>
+				</div>
+				<div id="menu_bar">
+					<div id="menu"><img id="menu_icon" src="<%= request.getContextPath() %>/resources/img/icon/groups.png" alt="조직도"></div>
+					<div id="menu"><img id="menu_icon" src="<%= request.getContextPath() %>/resources/img/icon/calendar.png" alt="근태"></div>
+					<div id="menu" style="cursor: pointer;" onclick="chatModal();"><img id="menu_icon" src="<%= request.getContextPath() %>/resources/img/icon/talk.png" alt="대화"></div>
+					<div id="menu"><img id="menu_icon" src="<%= request.getContextPath() %>/resources/img/icon/setting.png" alt="관리자"></div>
+				</div>
+			</div>
+			<div id="member">
+				<img id="member_img" src="<%= request.getContextPath() %>/resources/img/member1.jpeg" alt="회사원1">
+				<div id="member_name">JJ417976 홍길자</div>
+			</div>
+		</div>
+		<hr>
+		<div id="modal">
+			<div id="modalContent">
+			    <div class="modalBody">
+			        <!-- 채팅창 모달 -->
+			    </div>
+			</div>
+		</div>
+		<div id="slider" class="hidden">
+		    <div class="modalHeader">
+		        <h2>채팅방 참가자 검색</h2>
+		        <button class="closeBtn" onclick="closeSlider()">X</button>
+		    </div>
+		    <input type="text" name="search_value" id="user_search" placeholder="이름, 부서, 직책으로 검색하세요">
+		    <ul id="userList" style="display:none;"></ul>
+		    <button id="completeChatButton">완료</button>
+		</div>
+	</sec:authorize>
