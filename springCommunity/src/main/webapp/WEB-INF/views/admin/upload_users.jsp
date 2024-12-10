@@ -231,7 +231,7 @@ document.addEventListener("DOMContentLoaded", function() {
 									</select>
 								</td>
 			      				<td>
-			      					<input type="text" name="user_join_data" placeholder="입사일">
+			      					<input type="text" name="user_join_date" placeholder="입사일">
 			      				</td>
 			      				<td>
 			      					<select name="bank_id" id="bank_id">

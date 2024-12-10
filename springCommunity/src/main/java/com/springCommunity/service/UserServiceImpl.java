@@ -6,8 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.springCommunity.dao.UserDAO;
-import com.springCommunity.vo.ChatVO;
-import com.springCommunity.vo.SearchVO;
 import com.springCommunity.vo.UserInfoVO;
 
 @Service
@@ -20,5 +18,8 @@ public class UserServiceImpl implements UserService {
 	public int insertUsers(List<UserInfoVO> users) {
 		return userDAO.insertUsers(users);
 	}
-	
+	@Override
+	public int insertUser(UserInfoVO userInfoVO) {
+		return userDAO.insertUser(userInfoVO);
+	}
 }

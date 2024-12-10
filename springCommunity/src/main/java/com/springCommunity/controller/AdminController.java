@@ -5,6 +5,7 @@ import com.springCommunity.service.ExcelUserService;
 import com.springCommunity.vo.UserInfoVO;
 
 import java.io.InputStream;
+import java.security.SecureRandom;
 import java.util.*;
 
 import org.apache.ibatis.session.SqlSession;
@@ -63,7 +64,45 @@ public class AdminController {
             return "admin/upload_users";
         }
     }
-
+    
+    @RequestMapping(value="/insert_user.do", method = RequestMethod.POST)
+	public String insertUser(UserInfoVO userInfoVO) {
+		BCryptPasswordEncoder epwe = new BCryptPasswordEncoder();
+		
+		String random_PASSWORD = generateRandom(6);
+		userInfoVO.setUser_password(random_PASSWORD); // 비밀번호는 암호화 필요
+		
+		String encodedPassword = epwe.encode(userInfoVO.getUser_password());
+		userInfoVO.setUser_password(encodedPassword);
+		System.out.println("암호화된 비밀번호: " + encodedPassword);
+		
+		userInfoVO.setUser_id("jj"+userInfoVO.getUser_id());
+		
+		int result = userService.insertUser(userInfoVO);
+		
+		if(result > 0) {
+			System.out.println("회원등록성공");
+		}else {
+			System.out.println("회원등록실패");
+		}
+		
+		return "admin/upload_users";
+	}
+    
+    //랜덤 비밀번호 6글자 생성
+  	public String generateRandom(int length) {
+  		String datas = "abcdefghijklmnopqrstuvwxyz0123456789";
+  		SecureRandom secureRandom = new SecureRandom();
+  		StringBuilder code = new StringBuilder();
+  		
+  		for (int i = 0; i < length; i++) {
+  			int rand = secureRandom.nextInt(datas.length());
+  			code.append(datas.charAt(rand));
+  		}
+  		
+  		return code.toString();
+  	}
+    
     // 비밀번호 암호화 메소드
     private String encryptPassword(String password) {
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
