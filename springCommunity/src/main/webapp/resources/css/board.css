@@ -3,12 +3,27 @@
 .menu_table {
 	height: 100px;
 	width: 100%;
-	max-width: 1500px;
+	max-width: 1600px;
 	background: white;
 	padding: 20px;
 	border-radius: 5px;
 	text-align: center;
 	font-size: 25px;
+    border-top: 1px solid #444444;
+    border-collapse: collapse;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.menu_table th {
+	width: 30%;	
+    border-left: 1px solid #444444;
+    border-bottom: 1px solid #444444;
+    padding: 10px;
+}
+
+.menu_table th:first-child {
+	border-left: none;
 }
 
 .menu_table th:hover {
@@ -25,6 +40,8 @@
     background: white;
     padding: 30px;
     border-radius: 10px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .board-table {
@@ -72,4 +89,8 @@
 .pagination a:hover {
     background: #A2A2A2;
     color: white;
+}
+
+.board_writebtn {
+	text-align: right;
 }

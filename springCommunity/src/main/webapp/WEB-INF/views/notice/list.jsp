@@ -8,7 +8,7 @@
 				<select name="searchType">
 					<option value="post_title"<c:if test="${param.searchType eq 'post_title'}">selected</c:if>>제목</option>
 				</select>
-				<input type="text" name="searchValue" value="${param.searchValue}">
+				<input type="text" name="searchValue" value="${param.searchValue}" placeholder="제목으로 검색">
 				<button>검색</button>
 			</form>
 			<table class="board-table" border="1">
@@ -27,6 +27,10 @@
 					</tr>
 				</c:forEach>
 			</table>
+			
+			<div class="board_writebtn">
+				<button onclick="location.href='write.do'">글 등록</a>
+			</div>
 			
 			<!-- 페이징 영역 -->
 			<div class="pagination">
@@ -47,7 +51,6 @@
 					<a href="list.do?nowpage=${paging.endPage+1 }">&gt;</a>
 				</c:if>
 			</div>
-			<a href="write.do">글 등록</a>
 	</div>
 	</section>
 </body>
