@@ -8,7 +8,7 @@
 				<select name="searchType">
 					<option value="post_title"<c:if test="${param.searchType eq 'post_title'}">selected</c:if>>제목</option>
 				</select>
-				<input type="text" name="searchValue" value="${param.searchValue}" placeholder="제목으로 검색">
+				<input type="text" name="searchValue" value="${param.searchValue}" placeholder="">
 				<button>검색</button>
 			</form>
 			<table class="board-table" border="1">
