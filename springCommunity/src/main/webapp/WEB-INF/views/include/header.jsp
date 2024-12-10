@@ -9,6 +9,7 @@
 <link href="<%= request.getContextPath()%>/resources/css/header.css" rel="stylesheet" type="text/css">
 <link rel="stylesheet" type="text/css" href="<%= request.getContextPath() %>/resources/css/chat.css" />
 <link rel="stylesheet" type="text/css" href="<%= request.getContextPath() %>/resources/css/login.css" />
+<link rel="stylesheet" type="text/css" href="<%= request.getContextPath() %>/resources/css/board.css" />
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 <script src="<%= request.getContextPath() %>/resources/js/jquery-3.7.1.js"></script>
 <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css"><!-- jQuery UI CSS -->
