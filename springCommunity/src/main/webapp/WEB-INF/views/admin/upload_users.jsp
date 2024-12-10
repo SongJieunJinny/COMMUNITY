@@ -6,7 +6,7 @@
 <head>
     <meta charset="UTF-8">
     <title>커뮤니티</title>
-    <link rel="stylesheet" type="text/css" href="<%= request.getContextPath() %>/resources/css/spring.css" />
+    <link rel="stylesheet" type="text/css" href="<%= request.getContextPath() %>/resources/css/upload_users.css" />
     <style>
     body{
 		width: 80%;
@@ -130,7 +130,7 @@ document.addEventListener("DOMContentLoaded", function() {
 	      <div>모든사원 ></div><br>
 	      <div>임원 ></div><br>
 	      <div>그룹없음 ></div><br>
-	      <div>신규사원 ></div>
+	      <div><strong>신규사원 ></strong></div>
 	    </div>
 		<div id="menu_bar2">
 		    <div>경영 ></div><br>
