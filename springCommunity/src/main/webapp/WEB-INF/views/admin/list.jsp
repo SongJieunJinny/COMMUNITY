@@ -123,7 +123,7 @@
       <div>모든사원 ></div><br>
       <div>임원 ></div><br>
       <div>그룹없음 ></div><br>
-      <div>신규사원 ></div>
+      <div style="cursor:pointer;" onclick="location.href='upload_users.do'">신규사원 ></div>
     </div>
 		<div id="menu_bar2">
       <div>경영 ></div><br>

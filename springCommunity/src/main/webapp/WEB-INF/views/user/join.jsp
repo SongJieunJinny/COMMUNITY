@@ -44,7 +44,7 @@
 						<option value="5">개발팀</option>
 						<option value="6">디자인팀</option>
 						<option value="7">고객지원팀</option>
-						<option value="8">교육팀</option>
+						<option value="8">회계팀</option>
 					</select>
 				</td>
 			</tr>

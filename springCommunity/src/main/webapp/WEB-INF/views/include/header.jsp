@@ -309,9 +309,9 @@ function leaveChatRoom(chat_no,user_id) {
 		<div class="main_container" style="text-align: center;">
             <img src="<%= request.getContextPath() %>/resources/img/메인.jpg" alt="메인 이미지" 
             style="width: 100%; height: 820px;">
-            <div class="log_Info" style="font-size: 18px; text-decoration: none; color: black; font-weight: bold; margin-top: 20px;">
-                <a href="join.do">회원가입</a> | 
-                <a id="loginBtn">로그인</a><br>
+            <div class="log_Info" style="font-size: 18px; text-decoration: none; color: white; font-weight: bold; margin-top: 20px;">
+                <a href="join.do" style="color:white;">회원가입</a> | 
+                <a id="loginBtn" style="color:white;">로그인</a><br>
             </div>
         </div>
         
@@ -369,7 +369,9 @@ function leaveChatRoom(chat_no,user_id) {
 					<div id="menu"><img id="menu_icon" src="<%= request.getContextPath() %>/resources/img/icon/groups.png" alt="조직도"></div>
 					<div id="menu"><img id="menu_icon" src="<%= request.getContextPath() %>/resources/img/icon/calendar.png" alt="근태"></div>
 					<div id="menu" style="cursor: pointer;" onclick="chatModal();"><img id="menu_icon" src="<%= request.getContextPath() %>/resources/img/icon/talk.png" alt="대화"></div>
-					<div id="menu"><img id="menu_icon" src="<%= request.getContextPath() %>/resources/img/icon/setting.png" alt="관리자"></div>
+					<sec:authorize access="hasAnyRole('ROLE_ADMIN')">
+						<div id="menu" style="cursor: pointer;" onclick="location.href='<%= request.getContextPath() %>/admin/list.do'"><img id="menu_icon" src="<%= request.getContextPath() %>/resources/img/icon/setting.png" alt="관리자"></div>
+					</sec:authorize>
 				</div>
 			</div>
 			<div id="member">
