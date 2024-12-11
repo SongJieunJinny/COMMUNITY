@@ -348,7 +348,9 @@ function leaveChatRoom(chat_no,user_id) {
 	</sec:authorize>
 	<sec:authorize access="isAuthenticated()"><!-- 로그인 O -->
 		<div id="header1">
-			<img id="logo_img" src="<%= request.getContextPath() %>/resources/img/logo.png" alt="회사로고" >
+			<a href="<%= request.getContextPath() %>">
+				<img id="logo_img"  src="<%= request.getContextPath() %>/resources/img/logo.png" alt="회사로고" >
+			</a>
 			<div id = "login_info">
 				<a href="logout.do">로그아웃</a>
 				|
