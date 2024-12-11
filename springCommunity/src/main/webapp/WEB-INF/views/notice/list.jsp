@@ -29,7 +29,7 @@
 			</table>
 			
 			<div class="board_writebtn">
-				<button onclick="location.href='write.do'">글 등록</a>
+				<button onclick="location.href='<%=request.getContextPath() %>/notice/write.do'">글 등록</button>
 			</div>
 			
 			<!-- 페이징 영역 -->

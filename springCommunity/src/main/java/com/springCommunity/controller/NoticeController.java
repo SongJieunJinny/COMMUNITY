@@ -1,5 +1,6 @@
 package com.springCommunity.controller;
 
+import java.security.Principal;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -51,18 +52,17 @@ public class NoticeController {
 	public String write(HttpServletRequest request,HttpServletResponse response)
 			throws Exception {
 		
-		HttpSession session = request.getSession();
-		if(session.getAttribute("loginUser")== null) {
-			
-			response.setCharacterEncoding("utf-8");
-			response.setContentType("text/html;charset=utf-8");
-			
-			response.getWriter().append("<script>alert('로그인 후 이용하세요.');"
-									+"location.href='"
-									+request.getContextPath()
-									+"/login.do'</script>").flush();;
-			
-		}
+		/*
+		 * if(principal== null || principal.getName() == null) {
+		 * 
+		 * response.setCharacterEncoding("utf-8");
+		 * response.setContentType("text/html;charset=utf-8");
+		 * 
+		 * response.getWriter().append("<script>alert('로로그인 후 이용하세요.');"
+		 * +"location.href='" +request.getContextPath() +"/login.do'</script>").flush();
+		 * 
+		 * }
+		 */
 		
 		return "notice/write";
 	}

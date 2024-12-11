@@ -2,12 +2,12 @@ package com.springCommunity.vo;
  
 public class NoticeVO extends UserInfoVO {
 	private int post_no;
+	private String user_id;
 	private String post_title;
 	private String post_content;
 	private String post_date;
 	private String post_state;
 	private String post_type;
-	private String user_id;
 	
 	
 	public int getPost_no() {

@@ -1,5 +1,6 @@
 @charset "UTF-8";
 
+/* ---------헤더 메뉴바 css 시작---------- */
 .menu_table {
 	height: 100px;
 	width: 100%;
@@ -34,6 +35,10 @@
     color: white;
 }
 
+/* ---------헤더 메뉴바 css 끝---------- */
+
+
+/* -----------공지 및 사내 커뮤니티 css 시작 ----------- */
 .board-container {
     width: 100%;
     max-width: 1200px;
@@ -93,4 +98,99 @@
 
 .board_writebtn {
 	text-align: right;
+}
+/* -----------공지 및 사내 커뮤니티 css 종료 ----------- */
+
+/* -----------게시글 뷰 페이지 css 시작 ----------- */
+.view-container {
+    width: 80%;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.post-view {
+    margin-bottom: 20px;
+}
+
+.menu-title {
+    font-size: 24px;
+    margin-bottom: 10px;
+    color: #444;
+    text-align: center;
+}
+
+.post-table {
+    border-top: 3px solid #696969;
+    height: 100px;
+	width: 100%;
+	max-width: 1200px;
+	background: white;
+	padding: 20px;
+	border-radius: 5px;
+	text-align: center;
+	font-size: 25px;
+    border-collapse: collapse;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 20px;
+}
+
+.post-table th {
+	text-align: left;
+}
+
+.post-table tr {
+	border-bottom : 1px solid #808080;
+}
+
+.post-table .post-title {
+    width: 150px;
+    background: #C0C0C0;
+}
+
+.post-table .post-content {
+	height: 250px;
+	overflow: auto;
+	font-size: 15px;
+	padding-top: 20px;
+	padding-bottom: 20px;
+}
+
+.post-actions{
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
+}
+
+.edit-button, .delete-button {
+    background-color: #b0b0b0;
+    color: #fff;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    display: inline-block;
+}
+
+.edit-button:hover, .delete-button:hover {
+    background-color: #999;
+}
+
+.back-button {
+    background-color: #e0e0e0;
+    color: #333;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    text-align: right;
+}
+
+.back-button:hover {
+    background-color: #d6d6d6;
 }

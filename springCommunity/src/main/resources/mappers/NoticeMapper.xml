@@ -56,7 +56,7 @@
 	
 	<update id="changeState" parameterType="int">
 		UPDATE POST
-		   SET state = 'D'
+		   SET POST_STATE = '0'
 		 WHERE POST_NO = #{POST_NO}
 	</update>
 	

@@ -12,15 +12,10 @@
 					<th>내용 : </th>
 					<td><textarea name="post_content" cols="40" rows="10"></textarea></td>
 				</tr>
-				<tr>
-					<th>첨부파일 : </th>
-					<td><input type="file"></td>
-					<td>취소</td>
-				</tr>
 			</table>
 			<button>작성</button>
 		</form>
-			<button>취소</button>
+			<button onclick="location.href='<%=request.getContextPath() %>/notice/list.do'">취소</button>
 	</section>
 </body>
 </html>
