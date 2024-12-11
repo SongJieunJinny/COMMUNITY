@@ -91,22 +91,24 @@
 </head>
 <body>
   <div id="header1">
-    <img id="logo_img" src="./logo.png"alt="회사로고" >
+    <a href="<%= request.getContextPath() %>">
+    	<img id="logo_img" src="<%= request.getContextPath() %>/resources/img/logo.png" alt="회사로고" >
+    </a>
     <div id = "login_info">
-      <a href="<%= request.getContextPath() %>/user/logout.jsp">로그아웃</a>
+      <a href="logout.do">로그아웃</a>
       |
-      <a href="<%= request.getContextPath() %>/user/mypage.jsp">마이페이지</a>
+      <a href="info.do">마이페이지</a>
     </div>
   </div>
   <hr>
   <div id="mypage_list">
-    <a href="<%= request.getContextPath() %>/mypage/info.jsp">내 정보 수정</a>
+    <a href="info.do">내 정보 수정</a>
     |
-    <a href="<%= request.getContextPath() %>/mypage/benefit.jsp">경조금 신청</a>
+    <a href="benefit.do">경조금 신청</a>
     |
-    <a href="<%= request.getContextPath() %>/mypage/medical.jsp">의료비 신청</a>
+    <a href="medical.do">의료비 신청</a>
     |
-    <a href="<%= request.getContextPath() %>/mypage/form.jsp">증명서 발급</a>
+    <a href="form.do">증명서 발급</a>
   </div>
   <hr>
 	<div id="mypage_form">

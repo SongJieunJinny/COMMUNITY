@@ -352,7 +352,7 @@ function leaveChatRoom(chat_no,user_id) {
 			<div id = "login_info">
 				<a href="logout.do">로그아웃</a>
 				|
-				<a href="<%= request.getContextPath() %>/user/mypage.jsp">마이페이지</a>
+				<a href="<%= request.getContextPath() %>/mypage/info.do">마이페이지</a>
 			</div>
 		</div>
 		<hr>
