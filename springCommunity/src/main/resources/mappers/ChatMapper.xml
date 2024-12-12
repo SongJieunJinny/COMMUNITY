@@ -11,14 +11,30 @@
 		 	 AND (CHAT_NAME LIKE concat('%', #{search_value}, '%') OR #{search_value} = '') 
 	</select>
 	
-	<!-- 채팅목록 -->
-	<select id="selectAll" parameterType="searchVO" resultType="chatVO">
-		SELECT c.CHAT_NO, c.CHAT_NAME 
+	<!-- 채팅방 목록 -->
+    <select id="selectAll" parameterType="searchVO" resultType="chatVO">
+		SELECT c.CHAT_NO, c.CHAT_NAME, cm.CHAT_MESSAGE_CONTENT, 
+			date_format(cm.CHAT_MESSAGE_DATE,'%H:%i') as CHAT_MESSAGE_TIME,
+	        (
+             SELECT COUNT(*) 
+             FROM CHAT_MESSAGE_READ cmr
+             INNER JOIN CHAT_MESSAGE cm2 ON cmr.CHAT_MESSAGE_NO = cm2.CHAT_MESSAGE_NO
+             WHERE cm2.CHAT_NO = c.CHAT_NO
+              AND cmr.USER_ID = #{user_id} 
+              AND cmr.CHAT_MESSAGE_READ_STATE = 0  
+	        ) AS unread_count
 		FROM CHAT c
-		JOIN CHAT_USERS cu ON c.CHAT_NO = cu.CHAT_NO
+		INNER JOIN CHAT_USERS cu ON c.CHAT_NO = cu.CHAT_NO
+		LEFT JOIN  CHAT_MESSAGE cm ON cm.CHAT_NO = c.CHAT_NO 
+		    AND cm.CHAT_MESSAGE_NO = (
+		        SELECT MAX(cm2.CHAT_MESSAGE_NO)
+		        FROM CHAT_MESSAGE cm2
+		        WHERE cm2.CHAT_NO = c.CHAT_NO
+		    )
 		WHERE cu.USER_ID = #{user_id}
 			 AND CHAT_STATE='1'
 		 	 AND (CHAT_NAME LIKE concat('%', #{search_value}, '%') OR #{search_value} = '')
+	 	 ORDER BY cm.CHAT_MESSAGE_DATE DESC 
 	</select>
 	
 	<!-- 채팅초대 유저 검색 -->
@@ -65,4 +81,40 @@
 		DELETE FROM CHAT_USERS 
 		WHERE USER_ID = #{user_id} AND CHAT_NO = #{chat_no}
 	</delete>
+	
+	<!-- 메시지 저장 -->
+	<insert id="sendMessage" parameterType="chatMessageVO">
+	    INSERT INTO CHAT_MESSAGE (CHAT_NO, CHAT_MESSAGE_CONTENT, USER_ID)
+	    VALUES (#{chat_no}, #{chat_message_content}, #{user_id})
+	    <selectKey order="AFTER" resultType="int" keyProperty="chat_message_no">
+	        SELECT LAST_INSERT_ID() AS CHAT_MESSAGE_NO
+	    </selectKey>
+	</insert>
+	
+	<!-- 메시지 저장 후 읽음 상태 추가 -->
+    <!-- 입력한 유저 읽음 상태 추가 -->
+	<insert id="sendMessageAfterFirst" parameterType="chatMessageVO">
+	    INSERT INTO CHAT_MESSAGE_READ (CHAT_MESSAGE_NO, USER_ID, CHAT_MESSAGE_READ_STATE)
+	    VALUES (#{chat_message_no}, #{user_id}, 1)
+	</insert>
+    <!-- 채팅방 참가자 읽음 상태 추가 -->
+	<insert id="sendMessageAfterSecond" parameterType="chatMessageVO">
+	    INSERT INTO CHAT_MESSAGE_READ (CHAT_MESSAGE_NO, USER_ID, CHAT_MESSAGE_READ_STATE)
+	    SELECT #{chat_message_no}, USER_ID, 0
+	    FROM CHAT_USERS
+	    WHERE CHAT_NO = #{chat_no} AND USER_ID != #{user_id}
+	</insert>
+    
+    <!-- 기존 채팅내용 -->
+    <select id="loadMessage" parameterType="int" resultType="chatMessageVO">
+		SELECT CHAT_MESSAGE_CONTENT, 
+			cm.USER_ID,
+			CHAT_NO,
+			date_format(cm.CHAT_MESSAGE_DATE,'%H:%i') as CHAT_MESSAGE_TIME,
+            date_format(cm.CHAT_MESSAGE_DATE, '%Y.%m.%d') as CHAT_MESSAGE_DATE,
+			u.USER_NAME 
+		FROM CHAT_MESSAGE cm
+		INNER JOIN USER u ON u.USER_ID = cm.USER_ID 
+		WHERE CHAT_NO = #{chat_no}
+	</select>
 </mapper>

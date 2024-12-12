@@ -6,9 +6,7 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import com.springCommunity.vo.ChatVO;
-import com.springCommunity.vo.SearchVO;
-import com.springCommunity.vo.UserInfoVO;
+import com.springCommunity.vo.*;
 
 @Repository
 public class ChatDAO {
@@ -45,4 +43,22 @@ public class ChatDAO {
 	public int leaveChatRoom(ChatVO chatVO) {
 		return sqlSession.delete(name_space+"leaveChatRoom",chatVO);
 	}
+	
+	// 채팅메시지 저장
+    public int sendMessage(ChatMessageVO chatMessageVO) {
+    	return sqlSession.insert(name_space + "sendMessage", chatMessageVO);
+    }
+    
+    public int sendMessageAfterFirst(ChatMessageVO chatMessageVO) {
+    	return sqlSession.insert(name_space + "sendMessageAfterFirst", chatMessageVO);
+    }
+    
+    public int sendMessageAfterSecond(ChatMessageVO chatMessageVO) {
+    	return sqlSession.insert(name_space + "sendMessageAfterSecond", chatMessageVO);
+    }
+    
+    // 기존 채팅메시지 목록
+    public List<ChatMessageVO> loadMessage(int chat_no){
+    	return sqlSession.selectList(name_space + "loadMessage", chat_no);
+    }
 }

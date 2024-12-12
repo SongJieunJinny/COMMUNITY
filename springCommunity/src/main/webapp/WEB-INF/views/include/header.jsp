@@ -17,6 +17,7 @@
 <script>
 let user_name = "";
 let user_id = "";
+let openChats = []; // 열린 채팅방 번호를 저장하는 배열
 const chatRoomList = $("#chatRoomList");
 window.onload = function(){
 	user_name = "${sessionScope.SPRING_SECURITY_CONTEXT.authentication.principal.user_name}";
@@ -38,6 +39,58 @@ window.onload = function(){
             $("#loginModal").fadeOut();
 		}
 	});
+	
+	/* 채팅방 검색창 글지우는 버튼 */
+	$(document).on('keyup', '#search_input', function() {
+		if($(this).val().length > 0){
+			$("#clearBtn").css("display","inline");
+		}else{
+			$("#clearBtn").css("display","none");
+		}
+	});
+	$(document).on('click', '#clearBtn', function() {
+	    $("#search_input").val('');  
+	    $(this).css("display","none");
+	});
+	
+	/* 클릭할때 chat_no를 받아와서 배열에 담고, 해당 채팅창을 닫으면 배열에서 삭제. 매초마다 메시지내용 다시 불러오기 */
+	setInterval(() => {
+	    openChats.forEach((chat_no) => {
+	        loadMessage(chat_no);
+	    });
+	}, 1000);
+	 
+	
+	/* 채팅방목록 매초마다 불러오기. 마지막 채팅내용과 채팅시간에 필요 */
+	setInterval(function(){
+		$.ajax({
+	        url: "<%= request.getContextPath() %>/chat/chat.do",
+	        type: "GET",
+	        success: function(data) {
+	        	let html = ``;
+	        	for(item of data.list){
+					html += `
+					<li onclick="chatRoomView(\${item.chat_no},'\${item.chat_name}');">
+						<div class="chat_item">
+							<div class="message_wrapper">
+				          	  <div class="chat_name">\${item.chat_name}</div>`;
+		            if(item.unread_count > 0) {
+		           		html += `<div class="unread_count">\${item.unread_count}</div>`;
+		            }else{
+		            	html += `<div></div>`;
+		            }
+	            	html += `</div>
+		          			<div class="last_message_wrapper">
+				                <div class="last_message">\${item.chat_message_content || ""}</div>
+				                <div class="last_message_time">\${item.chat_message_time || ""}</div>
+				            </div>
+				        </div>
+					</li>`;
+				}
+	            $("#chatRoomList").html(html);
+	        }
+	    });
+	},1000);
 }
 
 
@@ -68,16 +121,15 @@ $(document).on('keyup', '#user_search', function() {
     }
 });
 
+/* 채팅방 목록 출력되는 모달 닫기 */
 function closeModal() {
     $("#modal").fadeOut(); // 모달 숨기기
 }
 
+/* 채팅방 목록 출력되는 모달 */
 function chatModal(){
-	if(user_id === ""){
-		alert("로그인 후 이용가능합니다.");
-		return;
-	}
     $("#modal").fadeIn(); // 모달 창 보이게 하기
+    
     $.ajax({
         url: "<%= request.getContextPath() %>/chat/chat.do",
         type: "GET",
@@ -85,7 +137,7 @@ function chatModal(){
         	let html = `
        		<div class="modalHeader">
 		        <h2>채팅</h2>
-		        <button class="closeBtn" onclick="closeModal();">X</button>
+		        <button class="closeBtn" onclick="closeModal()">X</button>
 		    </div>
     		<div id="chatContainer">
     			<div id="chatContainerHeader">
@@ -105,13 +157,22 @@ function chatModal(){
 	                <ul id="chatRoomList">`;
 	                
         	for(item of data.list){
-        		console.log("item chat_no" + item.chat_no);
-        		$("#chatRoomList").show();
 				html += `
 						<li onclick="chatRoomView(\${item.chat_no},'\${item.chat_name}');">
-							<div>
-								\${item.chat_name}
-						 	</div>
+							<div class="chat_item">
+								<div class="message_wrapper">
+						            <div class="chat_name">\${item.chat_name}</div>`;
+	            if(item.unread_count > 0) {
+	           		html += `			<div class="unread_count">\${item.unread_count || ""}</div>`;
+	            }else{
+	            	html += `			<div>\${item.unread_count || ""}</div>`;
+	            }
+         		html += `	        </div>
+					            <div class="last_message_wrapper">
+					                <div class="last_message">\${item.chat_message_content || ""}</div>
+					                <div class="last_message_time">\${item.chat_message_time || ""}</div>
+					            </div>
+					        </div>
 						</li>`;
 			}
         	
@@ -120,8 +181,6 @@ function chatModal(){
         	</div>
         	`;
             $("#modalContent").html(html);
-			
-            
         }
     });
     
@@ -132,15 +191,12 @@ function chatModal(){
 }
 
 
-//채팅방 생성 슬라이더 열기
+/* 채팅방 생성 슬라이더 열기 */
 $(document).on("click", "#createChatButton", function () {
     $("#slider").fadeIn(); // 슬라이더 표시
-    $("#slider").draggable({
-        handle: ".modalHeader", // 헤더 부분만 드래그 가능하도록 설정
-    });
 });
 
-// 채팅방 생성 슬라이더 닫기
+/* 채팅방 생성 슬라이더 닫기 */
 function closeSlider() {
     $("#slider").fadeOut(); // 슬라이더 숨김
     $("#user_search").val('');
@@ -148,6 +204,7 @@ function closeSlider() {
     $("#userList").toggle();
 }
 
+/* 초대할 회원 체크하고 채팅방 생성 */
 $(document).on("click", "#completeChatButton", function () {
 	let selectedUsers = [];
     let chatNames = [];
@@ -196,9 +253,17 @@ $(document).on("click", "#completeChatButton", function () {
     }
 });
 
-
+/* 개별채팅방 모달 만드는 함수 */
 function chatRoomView(chat_no,chat_name){
+	if(!openChats.includes(chat_no)) {
+		openChats.push(chat_no); // 배열에 chat_no 추가
+    }
 	chatUser(chat_no);
+	loadMessage(chat_no);
+	connectWebSocket(chat_no);
+	console.log("chatRoomView chat_no :" + chat_no);
+	console.log("chatRoomView chat_name :" + chat_name);
+	
 	const modalId = 'chatModal_' + chat_no;
 	console.log("modalId :"+modalId);
 	
@@ -208,7 +273,7 @@ function chatRoomView(chat_no,chat_name){
                 <div class="chatModalHeader">
                     <button class="hamburgerMenu" onclick="toggleChatMenu('\${modalId}')">☰</button>
                     <h2>\${chat_name}</h2>
-                   	<button class="closeBtn" onclick="closeChatModal('\${modalId}')">X</button>
+                   	<button class="closeBtn" onclick="closeChatModal('\${chat_no}')">X</button>
                 </div>
                 <div class="chatContent">
 	                <div id="chatLog_\${chat_no}" class="chatLog wrap">
@@ -238,7 +303,7 @@ function chatRoomView(chat_no,chat_name){
             handle: ".chatModalHeader"  // 헤더를 드래그 가능한 영역으로 설정
         });
 
-        // 모달 CSS
+        // 모달 스타일링 (CSS를 통해 채팅방 모달의 위치 및 크기 설정)
         $("#" + modalId).css({
             position: 'absolute',
             top: '50px', // 화면 상단에서 50px 떨어진 곳에 모달이 보이도록 설정
@@ -251,18 +316,33 @@ function chatRoomView(chat_no,chat_name){
             zIndex: 9999
         });
         $("#chatSidebar_" + modalId).hide();
+        /* setTimeout없이 동작시킬 경우 스크롤이 안먹힘 */
+        setTimeout(function(){
+        	$("#chatLog_"+chat_no).scrollTop($("#chatLog_"+chat_no)[0].scrollHeight);
+        },100);
+        
     }
 }
 
-//햄버거 메뉴 토글 기능
+/* 햄버거 메뉴 토글 기능 */
 function toggleChatMenu(modalId) {
     const sidebar = $("#chatSidebar_" + modalId);
     sidebar.toggle("slide", { direction: "right" }, 300); // 오른쪽으로 슬라이드 토글
 }
 
-//채팅방 모달을 닫는 함수
-function closeChatModal(modalId) {
-    $("#" + modalId).remove();  
+/* 채팅방 모달을 닫는 함수 */
+function closeChatModal(chat_no) {
+	const index = openChats.indexOf(chat_no);
+    if(index !== -1) {
+    	openChats.splice(index, 1); // 배열에서 chat_no 삭제
+        const socket = chatWebSockets[chat_no];
+        if(socket && socket.readyState === WebSocket.OPEN) {
+            socket.close(); // WebSocket 연결 종료
+        }
+        delete chatWebSockets[chat_no]; // WebSocket 객체 삭제
+        console.log("채팅방 닫힘: ", openChats);
+    }
+    $("#chatModal_" + chat_no).remove();  
 }
 
 let user_list = "";
@@ -300,6 +380,175 @@ function leaveChatRoom(chat_no,user_id) {
             alert("채팅방 나가기에 실패했습니다.");
         }
     });
+}
+
+/* 채팅방 웹소켓 */
+let socket;
+const chatWebSockets = {}; // 채팅방 WebSocket 저장 객체
+function connectWebSocket(chat_no) {
+    // 채팅방 번호에 따라 WebSocket을 생성
+    if(!chatWebSockets[chat_no]) {
+    	/* 시연용 */
+        //const socket = new WebSocket("ws://192.168.0.175:8080/community/chat"); 
+        //각자 컴퓨터에서 돌릴용
+        const socket = new WebSocket("ws://localhost:8080/community/chat"); 
+
+        socket.onopen = function () {
+            console.log(`WebSocket 연결 성공: 채팅방 \${chat_no}`);
+        };
+
+        socket.onmessage = function (event) {
+            const chatLog = document.getElementById("chatLog_" + chat_no);
+
+            // 서버에서 보낸 메시지(JSON 형식)를 파싱
+            const messageData = JSON.parse(event.data);
+            
+            // 오늘 날짜를 '연도.월.일' 형식으로 가져오기
+            const currentDate = new Date();
+            const todayDate = `\${currentDate.getFullYear()}.\${(currentDate.getMonth() + 1).toString().padStart(2, '0')}.\${currentDate.getDate().toString().padStart(2, '0')}`;
+
+            // 채팅 로그에 오늘 날짜의 chatDate가 이미 있는지 확인
+            const existingDateElement = chatLog.querySelector(`.chatDate[data-date="\${todayDate}"]`);
+
+            if(!existingDateElement) {
+                // 오늘 날짜가 없다면 chatDate 추가
+                const dateHTML = `
+                    <div class="chatDate" data-date="\${todayDate}">
+                        \${todayDate}
+                    </div>
+                `;
+                chatLog.insertAdjacentHTML('beforeend', dateHTML);
+            }
+
+            // 현재 시간을 '시:분' 형식으로 가져오기
+            const formattedTime = `\${currentDate.getHours()}:\${currentDate.getMinutes().toString().padStart(2, '0')}`;
+
+
+            // 현재 로그인한 사용자인지 확인
+            const isCurrentUser = messageData.user_name === user_name;
+
+            // 동적으로 스타일 클래스 지정. ch1 다른채팅유저(왼쪽), ch2 로그인한 유저(오른쪽)
+            const messageClass = isCurrentUser ? "chat ch2" : "chat ch1";
+
+            // DOM에 메시지 추가
+            const messageHTML = isCurrentUser
+	        ? `
+	            <div class="\${messageClass}">
+	                <div class="messageContent textbox">\${messageData.chat_message_content}</div>
+	                <div class="messageDate_ch2">\${formattedTime}</div>
+	            </div>
+	        `
+	        : `
+                <div class="messageUser">\${messageData.user_name}</div>
+	            <div class="\${messageClass}">
+	                <div class="messageContent textbox">\${messageData.chat_message_content}</div>
+	                <div class="messageDate_ch1">\${formattedTime}</div>
+	            </div>
+	        `;
+
+		    // DOM에 메시지 추가
+		    chatLog.insertAdjacentHTML('beforeend', messageHTML);
+
+            // 스크롤을 맨 아래로 유지
+            chatLog.scrollTop = chatLog.scrollHeight;
+        };
+
+        socket.onclose = function () {
+            console.log(`WebSocket 연결 종료: 채팅방\${chat_no}`);
+        };
+
+        chatWebSockets[chat_no] = socket;
+    }
+}
+/* 채팅메시지 DB에 저장 */
+function sendMessage(chat_no) {
+    const input = document.getElementById("messageInput_" + chat_no);
+    const chat_message_content = input.value.trim();
+
+    if (chat_message_content && chatWebSockets[chat_no]?.readyState === WebSocket.OPEN) {
+        const payload = JSON.stringify({
+            user_name: user_name, 
+            chat_message_content: chat_message_content,
+        });
+
+        chatWebSockets[chat_no].send(payload); // 서버로 메시지 전송
+        
+        // 메시지를 서버에 저장
+        $.ajax({
+            url: '<%= request.getContextPath() %>/chat/sendMessage.do',
+            method: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify({ chat_no, user_id, chat_message_content }),
+            success: function() {
+                console.log('메시지가 저장되었습니다.');
+            },
+            error: function() {
+                console.error('메시지 저장 중 오류 발생');
+            }
+        });
+
+        input.value = ""; // 입력 필드 초기화
+    } else {
+        console.log(`WebSocket이 열려 있지 않음: 채팅방 \${chat_no}`);
+    }
+}
+
+/* 기존 채팅메시지 불러오기 */
+function loadMessage(chat_no){
+	$.ajax({
+		url : "<%= request.getContextPath() %>/chat/loadMessage.do",
+		type : "get",
+		data : {chat_no : chat_no},
+		success : function(data){
+			let html = "";
+			
+			const currentDate = new Date();
+            const todayDate = `\${currentDate.getFullYear()}.\${(currentDate.getMonth() + 1)
+                .toString()
+                .padStart(2, "0")}.\${currentDate.getDate().toString().padStart(2, "0")}`;
+
+            let chat_date = ""; // 현재 DOM에 표시 중인 날짜
+
+            for(let item of data) {
+                if(item.chat_message_date !== chat_date) {
+                	chat_date = item.chat_message_date;
+                    // 날짜 구분 추가
+                    html += `
+                        <div class="chatDate" data-date="\${chat_date}">
+                            \${chat_date}
+                        </div>
+                    `;
+                }
+                
+	            // 현재 로그인한 사용자인지 확인
+	            let isCurrentUser = item.user_id === user_id;
+
+	            // 동적으로 스타일 클래스 지정
+	            let messageClass = isCurrentUser ? "chat ch2" : "chat ch1";
+
+	            // DOM에 메시지 추가
+	            html += isCurrentUser
+		        ? `
+		            <div class="\${messageClass}">
+		                <div class="messageContent textbox">\${item.chat_message_content}</div>
+		                <div class="messageDate_ch2">\${item.chat_message_time}</div>
+		            </div>
+		        `
+		        : `
+	                <div class="messageUser">\${item.user_name}</div>
+		            <div class="\${messageClass}">
+		                <div class="messageContent textbox">\${item.chat_message_content}</div>
+		                <div class="messageDate_ch1">\${item.chat_message_time}</div>
+		            </div>
+		        `;
+			}
+			
+			$("#chatLog_"+chat_no).html(html);
+		},
+	    error: function(xhr, status, error) {
+	        console.error("Error:", status, error);
+	    }
+	});
 }
 </script>
 </head>

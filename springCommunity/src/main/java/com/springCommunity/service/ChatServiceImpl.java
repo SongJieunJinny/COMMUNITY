@@ -6,9 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.springCommunity.dao.ChatDAO;
-import com.springCommunity.vo.ChatVO;
-import com.springCommunity.vo.SearchVO;
-import com.springCommunity.vo.UserInfoVO;
+import com.springCommunity.vo.*;
 
 @Service
 public class ChatServiceImpl implements ChatService {
@@ -49,5 +47,25 @@ public class ChatServiceImpl implements ChatService {
 	@Override
 	public int leaveChatRoom(ChatVO chatVO) {
 		return chatDAO.leaveChatRoom(chatVO);
+	}
+	
+	@Override
+	public int sendMessage(ChatMessageVO chatMessageVO) {
+		return chatDAO.sendMessage(chatMessageVO);
+	}
+	
+	@Override
+	public int sendMessageAfterFirst(ChatMessageVO chatMessageVO) {
+		return chatDAO.sendMessageAfterFirst(chatMessageVO);
+	}
+	
+	@Override
+	public int sendMessageAfterSecond(ChatMessageVO chatMessageVO) {
+		return chatDAO.sendMessageAfterSecond(chatMessageVO);
+	}
+
+	@Override
+	public List<ChatMessageVO> loadMessage(int chat_no) {
+		return chatDAO.loadMessage(chat_no);
 	}
 }

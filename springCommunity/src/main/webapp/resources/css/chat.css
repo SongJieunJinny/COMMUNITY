@@ -24,7 +24,7 @@ div a:hover{
 #chatContent {
     width: 70%;
     display: flex;
-    flex-direction: column;
+    flex-direction: column-reverse; /* 아래에서 위로 쌓이게 설정 */
 }
 
 #chatMessages {
@@ -118,7 +118,6 @@ div a:hover{
 	cursor:pointer;
 	font-size: 16px;
 	background-color: #333333;
-	margin-top: 5px;
 }
 
 #createChatButton:hover{
@@ -175,19 +174,6 @@ div a:hover{
     width: 30px;
 }
 
-/* 채팅 메시지 입력창 스타일 */
-#messageInput {
-   width: 100%;
-   margin-bottom: 10px;
-}
-
-/* 채팅 로그 스타일 */
-#chatLog {
-   overflow-y: auto;
-   height: 300px;
-   border-top: 1px solid #ccc;
-   margin-top: 10px;
-}
 
 /* 햄버거 메뉴 버튼 스타일 */
 .hamburgerMenu {
@@ -271,6 +257,11 @@ div a:hover{
 	width: 200px;
 }
 
+.messageInput{
+	position:absolute;
+	bottom:10px;
+}
+
 #user_search{
 	outline:none;
 	height: 30px;
@@ -291,6 +282,7 @@ div a:hover{
 	background-color: #333333;	
 }
 
+
 .wrap {
     background-color: #A8C0D6;
     max-height: 320px;
@@ -300,28 +292,16 @@ div a:hover{
     box-sizing: border-box; /* 패딩 포함 높이 계산 */
 }
 
-.wrap .chat {
+.wrap .ch2 {
     display: flex;
     align-items: flex-start;
     padding: 10px;
 }
 
-.wrap .chat .icon {
-    position: relative;
-    overflow: hidden;
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    background-color: #eee;
-}
-
-.wrap .chat .icon i {
-    position: absolute;
-    top: 10px;
-    left: 50%;
-    font-size: 2.5rem;
-    color: #aaa;
-    transform: translateX(-50%);
+.wrap .ch1 {
+    display: flex;
+    align-items: flex-start;
+    padding-left: 10px;
 }
 
 .wrap .chat .textbox {
@@ -331,7 +311,7 @@ div a:hover{
     padding: 10px;
     margin-top: 7px;
     font-size: 13px;
-    border-radius: 10px;
+    border-radius: 15px;
 }
 
 .wrap .chat .textbox::before {
@@ -343,13 +323,13 @@ div a:hover{
 
 .wrap .ch1 .textbox {
     margin-left: 20px;
-    background-color: #ddd;
+    background-color: white;
 }
 
 .wrap .ch1 .textbox::before {
     left: -15px;
     content: "◀";
-    color: #ddd;
+    color: white;
 }
 
 .wrap .ch2 {
@@ -365,4 +345,82 @@ div a:hover{
     right: -15px;
     content: "▶";
     color: #F9EB54;
+}
+
+/* 추가 */
+.messageDate_ch2{
+	margin-top:20px;
+	margin-right:5px;
+}
+
+.messageDate_ch1{
+	margin-top:20px;
+	margin-left:5px;
+}
+
+.chatDate {
+    color: white;
+    margin: auto;
+    /* background-color: #F4F4F4; */
+    background-color: #333333;
+    width: 130px;
+    height: 28px;
+    border-radius: 20px;
+    display: flex;
+    justify-content: center; 
+    align-items: center; 
+    font-size: 14px;
+    margin-top: 5px;  
+    font-weight: bold;
+}
+
+.messageUser{
+	padding: 10px 10px 0 0;
+	margin-left: 15px;
+}
+
+#chatRoomList .chat_name {
+    font-weight: bold;
+    font-size: 16px;
+    margin-bottom: 5px;
+}
+
+#chatRoomList .last_message_wrapper {
+    display: flex;
+    justify-content: space-between; /* 왼쪽과 오른쪽 정렬 */
+    align-items: center; /* 세로 중앙 정렬 */
+}
+
+#chatRoomList .last_message {
+    font-size: 14px;
+    color: #888;
+    flex-grow: 1; /* 메시지가 가능한 공간을 차지 */
+}
+
+#chatRoomList .last_message_time {
+    font-size: 12px;
+    color: #aaa;
+    text-align: right;
+    margin-left: 10px; /* 메시지와 시간 간격 */
+    white-space: nowrap; /* 시간 텍스트 줄바꿈 방지 */
+}
+
+#chatRoomList .message_wrapper {
+    display: flex;
+    justify-content: space-between; /* 왼쪽과 오른쪽 정렬 */
+    align-items: center; /* 세로 중앙 정렬 */
+}
+
+.unread_count{
+	position: absolute;
+    right: 35px;
+    font-size: 14px;
+    background-color: #FE6450;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    color: white;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
 }

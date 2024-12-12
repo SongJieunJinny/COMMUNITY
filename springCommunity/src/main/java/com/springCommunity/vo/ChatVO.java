@@ -6,7 +6,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 
 
-public class ChatVO{
+public class ChatVO extends ChatMessageVO{
 	private int chat_no;
 	private String chat_name;
 	private String chat_date;

@@ -1,5 +1,6 @@
 package com.springCommunity.controller;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -9,15 +10,15 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.springCommunity.service.ChatService;
-import com.springCommunity.vo.ChatVO;
-import com.springCommunity.vo.SearchVO;
-import com.springCommunity.vo.UserInfoVO;
+import com.springCommunity.vo.*;
+
 
 @RequestMapping(value="/chat")
 @Controller
@@ -27,37 +28,45 @@ public class CharController {
 	ChatService chatService;
 	
 	@ResponseBody
-	@RequestMapping(value="/chat.do",produces = "application/json; charset=utf-8")
-	public Map<String,Object> chat(SearchVO searchVO){
-		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		String loginUser = null;
-		if(authentication != null && authentication.isAuthenticated()) {
-			Object principal = authentication.getPrincipal();
-			if(principal instanceof UserDetails) {
-				loginUser = ((UserDetails)principal).getUsername();
-			}else {
-				loginUser = principal.toString();
-			}
-		}
-		System.out.println("로그인 유저:" + loginUser);
-		
-		searchVO.setUser_id(loginUser);
-		
-		if(searchVO.getSearch_value() == null || searchVO.getSearch_value().isEmpty()) {
-			searchVO.setSearch_value("");
-		}
-		
-		int total = chatService.selectTotal(searchVO);
+    @RequestMapping(value = "/chat.do", produces = "application/json; charset=utf-8")
+    public Map<String,Object> chat(Model model,SearchVO searchVO) {
+    	// 현재 인증된 사용자 정보 가져오기
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        
+        // 사용자 ID 추출
+        String loggedInUserId = null;
+        if (authentication != null && authentication.isAuthenticated()) {
+            Object principal = authentication.getPrincipal();
+            if(principal instanceof UserDetails) {
+                loggedInUserId = ((UserDetails) principal).getUsername();
+            }else {
+                // principal이 문자열일 경우
+                loggedInUserId = principal.toString();
+            }
+        }
+
+        // 로그인한 사용자 ID를 searchVO에 설정
+        searchVO.setUser_id(loggedInUserId);
+        
+        if (searchVO.getSearch_value() == null || searchVO.getSearch_value().isEmpty()) {
+            searchVO.setSearch_value("");
+        }
+
+        
+        Map<String,Object> map = new HashMap<String, Object>();
+    	
+    	int total = chatService.selectTotal(searchVO);
 		
 		List<ChatVO> list = chatService.selectAll(searchVO);
 		
-		Map<String,Object> map = new HashedMap<String, Object>();
-		
+		model.addAttribute("list", list);
+		model.addAttribute("total", total);
+    	
 		map.put("list", list);
 		map.put("total", total);
 		
-		return map;
-	}
+        return map;
+    }
 	
 	@ResponseBody
 	@RequestMapping(value="/searchUsers.do", method = RequestMethod.GET, produces = "application/json; charset=utf-8")
@@ -150,5 +159,35 @@ public class CharController {
     		System.out.println("채팅방 나가기 실패");
     		return "Failed";
     	}
+    }
+    
+    // 메시지 전송
+    @ResponseBody
+    @RequestMapping(value ="/sendMessage.do", method = RequestMethod.POST, produces = "application/text; charset=utf-8")
+    public void sendMessage(@RequestBody ChatMessageVO chatMessageVO) {
+    	System.out.println("chatMessageVO "+chatMessageVO.getChat_message_content());
+    	
+    	int result = chatService.sendMessage(chatMessageVO);
+    	
+    	if(result > 0) {
+    		System.out.println("채팅메시지 저장 성공");
+    		System.out.println("chatMessageVO 기본키:" + chatMessageVO.getChat_message_no());
+    		chatService.sendMessageAfterFirst(chatMessageVO);
+    		chatService.sendMessageAfterSecond(chatMessageVO);
+    	}else {
+    		System.out.println("채팅메시지 저장 실패");
+    	}
+    }
+    
+    @ResponseBody
+    @RequestMapping(value="/loadMessage.do", produces = "application/json; charset=utf-8")
+    public List<ChatMessageVO> loadMessage(int chat_no){
+    	System.out.println("loadMessage 실행1");
+    	List<ChatMessageVO> list = chatService.loadMessage(chat_no);
+    	System.out.println("loadMessage 실행2");
+    	for(ChatMessageVO vo : list) {
+    		System.out.println("loadChat : " + vo.getChat_message_content());
+    	}
+    	return list;
     }
 }
