@@ -33,16 +33,18 @@
 	
 	<insert id="insert" parameterType="noticeVO">
 		INSERT INTO POST(
-			 POST_NO
+			 USER_ID
 			,POST_TITLE
 			,POST_CONTENT
+			,POST_TYPE
 		)VALUES(
-			 #{USER_ID}
-			,#{POST_TITLE}
-			,#{POST_CONTENT}
+			 #{user_id}
+			,#{post_title}
+			,#{post_content}
+			,'1'
 		)
 		
-		<selectKey order="AFTER" resultType="int" keyProperty="nno">
+		<selectKey order="AFTER" resultType="int" keyProperty="post_no">
 			SELECT MAX(POST_NO) FROM POST
 		</selectKey>
 	</insert>

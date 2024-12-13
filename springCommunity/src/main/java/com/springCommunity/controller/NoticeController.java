@@ -58,7 +58,7 @@ public class NoticeController {
 		 * response.setCharacterEncoding("utf-8");
 		 * response.setContentType("text/html;charset=utf-8");
 		 * 
-		 * response.getWriter().append("<script>alert('로로그인 후 이용하세요.');"
+		 * response.getWriter().append("<script>alert('로그인 후 이용하세요.');"
 		 * +"location.href='" +request.getContextPath() +"/login.do'</script>").flush();
 		 * 
 		 * }
@@ -69,23 +69,24 @@ public class NoticeController {
 	
 	
 	@RequestMapping(value="/notice/writeOk.do",method=RequestMethod.POST)
-	public String write(NoticeVO vo,HttpServletRequest request) {
+	public String write(NoticeVO vo,HttpServletRequest request,Principal principal) {
 		
-		HttpSession session = request.getSession();
-		UserVO loginUser = (UserVO)session.getAttribute("loginUser");
-		
-		vo.setUser_id(loginUser.getUser_id());
+		vo.setUser_id(principal.getName());
 		
 		System.out.println(vo.getPost_no());
 		
 		
-		vo.setPost_title((String)request.getAttribute("post_title"));
-		vo.setPost_content((String)request.getAttribute("post_content"));
+//		vo.setPost_title((String)request.getAttribute("post_title"));
+//		vo.setPost_content((String)request.getAttribute("post_content"));
+		
+		System.out.println(vo.getUser_id());
+		System.out.println(vo.getPost_title());
+		System.out.println(vo.getPost_content());
 		
 		int result = noticeService.insert(vo);
 		
 		if(result>0) {
-			return "redirect:view.do?nno="+vo.getPost_no();
+			return "redirect:view.do?post_no="+vo.getPost_no();
 			
 		}else {
 			return "redirect:write.do";
