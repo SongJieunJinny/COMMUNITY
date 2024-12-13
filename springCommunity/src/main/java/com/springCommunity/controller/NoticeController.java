@@ -86,7 +86,7 @@ public class NoticeController {
 		int result = noticeService.insert(vo);
 		
 		if(result>0) {
-			return "redirect:view.do?post_no="+vo.getPost_no();
+			return "redirect:list.do?post_no="+vo.getPost_no();
 			
 		}else {
 			return "redirect:write.do";
@@ -95,6 +95,36 @@ public class NoticeController {
 	
 	}
 	
+	@RequestMapping(value="/notice/modify.do", method=RequestMethod.GET)
+	public String modify(int post_no, Model model) {
+		
+		NoticeVO vo = noticeService.selectOne(post_no);
+		
+		model.addAttribute("vo", vo);
+		
+		return "notice/modify";
+	}
+	
+	 // 공지사항 수정 메서드
+    @RequestMapping(value="/notice/modify.do", method=RequestMethod.POST)
+    public String modifyNotice(
+            @RequestParam("post_no") String post_no,
+            @RequestParam("post_title") String post_title,
+            @RequestParam("post_content") String post_content,
+            Model model) {
+
+        NoticeVO vo = new NoticeVO();
+        vo.setUser_id(post_no);
+        vo.setPost_title(post_title);
+        vo.setPost_content(post_content);
+
+        int isUpdated = noticeService.updateNotice(vo);
+        
+        return "redirect:list.do";
+    }
+	
+
+
 	@RequestMapping(value="/notice/view.do")
 	public String view(int post_no, Model model) {
 		

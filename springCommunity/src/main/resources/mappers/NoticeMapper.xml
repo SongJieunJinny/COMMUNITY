@@ -56,6 +56,15 @@
 		   AND p.POST_NO =#{POST_NO}
 	</select>
 	
+	<!-- 공지사항 수정 쿼리문 -->
+    <update id="updateNotice" parameterType="noticeVO">
+        UPDATE POST
+        SET POST_TITLE = #{post_title},
+            POST_CONTENT = #{post_content},
+            POST_DATE = NOW()
+        WHERE POST_NO = #{post_no}
+    </update>
+	
 	<update id="changeState" parameterType="int">
 		UPDATE POST
 		   SET POST_STATE = '0'
