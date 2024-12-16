@@ -7,4 +7,6 @@ public interface MypageService {
 	public int userUpdate(MypageVO mypageVO);
 	
 	public int userPwUpdate(MypageVO mypageVO);
+	
+	public MypageVO selectOne(String user_id);
 }

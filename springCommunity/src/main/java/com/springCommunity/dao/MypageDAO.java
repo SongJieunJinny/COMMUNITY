@@ -21,4 +21,8 @@ public class MypageDAO {
 	public int userPwUpdate (MypageVO mypageVO) {
 		return sqlSession.update(namespace+"userPwUpdate",mypageVO);
 	}
+	
+	public MypageVO selectOne(String user_id) {
+		return sqlSession.selectOne(namespace+"selectOne",user_id);
+	}
 }

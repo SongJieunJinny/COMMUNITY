@@ -5,6 +5,8 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+	<script src="<%= request.getContextPath() %>/resources/js/jquery-3.7.1.js"></script>
+
   <style>
     body{
       width: 80%;
@@ -55,6 +57,7 @@
       background-color: lightgray;
       font-size: medium;
       color: black;
+      cursor: pointer;
     }
     #mypage_benefit_mid{
       width: 100%;
@@ -96,9 +99,18 @@
     <a href="benefit.do">경조금 신청</a>
     |
     <a href="medical.do">의료비 신청</a>
-    |
-    <a href="form.do">증명서 발급</a>
   </div>
+              		<script>
+            		function targetChange(obj) {
+            		    var select = obj
+            		    var option = obj.value;
+
+            		    console.log(obj.options[obj.value].text);
+            		    
+            		    document.getElementById('btText').innerText = obj.options[obj.value].text;
+            		}
+            		
+	</script>
   <hr>
   <div id="mypage_benefit">
     <div id="mypage_benefit_top">
@@ -114,28 +126,33 @@
         	<tr>
           	<th style="width:150px">경조구분</th>
           	<td colspan="3">
-            	<select style="width:150px">
-              	<option>결혼</option>
-              	<option>회갑</option>
-              	<option>칠순</option>
-              	<option>출산</option>
-              	<option>사망</option>
+            	<select style="width:150px" id="benefit" onChange="benefitSelect()">
+            	<option value="0">선택해주세요</option>
+              	<option value="1">결혼</option>
+              	<option value="2">회갑</option>
+              	<option value="3">칠순</option>
+              	<option value="4">출산</option>
+              	<option value="5">사망</option>
             	</select>
           	</td>
         	</tr>
         	<tr>
           	<th>경조대상자</th>
           	<td>
-            	<select style="width:150px">
-              	<option>홍길자</option>
-              	<option>홍길연</option>
-              	<option>홍길우</option>
-              	<option>박선유</option>
-              	<option>홍길동</option>
+            	<select style="width:150px" name="benefitTarget" onChange="targetChange(this);">
+            		<option value="0" selected="selected">선택하세요
+              	<option value="1">본인</option>
+              	<option value="2">부</option>
+              	<option value="3">모</option>
+              	<option value="4">형제</option>
+              	<option value="5">자매</option>
+              	<option value="6">조부</option>
+              	<option value="7">조모</option>
             	</select>
+
           	</td>
           	<th style="width:150px; background-color: lightgray;">관계</th>
-          	<td>본인</td>
+          	<td><p id="btText"/></td>
         	</tr>
         	<tr>
           	<th>경조일자</th>

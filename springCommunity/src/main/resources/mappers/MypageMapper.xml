@@ -18,4 +18,10 @@
 		 WHERE USER_ID = #{user_id}
 	</update>
 	
+	<select id="selectOne" parameterType="String" resultType="mypageVO">
+		SELECT *
+			FROM USER
+		 WHERE USER_ID = #{user_id}
+	</select>
+	
 </mapper>

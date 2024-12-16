@@ -5,6 +5,7 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<script src="<%= request.getContextPath() %>/resources/js/jquery-3.7.1.js"></script>
   <style>
     body{
       width: 80%;
@@ -104,8 +105,6 @@
     <a href="benefit.do">경조금 신청</a>
     |
     <a href="medical.do">의료비 신청</a>
-    |
-    <a href="form.do">증명서 발급</a>
   </div>
   <hr>
 	<div id="mypage_medical">

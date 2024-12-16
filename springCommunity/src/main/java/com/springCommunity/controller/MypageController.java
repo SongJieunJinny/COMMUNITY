@@ -10,6 +10,7 @@ import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -27,7 +28,14 @@ public class MypageController {
 	public JavaMailSenderImpl mailSender;
 	
 	@RequestMapping(value="/mypage/info.do", method = RequestMethod.GET)
-	public String info() {
+	public String info(Principal principal, Model model) {
+		
+		String userId = principal.getName();
+		System.out.println("userid=>"+userId);
+		
+		MypageVO vo = mypageService.selectOne(userId);
+		model.addAttribute("vo",vo);
+		
 		return "mypage/info";
 	}
 	
@@ -122,9 +130,5 @@ public class MypageController {
 	@RequestMapping(value="/mypage/benefit.do", method = RequestMethod.GET)
 	public String benefit() {
 		return "mypage/benefit";
-	}
-	@RequestMapping(value="/mypage/form.do", method = RequestMethod.GET)
-	public String form() {
-		return "mypage/form";
 	}
 }

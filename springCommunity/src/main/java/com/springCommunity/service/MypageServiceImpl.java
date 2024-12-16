@@ -22,4 +22,9 @@ public class MypageServiceImpl implements MypageService {
 		return mypageDAO.userPwUpdate(mypageVO);
 	}
 
+	@Override
+	public MypageVO selectOne(String user_id) {
+		return mypageDAO.selectOne(user_id);
+	}
+
 }

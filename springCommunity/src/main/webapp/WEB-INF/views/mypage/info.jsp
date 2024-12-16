@@ -48,7 +48,7 @@
       width: 800px;
       border: 1px none lightgray;
     }
-    th:nth-child(1){
+    th{
 			background-color: lightgray;
 		}
     #info_btn{
@@ -110,8 +110,6 @@
     <a href="benefit.do">경조금 신청</a>
     |
     <a href="medical.do">의료비 신청</a>
-    |
-    <a href="form.do">증명서 발급</a>
   </div>
   <hr>
   <div id="mypage_info">
@@ -122,15 +120,15 @@
       <br>
       <table id="info_table" border="1">
         <tr>
-          <th colspan="2">근무부서:고객지원팀&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 사번:417976&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 성명:홍길자</th>
+          <th colspan="2" style="text-align: left;"> >내 개인정보 수정</th>
         </tr>
         <tr>
           <th style="width: 150px;">성명 </th>
-        	<td>홍길자<input type="hidden" name="user_id"></td>
+        	<td><input type="text" name="user_id" value="${vo.user_name}" disabled="disabled"></td>
       	</tr>
       	<tr>
         	<th>입사일 </th>
-        	<td>2002년 03년 28일</td>
+        	<td><input type="text" name="user_join_date" value="${vo.user_join_date}" disabled="disabled"></td>
       	</tr>
       	<tr>
         	<th>전화번호 </th>
@@ -173,7 +171,7 @@
       	</tr>
       	<tr>
         	<th>상세주소 </th>
-        	<td><input type="text" id="sample4_detailAddress"></td>
+        	<td colspan="2"><input type="text" id="sample4_detailAddress"></td>
       	</tr>
       	<tr>
         	<th>이메일 </th>
