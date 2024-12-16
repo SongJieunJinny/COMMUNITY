@@ -23,4 +23,5 @@ public interface ChatService {
     public int sendMessageAfterSecond(ChatMessageVO chatMessageVO);
     
     public List<ChatMessageVO> loadMessage(int chat_no);
+    public int updateReadState(ChatVO chatVO);
 }

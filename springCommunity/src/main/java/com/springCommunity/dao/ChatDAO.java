@@ -61,4 +61,8 @@ public class ChatDAO {
     public List<ChatMessageVO> loadMessage(int chat_no){
     	return sqlSession.selectList(name_space + "loadMessage", chat_no);
     }
+    
+    public int updateReadState(ChatVO chatVO) {
+    	return sqlSession.update(name_space + "updateReadState", chatVO);
+    }
 }

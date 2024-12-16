@@ -422,7 +422,13 @@ function connectWebSocket(chat_no) {
 
             // 현재 시간을 '시:분' 형식으로 가져오기
             const formattedTime = `\${currentDate.getHours()}:\${currentDate.getMinutes().toString().padStart(2, '0')}`;
-
+			
+            // 읽지 않은 메시지 수 표시
+            let unreadCount = "";
+            if(messageData.unread_count > 0) {
+            	unreadCount = `<span class="unreadMessage">\${messageData.unread_count}</span>`;
+            }
+            
 
             // 현재 로그인한 사용자인지 확인
             const isCurrentUser = messageData.user_name === user_name;
@@ -435,14 +441,20 @@ function connectWebSocket(chat_no) {
 	        ? `
 	            <div class="\${messageClass}">
 	                <div class="messageContent textbox">\${messageData.chat_message_content}</div>
-	                <div class="messageDate_ch2">\${formattedTime}</div>
+	                <div class="messageDate_ch2">	
+	                	\${unreadCount}
+	                	\${formattedTime}
+                	</div>
 	            </div>
 	        `
 	        : `
                 <div class="messageUser">\${messageData.user_name}</div>
 	            <div class="\${messageClass}">
 	                <div class="messageContent textbox">\${messageData.chat_message_content}</div>
-	                <div class="messageDate_ch1">\${formattedTime}</div>
+	                <div class="messageDate_ch1">
+	                	\${formattedTime}
+	                	\${unreadCount}
+                	</div>
 	            </div>
 	        `;
 
@@ -520,35 +532,65 @@ function loadMessage(chat_no){
                     `;
                 }
                 
+                // 읽지 않은 메시지 수 표시
+                let unreadCount = "";
+                if(item.unread_count > 0) {
+                	unreadCount = `<span class="unreadMessage">\${item.unread_count}</span>`;
+                }
+                
 	            // 현재 로그인한 사용자인지 확인
 	            let isCurrentUser = item.user_id === user_id;
 
 	            // 동적으로 스타일 클래스 지정
 	            let messageClass = isCurrentUser ? "chat ch2" : "chat ch1";
 
-	            // DOM에 메시지 추가
+	         // DOM에 메시지 추가
 	            html += isCurrentUser
 		        ? `
 		            <div class="\${messageClass}">
 		                <div class="messageContent textbox">\${item.chat_message_content}</div>
-		                <div class="messageDate_ch2">\${item.chat_message_time}</div>
+		                <div class="messageDate_ch2">
+		                	\${unreadCount}
+		                	\${item.chat_message_time}
+		                </div>
 		            </div>
 		        `
 		        : `
 	                <div class="messageUser">\${item.user_name}</div>
 		            <div class="\${messageClass}">
 		                <div class="messageContent textbox">\${item.chat_message_content}</div>
-		                <div class="messageDate_ch1">\${item.chat_message_time}</div>
+		                <div class="messageDate_ch1">
+		                	\${item.chat_message_time}
+		                	\${unreadCount}
+	                	</div>
 		            </div>
 		        `;
 			}
 			
 			$("#chatLog_"+chat_no).html(html);
+			
+			// 읽지 않은 메시지 읽음 처리 요청
+            messagesRead(chat_no);
 		},
 	    error: function(xhr, status, error) {
 	        console.error("Error:", status, error);
 	    }
 	});
+}
+
+function messagesRead(chat_no) {
+    $.ajax({
+        url: "<%= request.getContextPath() %>/chat/messagesRead.do",
+        type: "POST",
+        contentType: "application/json",
+        data: JSON.stringify({ chat_no: chat_no, user_id: user_id }),
+        success: function () {
+            console.log("읽음 상태 업데이트 완료");
+        },
+        error: function (xhr, status, error) {
+            console.error("읽음 상태 업데이트 오류:", error);
+        },
+    });
 }
 </script>
 </head>
