@@ -271,7 +271,7 @@ div a:hover{
 }
 
 #completeChatButton{
-	width: 400px;
+	width: 300px;
 	height: 40px;
 	color:white;
 	font-weight: bold;
@@ -423,4 +423,14 @@ div a:hover{
     justify-content: center;
     align-items: center;
     border-radius: 50%;
+}
+
+.no_unread{
+	display: none;	
+}
+
+.unreadMessage{
+	color: #FE6450;
+	font-weight: bold;
+	font-size: 14px;
 }

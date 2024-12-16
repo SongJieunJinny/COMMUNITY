@@ -112,9 +112,30 @@
 			CHAT_NO,
 			date_format(cm.CHAT_MESSAGE_DATE,'%H:%i') as CHAT_MESSAGE_TIME,
             date_format(cm.CHAT_MESSAGE_DATE, '%Y.%m.%d') as CHAT_MESSAGE_DATE,
-			u.USER_NAME 
+			u.USER_NAME,
+        	(
+            SELECT COUNT(*)
+            FROM CHAT_MESSAGE_READ cmr
+            WHERE cmr.CHAT_MESSAGE_NO = cm.CHAT_MESSAGE_NO
+              AND cmr.CHAT_MESSAGE_READ_STATE = 0
+       		) AS unread_count
 		FROM CHAT_MESSAGE cm
 		INNER JOIN USER u ON u.USER_ID = cm.USER_ID 
 		WHERE CHAT_NO = #{chat_no}
 	</select>
+	
+	<!-- 채팅메시지 읽음처리 -->
+	<update id="updateReadState">
+	    UPDATE CHAT_MESSAGE_READ
+	    SET CHAT_MESSAGE_READ_STATE = 1
+	    WHERE CHAT_MESSAGE_NO IN (
+	        SELECT CM.CHAT_MESSAGE_NO
+	        FROM CHAT_MESSAGE CM
+	        JOIN CHAT_USERS CU ON CM.CHAT_NO = CU.CHAT_NO
+	        WHERE CM.CHAT_NO = #{chat_no}
+	          AND CU.USER_ID = #{user_id}
+              AND CU.CHAT_USERS_DATE &lt;= CM.CHAT_MESSAGE_DATE
+	    )
+	    AND USER_ID = #{user_id}
+	</update>
 </mapper>

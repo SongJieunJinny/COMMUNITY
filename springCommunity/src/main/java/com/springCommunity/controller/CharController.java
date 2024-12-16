@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.springCommunity.service.ChatService;
 import com.springCommunity.vo.*;
 
-
 @RequestMapping(value="/chat")
 @Controller
 public class CharController {
@@ -182,12 +181,12 @@ public class CharController {
     @ResponseBody
     @RequestMapping(value="/loadMessage.do", produces = "application/json; charset=utf-8")
     public List<ChatMessageVO> loadMessage(int chat_no){
-    	System.out.println("loadMessage 실행1");
     	List<ChatMessageVO> list = chatService.loadMessage(chat_no);
-    	System.out.println("loadMessage 실행2");
-    	for(ChatMessageVO vo : list) {
-    		System.out.println("loadChat : " + vo.getChat_message_content());
-    	}
     	return list;
+    }
+    
+    @RequestMapping(value ="/messagesRead.do", method = RequestMethod.POST, produces = "application/text; charset=utf-8")
+    public void messagesRead(@RequestBody ChatVO chatVO) {
+        int result = chatService.updateReadState(chatVO);
     }
 }

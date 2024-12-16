@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import com.springCommunity.dao.ChatDAO;
 import com.springCommunity.vo.*;
 
+
 @Service
 public class ChatServiceImpl implements ChatService {
 
@@ -67,5 +68,10 @@ public class ChatServiceImpl implements ChatService {
 	@Override
 	public List<ChatMessageVO> loadMessage(int chat_no) {
 		return chatDAO.loadMessage(chat_no);
+	}
+	
+	@Override
+	public int updateReadState(ChatVO chatVO) {
+		return chatDAO.updateReadState(chatVO);
 	}
 }
