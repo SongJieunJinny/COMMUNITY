@@ -108,15 +108,20 @@ public class NoticeController {
 	 // 공지사항 수정 메서드
     @RequestMapping(value="/notice/modify.do", method=RequestMethod.POST)
     public String modifyNotice(
-            @RequestParam("post_no") String post_no,
+            @RequestParam("post_no") int post_no,
             @RequestParam("post_title") String post_title,
             @RequestParam("post_content") String post_content,
             Model model) {
-
+    	/*
+    	System.out.println(post_no);
+    	System.out.println(post_title);
+    	System.out.println(post_content.replaceAll("\n", "<br>"));
+    	*/
+    	
         NoticeVO vo = new NoticeVO();
-        vo.setUser_id(post_no);
+        vo.setPost_no(post_no);
         vo.setPost_title(post_title);
-        vo.setPost_content(post_content);
+        vo.setPost_content(post_content.replaceAll("\n", "<br>"));
 
         int isUpdated = noticeService.updateNotice(vo);
         
