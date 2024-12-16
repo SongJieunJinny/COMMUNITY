@@ -14,9 +14,8 @@
 	
 	<update id="userPwUpdate" parameterType="mypageVO">
 		UPDATE USER 
-			SET USER_PASSWORD = #{user_password}
-		WHERE USER_EMAIL = #{user_email}
-				 ,USER_ID = #{user_id}
+			 SET USER_PASSWORD = #{user_password}
+		 WHERE USER_ID = #{user_id}
 	</update>
 	
 </mapper>
