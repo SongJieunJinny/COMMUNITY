@@ -346,8 +346,8 @@ function closeChatModal(chat_no) {
     $("#chatModal_" + chat_no).remove();  
 }
 
-let user_list = "";
 function chatUser(chat_no){
+	let user_list = "";
 	$.ajax({
 		url : "<%= request.getContextPath() %>/chat/chatUsers.do",
 		type: 'post',
@@ -356,7 +356,7 @@ function chatUser(chat_no){
 			for(item of data){
 				user_list += "<li>" + item.user_name + "</li>";
 			}
-			$("#participantList_"+chat_no).append(user_list);
+			$("#participantList_"+chat_no).html(user_list);
 			user_list = "";
 		}
 	});
