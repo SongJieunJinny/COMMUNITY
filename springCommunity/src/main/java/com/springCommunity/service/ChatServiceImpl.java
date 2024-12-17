@@ -8,18 +8,12 @@ import org.springframework.stereotype.Service;
 import com.springCommunity.dao.ChatDAO;
 import com.springCommunity.vo.*;
 
-
 @Service
 public class ChatServiceImpl implements ChatService {
 
 	@Autowired
 	private ChatDAO chatDAO;
 	
-	@Override
-	public int selectTotal(SearchVO searchVO) {
-		return chatDAO.selectTotal(searchVO);
-	}
-
 	@Override
 	public List<ChatVO> selectAll(SearchVO searchVO) {
 		return chatDAO.selectAll(searchVO);
@@ -34,10 +28,14 @@ public class ChatServiceImpl implements ChatService {
 	public int insertRoom(ChatVO chatVO) {
 		return chatDAO.insertRoom(chatVO);
 	}
-
+	
 	@Override
-	public void insertRoomAfterUser(ChatVO chatVO) {
-		chatDAO.insertRoomAfterUser(chatVO);
+	public int addChatUser(int chat_no, String user_id, String chatName) {
+		ChatVO chatVO = new ChatVO();
+        chatVO.setChat_no(chat_no);
+        chatVO.setUser_id(user_id);
+        chatVO.setChat_users_name(chatName);
+		return chatDAO.addChatUser(chatVO);
 	}
 
 	@Override
@@ -73,5 +71,40 @@ public class ChatServiceImpl implements ChatService {
 	@Override
 	public int updateReadState(ChatVO chatVO) {
 		return chatDAO.updateReadState(chatVO);
+	}
+
+	@Override
+	public int updateChatName(ChatVO vo) {
+		return chatDAO.updateChatName(vo);
+	}
+
+	@Override
+	public int updateChatUserName(ChatVO vo) {
+		return chatDAO.updateChatUserName(vo);
+	}
+
+	@Override
+	public int chatStateCount(ChatVO chatVO) {
+		return chatDAO.chatStateCount(chatVO);
+	}
+
+	@Override
+	public List<ChatVO> chatInfo(int chat_no) {
+		return chatDAO.chatInfo(chat_no);
+	}
+
+	@Override
+	public int updateChatState(ChatVO chatVO) {
+		return chatDAO.updateChatState(chatVO);
+	}
+
+	@Override
+	public int sendSystemMessage(ChatVO chatVO) {
+		return chatDAO.sendSystemMessage(chatVO);
+	}
+
+	@Override
+	public int updateChatGroup(ChatVO chatVO) {
+		return chatDAO.updateChatGroup(chatVO);
 	}
 }
