@@ -171,11 +171,11 @@
     
     <!-- 채팅방 확인 -->
 	<select id="chatInfo" parameterType="int" resultType="chatVO">
-		SELECT c.CHAT_GROUP, u.USER_NAME 
-		FROM CHAT c 
-		INNER JOIN CHAT_USERS cu ON cu.CHAT_NO = c.CHAT_NO
-		INNER JOIN USER u ON cu.USER_ID = u.USER_ID    
-		WHERE c.CHAT_NO = #{chat_no}
+	    SELECT c.CHAT_GROUP, u.USER_NAME, cu.CHAT_USERS_STATE  
+	    FROM CHAT c 
+	    INNER JOIN CHAT_USERS cu ON cu.CHAT_NO = c.CHAT_NO
+	    INNER JOIN USER u ON cu.USER_ID = u.USER_ID    
+	    WHERE c.CHAT_NO = #{chat_no}
 	</select>
 	
 	<!-- 채팅방 참가 상태가 활성화되어 있는 참가자 수 -->
@@ -227,4 +227,36 @@
 		               END
 		WHERE CHAT_NO = #{chat_no} 
 	</update>
+	
+	<!-- 기존 사용자 상태 확인 -->
+	<select id="selectUserState" parameterType="chatVO" resultType="chatVO">
+	    SELECT CHAT_USERS_STATE, u.USER_NAME 
+	    FROM CHAT_USERS cu 
+	    INNER JOIN USER u ON u.USER_ID = cu.USER_ID 
+	    WHERE CHAT_NO = #{chat_no} 
+	      AND cu.USER_ID = #{user_id}
+	</select>
+	
+	<!-- 사용자 상태 업데이트 -->
+	<update id="updateUserState" parameterType="chatVO">
+	    UPDATE CHAT_USERS
+	    SET CHAT_USERS_STATE = #{chat_users_state}, CHAT_USERS_DATE = NOW()
+	    WHERE CHAT_NO = #{chat_no} 
+	      AND USER_ID = #{user_id}
+	</update>
+	
+	<!-- 안읽은 전체채팅방 메시지 -->
+	<select id="unreadMessageCounts" parameterType="string" resultType="int">
+	    SELECT COUNT(*) AS unread_count
+	    FROM CHAT_MESSAGE cm
+	    LEFT JOIN CHAT_MESSAGE_READ cmr 
+	        ON cm.CHAT_MESSAGE_NO = cmr.CHAT_MESSAGE_NO 
+	        AND cmr.USER_ID = #{user_id}
+	    WHERE cm.CHAT_NO IN (
+	        SELECT CHAT_NO 
+	        FROM CHAT_USERS 
+	        WHERE USER_ID = #{user_id} AND CHAT_USERS_STATE = 1
+	    )
+	    AND (cmr.CHAT_MESSAGE_READ_STATE IS NULL OR cmr.CHAT_MESSAGE_READ_STATE = 0)
+	</select>
 </mapper>

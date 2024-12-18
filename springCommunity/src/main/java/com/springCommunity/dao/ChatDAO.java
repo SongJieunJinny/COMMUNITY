@@ -88,8 +88,8 @@ public class ChatDAO {
     	return sqlSession.insert(name_space + "sendSystemMessage", chatVO);
     }
     
-    public int updateChatGroup(ChatVO chatVO) {
-    	return sqlSession.update(name_space + "updateChatGroup", chatVO);
+    public int updateChatGroup(int chat_no) {
+    	return sqlSession.update(name_space + "updateChatGroup", chat_no);
     }
     
     public int updateChatOne(int chat_no) {
@@ -102,5 +102,17 @@ public class ChatDAO {
     
     public int updateChatTop(int chat_no) {
     	return sqlSession.update(name_space + "updateChatTop", chat_no);
+    }
+    
+    public ChatVO selectUserState(ChatVO vo) {
+    	return sqlSession.selectOne(name_space + "selectUserState", vo);
+    }
+    
+    public int updateUserState(ChatVO vo) {
+    	return sqlSession.update(name_space + "updateUserState", vo);
+    }
+    
+    public int unreadMessageCounts(String user_id) {
+    	return sqlSession.selectOne(name_space + "unreadMessageCounts", user_id);
     }
 }

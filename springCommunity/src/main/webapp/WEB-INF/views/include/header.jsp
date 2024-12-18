@@ -64,7 +64,9 @@ window.onload = function(){
 	/* 채팅방목록 매초마다 불러오기. 마지막 채팅내용과 채팅시간에 필요 */
 	startChatInterval();
 	
-	
+	setInterval(function(){
+		unreadMessageCounts();
+	},1000);
 }
 
 let chatInterval;
@@ -76,35 +78,49 @@ function startChatInterval() {
             type: "GET",
             success: function(data) {
             	let html = ``;
-	        	for(item of data.list){
-					html += `
-					<li onclick="chatRoomView(\${item.chat_no},'\${item.chat_users_name}');">
-						<div class="chat_item">
-							<div class="message_wrapper">
-				           	 <div class="chat_name">
-					           	<!-- 상단 고정 아이콘 -->
-	                            <i class="\${item.chat_top === 1 ? 'fas fa-solid fa-thumbtack' : 'fas fa-regular fa-thumbtack'}" 
-	                               onclick="updateChatTop(event, \${item.chat_no});" 
-	                               style="margin-right: 8px; cursor: pointer; color: \${item.chat_top === 1 ? '#ff6347' : '#ccc'};">
-	                            </i>
-					           	\${item.chat_users_name}`;
-		           	if(item.user_count > 2) {   	
-	           		html += `   <span class="user_count">\${item.user_count}</span>`;
-		           	}
-		           	html += `</div>`;
-		            if(item.unread_count > 0) {
-		           		html += `<div class="unread_count">\${item.unread_count}</div>`;
-		            }else{
-		            	html += `<div></div>`;
-		            }
-		            html += `</div>
-		            		<div class="last_message_wrapper">
-				                <div class="last_message">\${item.chat_message_content || ""}</div>
-				                <div class="last_message_time">\${item.chat_message_time || ""}</div>
-				            </div>
-				        </div>
-					</li>`;
-				}
+            	if(data.message) {
+                    // 리스트가 비어있으면 메시지를 출력
+                    html += `<li><div class="no-result">\${data.message}</div></li>`;
+                }else {
+		        	for(item of data.list){
+						html += `
+						<li onclick="chatRoomView(\${item.chat_no},'\${item.chat_users_name}');">
+							<div class="chat_item">
+								<div class="message_wrapper">
+					           	 <div class="chat_name">
+						           	<!-- 상단 고정 아이콘 -->
+		                            <i class="\${item.chat_top === 1 ? 'fas fa-solid fa-thumbtack' : 'fas fa-regular fa-thumbtack'}" 
+		                               onclick="updateChatTop(event, \${item.chat_no});" 
+		                               style="margin-right: 8px; cursor: pointer; color: \${item.chat_top === 1 ? '#ff6347' : '#ccc'};">
+		                            </i>
+						           	\${item.chat_users_name}`;
+			           	if(item.user_count > 2) {   	
+		           		html += `   <span class="user_count">\${item.user_count}</span>`;
+			           	}
+			           	html += `</div>`;
+			            if(item.unread_count > 0) {
+			            	let unreadText = item.unread_count;
+
+			                if (item.unread_count > 99) {
+			                    unreadText = '99+';
+			                }
+			                else if (item.unread_count > 9) {
+			                    unreadText = '9+';
+			                }
+
+			                html += `<div class="unread_count">\${unreadText}</div>`;
+			            }else{
+			            	html += `<div></div>`;
+			            }
+			            html += `</div>
+			            		<div class="last_message_wrapper">
+					                <div class="last_message">\${item.chat_message_content || ""}</div>
+					                <div class="last_message_time">\${item.chat_message_time || ""}</div>
+					            </div>
+					        </div>
+						</li>`;
+					}
+                }
 	            $("#chatRoomList").html(html);
             }
         });
@@ -123,35 +139,49 @@ function startChatSearchInterval(searchValue) {
             data: { search_value: searchValue },
             success: function(data) {
             	let html = ``;
-	        	for(item of data.list){
-					html += `
-					<li onclick="chatRoomView(\${item.chat_no},'\${item.chat_users_name}');">
-						<div class="chat_item">
-							<div class="message_wrapper">
-				           	 <div class="chat_name">
-					           	<!-- 상단 고정 아이콘 -->
-	                            <i class="\${item.chat_top === 1 ? 'fas fa-solid fa-thumbtack' : 'fas fa-regular fa-thumbtack'}" 
-	                               onclick="updateChatTop(event, \${item.chat_no});" 
-	                               style="margin-right: 8px; cursor: pointer; color: \${item.chat_top === 1 ? '#ff6347' : '#ccc'};">
-	                            </i>
-					           	\${item.chat_users_name}`;
-		           	if(item.user_count > 2) {   	
-	           		html += `   <span class="user_count">\${item.user_count}</span>`;
-		           	}
-		           	html += `</div>`;
-		            if(item.unread_count > 0) {
-		           		html += `<div class="unread_count">\${item.unread_count}</div>`;
-		            }else{
-		            	html += `<div></div>`;
-		            }
-		            html += `</div>
-		            		<div class="last_message_wrapper">
-				                <div class="last_message">\${item.chat_message_content || ""}</div>
-				                <div class="last_message_time">\${item.chat_message_time || ""}</div>
-				            </div>
-				        </div>
-					</li>`;
-				}
+            	if(data.message) {
+                    // 리스트가 비어있으면 메시지를 출력
+                    html += `<li><div class="no-result">\${data.message}</div></li>`;
+                }else {
+		        	for(item of data.list){
+						html += `
+						<li onclick="chatRoomView(\${item.chat_no},'\${item.chat_users_name}');">
+							<div class="chat_item">
+								<div class="message_wrapper">
+					           	 <div class="chat_name">
+						           	<!-- 상단 고정 아이콘 -->
+		                            <i class="\${item.chat_top === 1 ? 'fas fa-solid fa-thumbtack' : 'fas fa-regular fa-thumbtack'}" 
+		                               onclick="updateChatTop(event, \${item.chat_no});" 
+		                               style="margin-right: 8px; cursor: pointer; color: \${item.chat_top === 1 ? '#ff6347' : '#ccc'};">
+		                            </i>
+						           	\${item.chat_users_name}`;
+			           	if(item.user_count > 2) {   	
+		           		html += `   <span class="user_count">\${item.user_count}</span>`;
+			           	}
+			           	html += `</div>`;
+			            if(item.unread_count > 0) {
+			            	let unreadText = item.unread_count;
+
+			                if (item.unread_count > 99) {
+			                    unreadText = '99+';
+			                }
+			                else if (item.unread_count > 9) {
+			                    unreadText = '9+';
+			                }
+
+			                html += `<div class="unread_count">\${unreadText}</div>`;
+			            }else{
+			            	html += `<div></div>`;
+			            }
+			            html += `</div>
+			            		<div class="last_message_wrapper">
+					                <div class="last_message">\${item.chat_message_content || ""}</div>
+					                <div class="last_message_time">\${item.chat_message_time || ""}</div>
+					            </div>
+					        </div>
+						</li>`;
+					}
+                }
 	            $("#chatRoomList").html(html);
             }
         });
@@ -169,36 +199,49 @@ function chatSearch() {
         data: { search_value: searchValue },
         success: function(data) {
             let html = '';
-            for(item of data.list) {
-                html += `
-                    <li onclick="chatRoomView(\${item.chat_no}, '\${item.chat_users_name}');">
-                        <div class="chat_item">
-                            <div class="message_wrapper">
-                                <div class="chat_name">
-	                                <!-- 상단 고정 아이콘 -->
-	                                <i class="\${item.chat_top === 1 ? 'fas fa-solid fa-thumbtack' : 'fas fa-regular fa-thumbtack'}" 
-	                                   onclick="updateChatTop(event, \${item.chat_no});" 
-	                                   style="margin-right: 8px; cursor: pointer; color: \${item.chat_top === 1 ? '#ff6347' : '#ccc'};">
-	                                </i>
-                                    \${item.chat_users_name}`;
-                if (item.user_count > 2) {
-                    html += `       <span class="user_count">\${item.user_count}</span>`;
-                }
-                html += `</div>`;
-                if (item.unread_count > 0) {
-                    html += `<div id="unread_count_\${item.chat_no}" class="unread_count">\${item.unread_count || ""}</div>`;
-                } else {
-                    html += `<div id="unread_count_\${item.chat_no}">\${item.unread_count || ""}</div>`;
-                }
-                html += `</div>
-                            <div class="last_message_wrapper">
-                                <div class="last_message">\${item.chat_message_content || ""}</div>
-                                <div class="last_message_time">\${item.chat_message_time || ""}</div>
-                            </div>
-                        </div>
-                    </li>`;
-            }
+            if(data.message) {
+                // 리스트가 비어있으면 메시지를 출력
+                html += `<li><div class="no-result">\${data.message}</div></li>`;
+            }else {
+	            for(item of data.list) {
+	                html += `
+	                    <li onclick="chatRoomView(\${item.chat_no}, '\${item.chat_users_name}');">
+	                        <div class="chat_item">
+	                            <div class="message_wrapper">
+	                                <div class="chat_name">
+		                                <!-- 상단 고정 아이콘 -->
+		                                <i class="\${item.chat_top === 1 ? 'fas fa-solid fa-thumbtack' : 'fas fa-regular fa-thumbtack'}" 
+		                                   onclick="updateChatTop(event, \${item.chat_no});" 
+		                                   style="margin-right: 8px; cursor: pointer; color: \${item.chat_top === 1 ? '#ff6347' : '#ccc'};">
+		                                </i>
+	                                    \${item.chat_users_name}`;
+	                if (item.user_count > 2) {
+	                    html += `       <span class="user_count">\${item.user_count}</span>`;
+	                }
+	                html += `</div>`;
+	                if(item.unread_count > 0) {
+	                	let unreadText = item.unread_count;
 
+		                if(item.unread_count > 99) {
+		                    unreadText = '99+';
+		                }
+		                else if(item.unread_count > 9) {
+		                    unreadText = '9+';
+		                }
+
+		                html += `<div id="unread_count_\${item.chat_no}" class="unread_count">\${unreadText}</div>`;
+	                }else {
+	                    html += `<div id="unread_count_\${item.chat_no}"></div>`;
+	                }
+	                html += `</div>
+	                            <div class="last_message_wrapper">
+	                                <div class="last_message">\${item.chat_message_content || ""}</div>
+	                                <div class="last_message_time">\${item.chat_message_time || ""}</div>
+	                            </div>
+	                        </div>
+	                    </li>`;
+	            }
+            }
             $("#chatRoomList").html(html); // 검색 결과를 업데이트
             startChatSearchInterval(searchValue);
         },
@@ -220,7 +263,7 @@ function updateChatTop(event, chat_no) {
                 // DOM에서 아이콘 상태 업데이트
                 const icon = event.target;
                 const isPinned = icon.classList.contains("fa-solid");
-                icon.className = isPinned ? "fa-regular fa-thumbtack" : "fa-solid fa-thumbtack";
+                icon.className = isPinned ? "fas fa-regular fa-thumbtack" : "fas fa-solid fa-thumbtack";
                 icon.style.color = isPinned ? "#ccc" : "#ff6347";
             }else {
                 alert("상단 고정 상태 변경에 실패했습니다.");
@@ -272,8 +315,8 @@ function chatModal(){
         url: "<%= request.getContextPath() %>/chat/chat.do",
         type: "GET",
         success: function(data) {
-        	let html = `
-       		<div class="modalHeader">
+        	let html = 
+       		`<div class="modalHeader">
 		        <h2>채팅</h2>
 		        <button class="closeBtn" onclick="closeModal()">X</button>
 		    </div>
@@ -285,42 +328,56 @@ function chatModal(){
 							 background-color: white; border-radius: 25px; width:98%; height: 30px;">
       	   				  <i class="fas fa-magnifying-glass search-icon" style="margin-left:10px;"></i>
 	                      <input type="text" name="search_value" id="search_input" placeholder="채팅방검색"
-                    	  onkeydown="if(event.key === 'Enter') chatSearch();"
+	                      onkeydown="if(event.key === 'Enter') chatSearch();"
 	                      style="border:none; width:85%; height:auto; margin-left:5px;">
 	                      <i class="fas fa-times" id="clearBtn"></i>
                     </div>
 	            </div>
 	            <div id="chatSidebar">
 	                <ul id="chatRoomList">`;
-	                
-        	for(item of data.list){
-				html += `
-						<li onclick="chatRoomView(\${item.chat_no},'\${item.chat_users_name}');">
-							<div class="chat_item">
-								<div class="message_wrapper">
-						            <div class="chat_name">
-							            <!-- 상단 고정 아이콘 -->
-	                                    <i class="\${item.chat_top === 1 ? 'fas fa-solid fa-thumbtack' : 'fas fa-regular fa-thumbtack'}" 
-	                                       onclick="updateChatTop(event, \${item.chat_no});" 
-	                                       style="margin-right: 8px; cursor: pointer; color: \${item.chat_top === 1 ? '#ff6347' : '#ccc'};">
-	                                    </i>
-						            	\${item.chat_users_name}
-						            </div>`;
-	            if(item.unread_count > 0) {
-	           		html += `			<div id="unread_count_\${item.chat_no}" 
-	           								class="unread_count">\${item.unread_count || ""}</div>`;
-	            }else{
-	            	html += `			<div id="unread_count_\${item.chat_no}">\${item.unread_count || ""}</div>`;
-	            }
-         		html += `	        </div>
-					            <div class="last_message_wrapper">
-					                <div class="last_message">\${item.chat_message_content || ""}</div>
-					                <div class="last_message_time">\${item.chat_message_time || ""}</div>
-					            </div>
-					        </div>
-						</li>`;
-			}
-        	
+            if(data.message) {
+               // 리스트가 비어있으면 메시지를 출력
+               html += `<li><div class="no-result">\${data.message}</div></li>`;
+            }else {
+	        	for(item of data.list){
+					html += 
+							`<li onclick="chatRoomView(\${item.chat_no},'\${item.chat_users_name}');">
+								<div class="chat_item">
+									<div class="message_wrapper">
+							            <div class="chat_name">
+								            <!-- 상단 고정 아이콘 -->
+		                                    <i class="\${item.chat_top === 1 ? 'fas fa-solid fa-thumbtack' : 'fas fa-regular fa-thumbtack'}" 
+		                                       onclick="updateChatTop(event, \${item.chat_no});" 
+		                                       style="margin-right: 8px; cursor: pointer; color: \${item.chat_top === 1 ? '#ff6347' : '#ccc'};">
+		                                    </i>
+							            	\${item.chat_users_name}`;
+		           	if(item.user_count > 2) {   	
+	           			html +=            `<span class="user_count">\${item.user_count}</span>`;
+		           	}
+	          		html +=            `</div>`;
+		            if(item.unread_count > 0) {
+		            	let unreadText = item.unread_count;
+
+		                if (item.unread_count > 99) {
+		                    unreadText = '99+';
+		                }
+		                else if (item.unread_count > 9) {
+		                    unreadText = '9+';
+		                }
+
+		                html += `    	<div id="unread_count_\${item.chat_no}" class="unread_count">\${unreadText}</div>`;
+		            }else{
+		            	html += `    	<div id="unread_count_\${item.chat_no}"></div>`;
+		            }
+	         		html += 	    `</div>
+						            <div class="last_message_wrapper">
+						                <div class="last_message">\${item.chat_message_content || ""}</div>
+						                <div class="last_message_time">\${item.chat_message_time || ""}</div>
+						            </div>
+						        </div>
+							</li>`;
+				}
+            }
         	html += `</ul>
 	            </div>
         	</div>
@@ -916,6 +973,57 @@ function chatName(chat_no){
 			$("#chatName_"+chat_no).text(data.chat_users_name);
 		}
 	});
+}
+
+function unreadMessageCounts() {
+    $.ajax({
+        url: "<%= request.getContextPath()%>/chat/unreadMessageCounts.do",
+        method: "GET",
+        data: { user_id: user_id },
+        success: function (totalUnread) {
+            showUnreadCount(totalUnread);
+        },
+        error: function () {
+            console.error("안 읽은 메시지 개수를 가져오지 못했습니다.");
+        }
+    });
+}
+
+function showUnreadCount(totalUnread) {
+    const chatIcon = document.querySelector('div[onclick="chatModal();"]');
+    let unreadBubble = document.getElementById('unreadBubble');
+
+    if(!unreadBubble) {
+        unreadBubble = document.createElement('div');
+        unreadBubble.id = 'unreadBubble';
+        unreadBubble.style.cssText = `
+            font-size: 16px;
+            background-color: #FE6450;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            color: white;
+            justify-content: center;
+            align-items: center;
+            border-radius: 50%;
+            position: absolute;
+            top: 5%;
+            right: 33%;
+        `;
+        chatIcon.appendChild(unreadBubble);
+    }
+
+    if(totalUnread > 0) {
+        if(totalUnread > 99) {
+            unreadBubble.textContent = '99+';
+        }else if (totalUnread > 9) {
+            unreadBubble.textContent = '9+';
+        }else {
+            unreadBubble.textContent = totalUnread;
+        }
+    }else {
+        unreadBubble.remove();
+    }
 }
 </script>
 </head>

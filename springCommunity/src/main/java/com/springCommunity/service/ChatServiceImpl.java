@@ -30,12 +30,30 @@ public class ChatServiceImpl implements ChatService {
 	}
 	
 	@Override
-	public int addChatUser(int chat_no, String user_id, String chatName) {
+	public int addChatUser(int chat_no, String user_id, String chat_users_name) {
 		ChatVO chatVO = new ChatVO();
-        chatVO.setChat_no(chat_no);
+		chatVO.setChat_no(chat_no);
         chatVO.setUser_id(user_id);
-        chatVO.setChat_users_name(chatName);
-		return chatDAO.addChatUser(chatVO);
+        ChatVO userState = chatDAO.selectUserState(chatVO);
+
+        if(userState != null) {
+            if(userState.getChat_users_state() == 0) {
+            	ChatVO message = new ChatVO();
+                message.setChat_no(chat_no);
+                message.setChat_message_content(userState.getUser_name() + "님이 초대되었습니다.");
+                chatDAO.sendSystemMessage(message);
+                // 기존에 나간 사용자 상태를 참여로 변경
+            	chatVO.setChat_users_state(1);
+                return chatDAO.updateUserState(chatVO);
+            }else {
+                // 이미 참여 중인 사용자 (추가 작업 필요 없음)
+                return 1;
+            }
+        }else {
+            // 새로운 사용자 추가
+            chatVO.setChat_users_name(chat_users_name);
+            return chatDAO.addChatUser(chatVO);
+        }
 	}
 
 	@Override
@@ -104,8 +122,8 @@ public class ChatServiceImpl implements ChatService {
 	}
 
 	@Override
-	public int updateChatGroup(ChatVO chatVO) {
-		return chatDAO.updateChatGroup(chatVO);
+	public int updateChatGroup(int chat_no) {
+		return chatDAO.updateChatGroup(chat_no);
 	}
 
 	@Override
@@ -121,5 +139,10 @@ public class ChatServiceImpl implements ChatService {
 	@Override
 	public int updateChatTop(int chat_no) {
 		return chatDAO.updateChatTop(chat_no);
+	}
+
+	@Override
+	public int unreadMessageCounts(String user_id) {
+		return chatDAO.unreadMessageCounts(user_id);
 	}
 }

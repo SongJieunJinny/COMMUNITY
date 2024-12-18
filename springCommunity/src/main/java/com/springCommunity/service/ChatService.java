@@ -32,10 +32,12 @@ public interface ChatService {
     public int updateChatState(ChatVO chatVO);
     public int sendSystemMessage(ChatVO chatVO);
     
-    public int updateChatGroup(ChatVO chatVO);
+    public int updateChatGroup(int chat_no);
     public int updateChatOne(int chat_no);
     
     public ChatVO chatName(ChatVO vo);
     
     public int updateChatTop(int chat_no);
+    
+    public int unreadMessageCounts(String user_id);
 }
