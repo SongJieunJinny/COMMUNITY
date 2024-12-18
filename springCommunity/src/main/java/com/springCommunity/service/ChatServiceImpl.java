@@ -137,8 +137,8 @@ public class ChatServiceImpl implements ChatService {
 	}
 
 	@Override
-	public int updateChatTop(int chat_no) {
-		return chatDAO.updateChatTop(chat_no);
+	public int updateChatTop(ChatVO vo) {
+		return chatDAO.updateChatTop(vo);
 	}
 
 	@Override

@@ -295,8 +295,8 @@ public class CharController {
     
     @ResponseBody
     @PostMapping("/updateChatTop.do")
-    public String updateChatTop(int chat_no) {
-        int result = chatService.updateChatTop(chat_no); 
+    public String updateChatTop(ChatVO vo) {
+        int result = chatService.updateChatTop(vo); 
         if(result > 0) {
         	return("Success");
         }else {

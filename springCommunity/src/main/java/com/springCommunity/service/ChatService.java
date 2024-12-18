@@ -37,7 +37,7 @@ public interface ChatService {
     
     public ChatVO chatName(ChatVO vo);
     
-    public int updateChatTop(int chat_no);
+    public int updateChatTop(ChatVO vo);
     
     public int unreadMessageCounts(String user_id);
 }

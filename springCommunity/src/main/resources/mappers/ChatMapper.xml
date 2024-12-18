@@ -5,7 +5,7 @@
 	<!-- 채팅방 목록 -->
     <!-- 채팅방 목록 -->
     <select id="selectAll" parameterType="searchVO" resultType="chatVO">
-		SELECT c.CHAT_NO, c.CHAT_TOP, 
+		SELECT c.CHAT_NO, CHAT_USERS_TOP, 
 			cu.CHAT_USERS_NAME, 
 			cm.CHAT_MESSAGE_CONTENT, 
 			date_format(cm.CHAT_MESSAGE_DATE,'%H:%i') as CHAT_MESSAGE_TIME,
@@ -40,7 +40,7 @@
 	            OR u.USER_NAME LIKE CONCAT('%', #{search_value}, '%') 
 	            OR #{search_value} = ''
 	        )
-	 	 ORDER BY CHAT_TOP DESC, cm.CHAT_MESSAGE_DATE DESC 
+	 	 ORDER BY CHAT_USERS_TOP DESC, cm.CHAT_MESSAGE_DATE DESC 
 	</select>
 	
 	<!-- 채팅초대 유저 검색 -->
@@ -219,13 +219,13 @@
 	</select>
 	
 	<!-- 채팅방 고정&고정풀기 -->
-	<update id="updateChatTop" parameterType="int">
-		UPDATE CHAT
-		SET CHAT_TOP = CASE 
-		                 WHEN CHAT_TOP = 1 THEN 0 
+	<update id="updateChatTop" parameterType="chatVO">
+		UPDATE CHAT_USERS 
+		SET CHAT_USERS_TOP = CASE 
+		                 WHEN CHAT_USERS_TOP = 1 THEN 0 
 		                 ELSE 1 
 		               END
-		WHERE CHAT_NO = #{chat_no} 
+		WHERE CHAT_NO = #{chat_no} AND USER_ID = #{user_id}
 	</update>
 	
 	<!-- 기존 사용자 상태 확인 -->

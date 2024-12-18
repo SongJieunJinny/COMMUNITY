@@ -89,9 +89,9 @@ function startChatInterval() {
 								<div class="message_wrapper">
 					           	 <div class="chat_name">
 						           	<!-- 상단 고정 아이콘 -->
-		                            <i class="\${item.chat_top === 1 ? 'fas fa-solid fa-thumbtack' : 'fas fa-regular fa-thumbtack'}" 
+		                            <i class="\${item.chat_users_top === 1 ? 'fas fa-solid fa-thumbtack' : 'fas fa-regular fa-thumbtack'}" 
 		                               onclick="updateChatTop(event, \${item.chat_no});" 
-		                               style="margin-right: 8px; cursor: pointer; color: \${item.chat_top === 1 ? '#ff6347' : '#ccc'};">
+		                               style="margin-right: 8px; cursor: pointer; color: \${item.chat_users_top === 1 ? '#ff6347' : '#ccc'};">
 		                            </i>
 						           	\${item.chat_users_name}`;
 			           	if(item.user_count > 2) {   	
@@ -150,9 +150,9 @@ function startChatSearchInterval(searchValue) {
 								<div class="message_wrapper">
 					           	 <div class="chat_name">
 						           	<!-- 상단 고정 아이콘 -->
-		                            <i class="\${item.chat_top === 1 ? 'fas fa-solid fa-thumbtack' : 'fas fa-regular fa-thumbtack'}" 
+		                            <i class="\${item.chat_users_top === 1 ? 'fas fa-solid fa-thumbtack' : 'fas fa-regular fa-thumbtack'}" 
 		                               onclick="updateChatTop(event, \${item.chat_no});" 
-		                               style="margin-right: 8px; cursor: pointer; color: \${item.chat_top === 1 ? '#ff6347' : '#ccc'};">
+		                               style="margin-right: 8px; cursor: pointer; color: \${item.chat_users_top === 1 ? '#ff6347' : '#ccc'};">
 		                            </i>
 						           	\${item.chat_users_name}`;
 			           	if(item.user_count > 2) {   	
@@ -210,9 +210,9 @@ function chatSearch() {
 	                            <div class="message_wrapper">
 	                                <div class="chat_name">
 		                                <!-- 상단 고정 아이콘 -->
-		                                <i class="\${item.chat_top === 1 ? 'fas fa-solid fa-thumbtack' : 'fas fa-regular fa-thumbtack'}" 
+		                                <i class="\${item.chat_users_top === 1 ? 'fas fa-solid fa-thumbtack' : 'fas fa-regular fa-thumbtack'}" 
 		                                   onclick="updateChatTop(event, \${item.chat_no});" 
-		                                   style="margin-right: 8px; cursor: pointer; color: \${item.chat_top === 1 ? '#ff6347' : '#ccc'};">
+		                                   style="margin-right: 8px; cursor: pointer; color: \${item.chat_users_top === 1 ? '#ff6347' : '#ccc'};">
 		                                </i>
 	                                    \${item.chat_users_name}`;
 	                if (item.user_count > 2) {
@@ -257,7 +257,7 @@ function updateChatTop(event, chat_no) {
     $.ajax({
         url: `<%= request.getContextPath() %>/chat/updateChatTop.do`,
         type: "POST",
-        data: { chat_no: chat_no },
+        data: { chat_no: chat_no, user_id: user_id },
         success: function(result) {
             if(result === "Success") {
                 // DOM에서 아이콘 상태 업데이트
@@ -346,9 +346,9 @@ function chatModal(){
 									<div class="message_wrapper">
 							            <div class="chat_name">
 								            <!-- 상단 고정 아이콘 -->
-		                                    <i class="\${item.chat_top === 1 ? 'fas fa-solid fa-thumbtack' : 'fas fa-regular fa-thumbtack'}" 
+		                                    <i class="\${item.chat_users_top === 1 ? 'fas fa-solid fa-thumbtack' : 'fas fa-regular fa-thumbtack'}" 
 		                                       onclick="updateChatTop(event, \${item.chat_no});" 
-		                                       style="margin-right: 8px; cursor: pointer; color: \${item.chat_top === 1 ? '#ff6347' : '#ccc'};">
+		                                       style="margin-right: 8px; cursor: pointer; color: \${item.chat_users_top === 1 ? '#ff6347' : '#ccc'};">
 		                                    </i>
 							            	\${item.chat_users_name}`;
 		           	if(item.user_count > 2) {   	

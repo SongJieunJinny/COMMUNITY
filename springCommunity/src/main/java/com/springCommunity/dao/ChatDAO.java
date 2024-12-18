@@ -100,8 +100,8 @@ public class ChatDAO {
     	return sqlSession.selectOne(name_space + "chatName", vo);
     }
     
-    public int updateChatTop(int chat_no) {
-    	return sqlSession.update(name_space + "updateChatTop", chat_no);
+    public int updateChatTop(ChatVO vo) {
+    	return sqlSession.update(name_space + "updateChatTop", vo);
     }
     
     public ChatVO selectUserState(ChatVO vo) {
