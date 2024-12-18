@@ -3,8 +3,9 @@
 			"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.springCommunity.mapper.chatMapper">
 	<!-- 채팅방 목록 -->
+    <!-- 채팅방 목록 -->
     <select id="selectAll" parameterType="searchVO" resultType="chatVO">
-		SELECT c.CHAT_NO, 
+		SELECT c.CHAT_NO, c.CHAT_TOP, 
 			cu.CHAT_USERS_NAME, 
 			cm.CHAT_MESSAGE_CONTENT, 
 			date_format(cm.CHAT_MESSAGE_DATE,'%H:%i') as CHAT_MESSAGE_TIME,
@@ -15,9 +16,16 @@
              WHERE cm2.CHAT_NO = c.CHAT_NO
               AND cmr.USER_ID = #{user_id} 
               AND cmr.CHAT_MESSAGE_READ_STATE = 0  
-	        ) AS unread_count
+	        ) AS unread_count,
+	        ( 
+		     SELECT COUNT(*) 
+		     FROM CHAT_USERS cu2 
+		     WHERE cu2.CHAT_NO = c.CHAT_NO 
+		      AND cu2.CHAT_USERS_STATE = 1 
+			) AS user_count
 		FROM CHAT c
 		INNER JOIN CHAT_USERS cu ON c.CHAT_NO = cu.CHAT_NO 
+		INNER JOIN USER u ON cu.USER_ID = u.USER_ID 
 		LEFT JOIN  CHAT_MESSAGE cm ON cm.CHAT_NO = c.CHAT_NO 
 		    AND cm.CHAT_MESSAGE_NO = (
 		        SELECT MAX(cm2.CHAT_MESSAGE_NO)
@@ -27,13 +35,17 @@
 		WHERE cu.USER_ID = #{user_id}
 			 AND CHAT_STATE=1 
 			 AND CHAT_USERS_STATE=1 
-		 	 AND (CHAT_USERS_NAME LIKE concat('%', #{search_value}, '%') OR #{search_value} = '')
-	 	 ORDER BY cm.CHAT_MESSAGE_DATE DESC 
+		 	 AND  (
+	            cu.CHAT_USERS_NAME LIKE CONCAT('%', #{search_value}, '%') 
+	            OR u.USER_NAME LIKE CONCAT('%', #{search_value}, '%') 
+	            OR #{search_value} = ''
+	        )
+	 	 ORDER BY CHAT_TOP DESC, cm.CHAT_MESSAGE_DATE DESC 
 	</select>
 	
 	<!-- 채팅초대 유저 검색 -->
 	<select id="searchUsers" parameterType="searchVO" resultType="userInfoVO">
-		SELECT USER_NAME, USER_ID, DEPARTMENT_NAME, JOB_POSITION_NAME
+	    SELECT USER_NAME, USER_ID, DEPARTMENT_NAME, JOB_POSITION_NAME
 	    FROM USER u
 	    INNER JOIN DEPARTMENT d ON u.DEPARTMENT_ID = d.DEPARTMENT_ID
 	    INNER JOIN JOB_POSITION j ON u.JOB_POSITION_ID = j.JOB_POSITION_ID
@@ -42,12 +54,15 @@
 		       OR d.DEPARTMENT_NAME LIKE CONCAT('%', #{search_value}, '%')
 		       OR j.JOB_POSITION_NAME LIKE CONCAT('%', #{search_value}, '%')
 		      )
-	       AND USER_ID != #{user_id} 
-	       AND (#{chat_no} = 0 OR USER_ID NOT IN (
-		        SELECT USER_ID
-		        FROM CHAT_USERS
-		        WHERE CHAT_NO = #{chat_no}
-		    ))
+	       AND USER_ID != #{user_id}
+	       AND (
+	          #{chat_no} IS NULL OR #{chat_no} = 0 
+	          OR u.USER_ID NOT IN (
+	              SELECT USER_ID 
+	              FROM CHAT_USERS 
+	              WHERE CHAT_NO = #{chat_no} AND CHAT_USERS_STATE = 1
+	          )
+	      )
 	</select>
 	
 	<!-- 채팅방 생성 -->
@@ -187,5 +202,29 @@
 		UPDATE CHAT 
 			SET CHAT_GROUP = 0 
 			WHERE CHAT_NO = #{chat_no} 
+	</update>
+	
+	<!-- 그룹채팅을 1대1로 변경 -->
+	<update id="updateChatOne" parameterType="int">
+		UPDATE CHAT 
+			SET CHAT_GROUP = 1 
+			WHERE CHAT_NO = #{chat_no} 
+	</update>
+	
+	<!-- 채팅방 이름 1개 확인 -->
+	<select id="chatName" parameterType="int" resultType="chatVO">
+		SELECT CHAT_USERS_NAME   
+		FROM CHAT_USERS 
+		WHERE CHAT_NO = #{chat_no} AND USER_ID = #{user_id}  
+	</select>
+	
+	<!-- 채팅방 고정&고정풀기 -->
+	<update id="updateChatTop" parameterType="int">
+		UPDATE CHAT
+		SET CHAT_TOP = CASE 
+		                 WHEN CHAT_TOP = 1 THEN 0 
+		                 ELSE 1 
+		               END
+		WHERE CHAT_NO = #{chat_no} 
 	</update>
 </mapper>

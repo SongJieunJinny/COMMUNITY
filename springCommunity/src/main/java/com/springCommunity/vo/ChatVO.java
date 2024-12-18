@@ -18,6 +18,7 @@ public class ChatVO extends ChatMessageVO{
 	private String chat_users_name;
 	private int chat_users_state;
 	private String user_name;
+	private int user_count;
 	
 	public int getChat_no()       { return chat_no;    }
 	public String getChat_name()  { return chat_name;  }
@@ -26,6 +27,7 @@ public class ChatVO extends ChatMessageVO{
 	public int getChat_group()    { return chat_group; }
 	public int getChat_top()      { return chat_top;   }
 	public String getUser_id()    { return user_id;    }
+	public int getUser_count()    { return user_count; }
 	public String getChat_users_name() { return chat_users_name;  }
 	public int getChat_users_state()   { return chat_users_state; }
 	public String getUser_name()       { return user_name;        }
@@ -37,6 +39,7 @@ public class ChatVO extends ChatMessageVO{
 	public void setChat_group(int chat_group)    { this.chat_group = chat_group; }
 	public void setChat_top(int chat_top)        { this.chat_top = chat_top;     }
 	public void setUser_id(String user_id)       { this.user_id = user_id;       }
+	public void setUser_count(int user_count)    { this.user_count = user_count; }
 	public void setChat_users_name(String chat_users_name) { this.chat_users_name = chat_users_name;   }
 	public void setChat_users_state(int chat_users_state)  { this.chat_users_state = chat_users_state; }
 	public void setUser_name(String user_name)             { this.user_name = user_name;               }

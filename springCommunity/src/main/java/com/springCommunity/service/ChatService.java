@@ -31,5 +31,11 @@ public interface ChatService {
 	public List<ChatVO> chatInfo(int chat_no);
     public int updateChatState(ChatVO chatVO);
     public int sendSystemMessage(ChatVO chatVO);
+    
     public int updateChatGroup(ChatVO chatVO);
+    public int updateChatOne(int chat_no);
+    
+    public ChatVO chatName(ChatVO vo);
+    
+    public int updateChatTop(int chat_no);
 }

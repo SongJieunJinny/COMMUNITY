@@ -159,6 +159,12 @@ public class CharController {
             if(chatVO.getChat_group() == 0) {
             	chatVO.setChat_message_content(user_name + "님이 나갔습니다.");
                 chatService.sendSystemMessage(chatVO);
+                
+                int chatState = chatService.chatStateCount(chatVO);
+    			if(chatState <= 2) {
+    				//그룹(0)에서 1대1채팅(1)으로 변경
+    				chatService.updateChatOne(chatVO.getChat_no());
+    			}
             }
     		
     		return "Success";
@@ -247,62 +253,47 @@ public class CharController {
         }
 
         if(result > 0) {
-            // 기존 참가자 이름 처리
-            List<String> existingUserNames = new ArrayList<>();
+            List<String> beforeUserNames = new ArrayList<>();
             for(ChatVO vo : list) {
-                if(vo.getChat_users_name() != null) {
-                    if(vo.getChat_users_name().contains(",")) {
-                        existingUserNames.addAll(Arrays.asList(vo.getChat_users_name().split(", ")));
-                    }else {
-                        existingUserNames.add(vo.getChat_users_name());
-                    }
-                }
+            	System.out.println("beforeUserNames " +vo.getUser_name());
+            	beforeUserNames.add(vo.getUser_name());
+            }
+            
+            List<ChatVO> afterList = chatService.chatInfo(chat_no);
+            List<String> afterUserNames = new ArrayList<>();
+            for(ChatVO afterUserName : afterList) {
+            	afterUserNames.add(afterUserName.getUser_name()); 
             }
 
-            // 기존 사용자 목록 출력
-            for(String existingUserName : existingUserNames) {
-                System.out.println("existingUserName : " + existingUserName);
-            }
+            afterUserNames.removeAll(beforeUserNames); 
 
-            // 새로 추가된 사용자 확인
-            List<String> newUserNames = new ArrayList<>();
-            System.out.println("chat_users_name: " + chat_users_name); // chat_users_name 값 확인
-            String[] userNamesArray = chat_users_name.split(", ");
-
-            // userNamesArray 출력
-            System.out.println("userNamesArray length: " + userNamesArray.length); // 배열 길이 확인
-            for(String newUserName : userNamesArray) {
-                System.out.println("userNamesArray item: " + newUserName); // 각 항목 확인
-                newUserNames.add(newUserName.trim()); // 공백 제거 후 추가
-            }
-
-            // 기존 사용자 목록을 출력하여 확인
-            System.out.println("existingUserNames before trim: " + existingUserNames);
-
-            // 기존 사용자 목록에서 공백을 제거한 후 출력
-            List<String> cleanedExistingUserNames = new ArrayList<>();
-            for(String existingUserName : existingUserNames) {
-                cleanedExistingUserNames.add(existingUserName.trim()); // 공백 제거
-            }
-            System.out.println("cleanedExistingUserNames: " + cleanedExistingUserNames);
-
-            // 기존 사용자 제외 (새 사용자만 남기기)
-            newUserNames.removeAll(cleanedExistingUserNames); 
-
-            // 제거된 후 새로 추가된 사용자 목록 출력
-            System.out.println("newUserNames after removeAll: " + newUserNames);
-
-            // 새로 추가된 사용자에 대해 시스템 메시지 생성
-            for(String newUserName : newUserNames) {
-                System.out.println("newUserName : " + newUserName); // 새 사용자 출력
-                for(ChatVO vo : list) {
-                    vo.setChat_message_content(newUserName + "님이 초대되었습니다.");
-                    chatService.sendSystemMessage(vo);
-                }
+            for(String afterUserName : afterUserNames) {
+            	System.out.println("afterUserName " +afterUserName);
+            	ChatVO vo = new ChatVO();
+            	vo.setChat_no(chat_no);
+            	vo.setChat_message_content(afterUserName + "님이 초대되었습니다.");
+                chatService.sendSystemMessage(vo);
             }
             return "Success";
-        } else {
+        }else {
             return "Fail";
+        }
+    }
+    
+    @ResponseBody
+    @PostMapping("/chatName.do")
+    public ChatVO chatName(ChatVO vo) {
+        return chatService.chatName(vo);
+    }
+    
+    @ResponseBody
+    @PostMapping("/updateChatTop.do")
+    public String updateChatTop(int chat_no) {
+        int result = chatService.updateChatTop(chat_no); 
+        if(result > 0) {
+        	return("Success");
+        }else {
+        	return("Fail");
         }
     }
 }

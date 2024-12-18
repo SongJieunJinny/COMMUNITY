@@ -107,4 +107,19 @@ public class ChatServiceImpl implements ChatService {
 	public int updateChatGroup(ChatVO chatVO) {
 		return chatDAO.updateChatGroup(chatVO);
 	}
+
+	@Override
+	public int updateChatOne(int chat_no) {
+		return chatDAO.updateChatOne(chat_no);
+	}
+
+	@Override
+	public ChatVO chatName(ChatVO vo) {
+		return chatDAO.chatName(vo);
+	}
+
+	@Override
+	public int updateChatTop(int chat_no) {
+		return chatDAO.updateChatTop(chat_no);
+	}
 }

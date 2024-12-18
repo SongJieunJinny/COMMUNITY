@@ -91,4 +91,16 @@ public class ChatDAO {
     public int updateChatGroup(ChatVO chatVO) {
     	return sqlSession.update(name_space + "updateChatGroup", chatVO);
     }
+    
+    public int updateChatOne(int chat_no) {
+    	return sqlSession.update(name_space + "updateChatOne", chat_no);
+    }
+    
+    public ChatVO chatName(ChatVO vo) {
+    	return sqlSession.selectOne(name_space + "chatName", vo);
+    }
+    
+    public int updateChatTop(int chat_no) {
+    	return sqlSession.update(name_space + "updateChatTop", chat_no);
+    }
 }
