@@ -17,6 +17,8 @@ public class UserInfoVO{
 	private String user_address;
 	private String department_name;
 	private String job_position_name;
+	private String before_password; //비밀번호 암호화 전
+	
 	
 	public String getUser_id()           { return user_id;           }
 	public String getUser_password()     { return user_password;     }
@@ -33,6 +35,7 @@ public class UserInfoVO{
 	public String getUser_address()      { return user_address;      }
 	public String getDepartment_name()   { return department_name;   }
 	public String getJob_position_name() { return job_position_name; }
+	public String getBefore_password()   { return before_password;   }
 	
 	public void setUser_id(String user_id)                     { this.user_id = user_id;                     }
 	public void setUser_password(String user_password)         { this.user_password = user_password;         }
@@ -49,5 +52,5 @@ public class UserInfoVO{
 	public void setUser_address(String user_address)           { this.user_address = user_address;           }
 	public void setDepartment_name(String department_name)     { this.department_name = department_name;     }
 	public void setJob_position_name(String job_position_name) { this.job_position_name = job_position_name; }
-	
+	public void setBefore_password(String before_password)     { this.before_password = before_password;     }
 }

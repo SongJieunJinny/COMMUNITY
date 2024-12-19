@@ -99,7 +99,8 @@
 	}
     </style>
 <script>
-document.addEventListener("DOMContentLoaded", function() {
+document.addEventListener("DOMContentLoaded", function() { 
+    // upload_users.do 관련 처리
     const uploadForm = document.querySelector("form[action='upload_users.do']");
     const uploadButton = document.getElementById("uploadButton");
 
@@ -108,7 +109,19 @@ document.addEventListener("DOMContentLoaded", function() {
         uploadButton.disabled = true;
         uploadButton.textContent = "등록중...";
     });
+
+    // insert_user.do 관련 처리
+    const insertForm = document.querySelector("form[action='insert_user.do']");
+    const submitButton = insertForm.querySelector("button");
+
+    insertForm.addEventListener("submit", function(event) {
+        // 버튼 비활성화 및 텍스트 변경
+        submitButton.disabled = true;
+        submitButton.textContent = "등록중...";
+    });
 });
+
+
 </script>
     
 </head>
@@ -130,7 +143,7 @@ document.addEventListener("DOMContentLoaded", function() {
 	      <div>모든사원 ></div><br>
 	      <div>임원 ></div><br>
 	      <div>그룹없음 ></div><br>
-	      <div><strong>신규사원 ></strong></div>
+	      <div style="cursor:pointer;" onclick="location.href='upload_users.do'"><strong>신규사원 ></strong></div>
 	    </div>
 		<div id="menu_bar2">
 		    <div>경영 ></div><br>
@@ -168,16 +181,20 @@ document.addEventListener("DOMContentLoaded", function() {
 				    <c:if test="${not empty Message}">
 					    <div class="message" style="color:green;">${Message}</div>
 					</c:if>
+					<!-- 이메일 발송 결과 메시지 -->
+					<c:if test="${not empty MessageE}">
+					    <div class="message" style="color:blue;">${MessageE}</div>
+					</c:if>
 					</form>
 		      	</td>
 		      </tr>
 		      <tr>
 		      	<td>
-		      		<hr>
 		      		<form action="insert_user.do" method="post">
-			      		<table id="insert_table" style="width:700px;">
+			      		<table id="insert_table" style="width:700px; margin-top:100px;">
 			      			<tr>
 						  	  	<td>
+						      		<!-- <hr> -->
 						  	  		<h3>단건등록</h3>
 						  	 	</td>
 						  	</tr>
@@ -215,7 +232,7 @@ document.addEventListener("DOMContentLoaded", function() {
 										<option value="5">개발팀</option>
 										<option value="6">디자인팀</option>
 										<option value="7">고객지원팀</option>
-										<option value="8">교육팀</option>
+										<option value="8">회계팀</option>
 									</select>
 			      				</td>
 			      				<td>
@@ -262,89 +279,17 @@ document.addEventListener("DOMContentLoaded", function() {
 			      			</tr>
 			      		</table>
 		      		</form>
-		      	</td>
-		      </tr>
-		      <tr>
-		      	<td style="text-align: left;">
-		      		<hr>
-		      		초기비밀번호 발송
-		      		<hr>
-		      	</td>
-		      </tr>
-		      <tr>
-		      	<td>
-		      		<table id="pass_table">
-		      			<tr>
-		      				<th>번호</th>
-		      				<th>사번</th>
-		      				<th>이름</th>
-		      				<th>부서</th>
-		      				<th>직책</th>
-		      				<th>입사일</th>
-		      				<th>이메일</th>
-		      				<th>발송상태</th>
-		      			</tr>
-		      			<tr>
-		      				<td>15</td>
-		      				<td>000015</td>
-		      				<td>김길동</td>
-		      				<td>인사팀</td>
-		      				<td>대리</td>
-		      				<td>2024-12-10</td>
-		      				<td>kim@kim.com</td>
-		      				<td>발송전</td>
-		      			</tr>
-		      			<tr>
-		      				<td>15</td>
-		      				<td>000015</td>
-		      				<td>김길동</td>
-		      				<td>인사팀</td>
-		      				<td>대리</td>
-		      				<td>2024-12-10</td>
-		      				<td>kim@kim.com</td>
-		      				<td>발송전</td>
-		      			</tr>
-		      			<tr>
-		      				<td>15</td>
-		      				<td>000015</td>
-		      				<td>김길동</td>
-		      				<td>인사팀</td>
-		      				<td>대리</td>
-		      				<td>2024-12-10</td>
-		      				<td>kim@kim.com</td>
-		      				<td>발송전</td>
-		      			</tr>
-		      			<tr>
-		      				<td>15</td>
-		      				<td>000015</td>
-		      				<td>김길동</td>
-		      				<td>인사팀</td>
-		      				<td>대리</td>
-		      				<td>2024-12-10</td>
-		      				<td>kim@kim.com</td>
-		      				<td>발송전</td>
-		      			</tr>
-		      			<tr>
-		      				<td>15</td>
-		      				<td>000015</td>
-		      				<td>김길동</td>
-		      				<td>인사팀</td>
-		      				<td>대리</td>
-		      				<td>2024-12-10</td>
-		      				<td>kim@kim.com</td>
-		      				<td>발송전</td>
-		      			</tr>
-		      			<tr>
-		      				<td>15</td>
-		      				<td>000015</td>
-		      				<td>김길동</td>
-		      				<td>인사팀</td>
-		      				<td>대리</td>
-		      				<td>2024-12-10</td>
-		      				<td>kim@kim.com</td>
-		      				<td>발송전</td>
-		      			</tr>
-		      		</table>
+		      		<div>
+					    <!-- 등록 결과 메시지 -->
+					    <c:if test="${not empty iMessage}">
+					        <p style="color: green; font-weight: bold;">${iMessage}</p>
+					    </c:if>
+					
+					    <!-- 이메일 발송 결과 메시지 -->
+					    <c:if test="${not empty iMessageE}">
+					        <p style="color: blue; font-weight: bold;">${iMessageE}</p>
+					    </c:if>
+					</div>
 		      	</td>
 		      </tr>
 		   </table>
