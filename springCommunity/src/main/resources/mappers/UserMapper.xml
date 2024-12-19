@@ -8,6 +8,8 @@
 			 ,USER_PASSWORD 
 			 ,USER_ENABLED 
 			 ,USER_AUTHORITY 
+			 ,DEPARTMENT_ID 
+			 ,JOB_POSITION_ID 
 		 FROM USER  
 		 WHERE USER_ID = #{user_id} 
 	</select>

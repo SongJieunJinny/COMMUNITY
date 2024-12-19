@@ -55,6 +55,8 @@ public class UserAuthenticationService implements UserDetailsService {
 				,authorities
 				,(String)user.get("USER_AUTHORITY")
 				,(String)user.get("USER_NAME")
+				,(Integer)user.get("DEPARTMENT_ID")
+				,(Integer)user.get("JOB_POSITION_ID")
 				);
 		
 		return vo;
