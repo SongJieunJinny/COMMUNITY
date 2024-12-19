@@ -40,6 +40,15 @@ window.onload = function(){
 		}
 	});
 	
+	$(document).ready(function () {
+        const loginError = '<%= session.getAttribute("loginError") %>';
+        if(loginError !== 'null') {
+            $('#loginModal').fadeIn(); // 모달 표시
+            $('#loginError').text(loginError).show(); // 에러 메시지 표시
+        }
+        <% session.removeAttribute("loginError"); %> <!-- 에러 메시지 제거 -->
+    });
+	
 	/* 채팅방 검색창 글지우는 버튼 */
 	$(document).on('keyup', '#search_input', function() {
 		if($(this).val().length > 0){
@@ -66,7 +75,7 @@ window.onload = function(){
 	
 	setInterval(function(){
 		unreadMessageCounts();
-	},1000);
+	},5000);
 }
 
 let chatInterval;
@@ -1063,7 +1072,7 @@ function showUnreadCount(totalUnread) {
 							</td>
 						</tr>
 					</table>
-					<br>
+					<div id="loginError" style="color: red; text-align: center; display: none;"></div>
 					<button class="login_modal_btn">로그인</button>
 					<button type="button" class="login_modal_btn">비밀번호 찾기</button>
 				</form>
