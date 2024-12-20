@@ -15,7 +15,7 @@
 		 WHERE USER_ID = #{user_id} 
 	</select>
 	
-	<insert id="insert" parameterType="userInfoVO">
+	<insert id="insertUser" parameterType="userInfoVO">
 		INSERT INTO USER (
 			  USER_ID
 			, USER_PASSWORD
