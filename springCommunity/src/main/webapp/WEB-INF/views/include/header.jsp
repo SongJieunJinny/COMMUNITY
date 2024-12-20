@@ -1128,11 +1128,13 @@ function showUnreadCount(totalUnread) {
 		    <button id="completeChatButton">완료</button>
 		</div>
 		
-		<table class="menu_table">
-			<tr>
-				<th><a href="<%=request.getContextPath() %>/notice/list.do">공지사항</a></th>
-				<th><a href="<%=request.getContextPath() %>/board/list.do">사내 커뮤니티</a></th>
-				<th><a href="">나의 부서 업무 상황</a></th>
-			</tr>
-		</table>
+		<table class="mainTable" style="font-size:18px; text-decoration: none; color:black; font-weight: bold;">
+	        <tr>
+	            <th class="existValue"><a href="<%=request.getContextPath() %>/notice/list.do">공지사항</a></th>
+	            <th>|</th>
+	            <th class="existValue"><a href="<%=request.getContextPath() %>/board/list.do">사내 커뮤니티</a></th>
+	            <th>|</th>
+	            <th class="existValue"><a href="user/myDepartment.do">나의 부서 업무 상황</a></th>
+	        </tr>
+	    </table>
 	</sec:authorize>
