@@ -1035,6 +1035,86 @@ function showUnreadCount(totalUnread) {
     }
 }
 </script>
+<script>
+function checkIn() {
+    if ("geolocation" in navigator) {
+        navigator.geolocation.getCurrentPosition(
+            (position) => {
+                const { latitude, longitude } = position.coords;
+
+                // AJAX 요청
+                $.ajax({
+                    url: "user/checkIn.do",
+                    method: "POST",
+                    contentType: "application/json",
+                    data: JSON.stringify({
+                        latitude: latitude,         // 위도
+                        longitude: longitude,       // 경도
+                        user_id: user_id  // 사용자 ID (VO의 필드와 동일해야함)
+                    }),
+                    success: function (data) {
+                    	console.log(data);
+                        alert('출근 완료!');
+                    },
+                    error: function (xhr, status, error) {
+                        alert('출근 실패! 이미 존재하는 출근 기록입니다.');
+                       console.log(xhr.responseText);
+                    }
+                });
+            },
+            (error) => {
+                alert(`위치 정보를 가져올 수 없습니다: ${error.message}`);
+            },
+            {
+                enableHighAccuracy: true, // 정확도 우선 모드
+                timeout: 10000,           // 10초 이내 응답 없으면 에러 발생
+                maximumAge: 0             // 항상 최신 위치 정보 수집
+            }
+        );
+    } else {
+        alert("브라우저가 위치 서비스를 지원하지 않습니다.");
+    }
+}
+// 퇴근 함수 
+function checkOut() {
+    if ("geolocation" in navigator) {
+        navigator.geolocation.getCurrentPosition(
+            (position) => {
+                const { latitude, longitude } = position.coords;
+
+                // AJAX 요청
+                $.ajax({
+                    url: "user/checkOut.do",
+                    method: "POST",
+                    contentType: "application/json",
+                    data: JSON.stringify({
+                        latitude: latitude,         // 위도
+                        longitude: longitude,       // 경도
+                        user_id: user_id  // 사용자 ID (VO의 필드와 동일해야함)
+                    }),
+                    success: function (data) {
+                        alert('퇴근 완료! ');
+                    },
+                    error: function (xhr, status, error) {
+                        alert('퇴근 처리가 되지 않았습니다.');
+                       console.log(xhr.responseText);
+                    }
+                });
+            },
+            (error) => {
+                alert(`위치 정보를 가져올 수 없습니다: ${error.message}`);
+            },
+            {
+                enableHighAccuracy: true, // 정확도 우선 모드
+                timeout: 10000,           // 10초 이내 응답 없으면 에러 발생
+                maximumAge: 0             // 항상 최신 위치 정보 수집
+            }
+        );
+    } else {
+        alert("브라우저가 위치 서비스를 지원하지 않습니다.");
+    }
+}
+</script>
 </head>
 <body>
 	<!-- 로그인 X -->
@@ -1095,6 +1175,8 @@ function showUnreadCount(totalUnread) {
 			<div id="bar">
 				<div id="working_info_bar">
 					<div id="working_info">근태정보</div><br>
+					<div><button onclick="checkIn()">출근 </button></div>
+					<div><button onclick="checkOut()">퇴근</button></div>
 					<div id="working_info">2024-12-05 11:51</div><br>
 					<div id="working_info">출근시각 : </div><br>
 					<div id="working_info">퇴근시각 : </div>
