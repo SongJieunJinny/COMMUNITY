@@ -1085,7 +1085,7 @@ function showUnreadCount(totalUnread) {
 				<img id="logo_img"  src="<%= request.getContextPath() %>/resources/img/logo.png" alt="회사로고" >
 			</a>
 			<div id = "login_info">
-				<a href="logout.do">로그아웃</a>
+				<a href="<%= request.getContextPath() %>/logout.do">로그아웃</a>
 				|
 				<a href="<%= request.getContextPath() %>/mypage/info.do">마이페이지</a>
 			</div>
