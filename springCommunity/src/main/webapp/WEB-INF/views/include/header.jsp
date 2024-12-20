@@ -599,9 +599,9 @@ function connectWebSocket(chat_no) {
     // 채팅방 번호에 따라 WebSocket을 생성
     if(!chatWebSockets[chat_no]) {
     	/* 시연용 */
-        //const socket = new WebSocket("ws://192.168.0.175:8080/community/chat"); 
+        const socket = new WebSocket("ws://192.168.0.175:8080/community/chat"); 
         //각자 컴퓨터에서 돌릴용
-        const socket = new WebSocket("ws://localhost:8080/community/chat"); 
+        //const socket = new WebSocket("ws://localhost:8080/community/chat"); 
 
         socket.onopen = function () {
             console.log(`WebSocket 연결 성공: 채팅방 \${chat_no}`);
@@ -1017,7 +1017,7 @@ function showUnreadCount(totalUnread) {
             border-radius: 50%;
             position: absolute;
             top: 5%;
-            right: 33%;
+            right: 28%;
         `;
         chatIcon.appendChild(unreadBubble);
     }
