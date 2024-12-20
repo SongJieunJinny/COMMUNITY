@@ -139,9 +139,9 @@ document.addEventListener("DOMContentLoaded", function () {
 	<div id="header1">
 	    <img id="logo_img" style="cursor:pointer;" onclick="location.href='<%= request.getContextPath() %>'" src="<%= request.getContextPath() %>/resources/img/logo.png" alt="회사로고">
 	    <div id = "login_info">
-	  	    <a href="<%= request.getContextPath() %>/user/logout.do">로그아웃</a>
+	  	    <a href="<%= request.getContextPath() %>/logout.do">로그아웃</a>
 	  	  |
-	  	    <a href="<%= request.getContextPath() %>/user/mypage.do">마이페이지</a>
+	  	    <a href="<%= request.getContextPath() %>/mypage/info.do">마이페이지</a>
 	    </div>
 	</div>
 	<hr>
