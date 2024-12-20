@@ -16,7 +16,7 @@ import com.springCommunity.vo.*;
 public class AdminDAO {
 	
 	@Autowired
-	public SqlSession sqlSession;
+	private SqlSession sqlSession;
 	
 	private final String name_space = "com.springCommunity.mapper.adminMapper.";
 	

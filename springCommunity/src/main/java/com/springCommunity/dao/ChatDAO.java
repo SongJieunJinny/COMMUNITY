@@ -12,7 +12,7 @@ import com.springCommunity.vo.*;
 public class ChatDAO {
 	
 	@Autowired
-	SqlSession sqlSession;
+	private SqlSession sqlSession;
 	
 	private final String name_space = "com.springCommunity.mapper.chatMapper.";
 	

@@ -30,7 +30,7 @@ public class CharController {
 	ChatService chatService;
 	
 	@ResponseBody
-    @RequestMapping(value = "/chat.do", produces = "application/json; charset=utf-8")
+    @RequestMapping(value = "/chat.do", method = RequestMethod.GET, produces = "application/json; charset=utf-8")
     public Map<String,Object> chat(Model model,SearchVO searchVO) {
     	// 현재 인증된 사용자 정보 가져오기
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -200,7 +200,7 @@ public class CharController {
     }
     
     @ResponseBody
-    @RequestMapping(value="/loadMessage.do", produces = "application/json; charset=utf-8")
+    @RequestMapping(value="/loadMessage.do", method = RequestMethod.GET, produces = "application/json; charset=utf-8")
     public List<ChatMessageVO> loadMessage(int chat_no){
     	List<ChatMessageVO> list = chatService.loadMessage(chat_no);
     	return list;
