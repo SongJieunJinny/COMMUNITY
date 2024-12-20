@@ -1175,8 +1175,8 @@ function checkOut() {
 			<div id="bar">
 				<div id="working_info_bar">
 					<div id="working_info">근태정보</div><br>
-					<div><button onclick="checkIn()">출근 </button></div>
-					<div><button onclick="checkOut()">퇴근</button></div>
+					<button onclick="checkIn()">출근 </button> &nbsp;&nbsp;&nbsp;&nbsp;
+					<button onclick="checkOut()">퇴근</button>
 					<div id="working_info">2024-12-05 11:51</div><br>
 					<div id="working_info">출근시각 : </div><br>
 					<div id="working_info">퇴근시각 : </div>
