@@ -11,6 +11,7 @@ public class UserInfoVO{
 	private String user_account;
 	private String user_authority;
 	private boolean user_enabled;
+	private int user_state; 
 	private int department_id; 
 	private int job_position_id;
 	private int bank_id;
@@ -29,6 +30,7 @@ public class UserInfoVO{
 	public String getUser_account()      { return user_account;      }
 	public String getUser_authority()    { return user_authority;    }
 	public boolean isUser_enabled()      { return user_enabled;      }
+	public int getUser_state()           { return user_state;        }
 	public int getDepartment_id()        { return department_id;     }
 	public int getJob_position_id()      { return job_position_id;   }
 	public int getBank_id()              { return bank_id;           }
@@ -46,6 +48,7 @@ public class UserInfoVO{
 	public void setUser_account(String user_account)           { this.user_account = user_account;           }
 	public void setUser_authority(String user_authority)       { this.user_authority = user_authority;       }
 	public void setUser_enabled(boolean user_enabled)          { this.user_enabled = user_enabled;           }
+	public void setUser_state(int user_state)                  { this.user_state = user_state;               }
 	public void setDepartment_id(int department_id)            { this.department_id = department_id;         }
 	public void setJob_position_id(int job_position_id)        { this.job_position_id = job_position_id;     }
 	public void setBank_id(int bank_id)                        { this.bank_id = bank_id;                     }

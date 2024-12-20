@@ -9,7 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.mysql.cj.protocol.Resultset;
-import com.springCommunity.vo.UserInfoVO;
+import com.springCommunity.vo.*;
 
 
 @Repository
@@ -24,4 +24,19 @@ public class AdminDAO {
 		return sqlSession.insert(name_space+"insertUsers",users);
 	}
 	
+	public List<UserInfoVO> selectAll(SearchVO searchVO){
+		return sqlSession.selectList(name_space+"selectAll",searchVO);
+	}
+	
+	public int selectCount(SearchVO searchVO) {
+		return sqlSession.selectOne(name_space+"selectCount",searchVO);
+	}
+	
+	public int updateUser(UserInfoVO vo) {
+		return sqlSession.update(name_space+"updateUser",vo);
+	}
+	
+	public UserInfoVO selectById(String user_id) {
+		return sqlSession.selectOne(name_space+"selectById",user_id);
+	}
 }

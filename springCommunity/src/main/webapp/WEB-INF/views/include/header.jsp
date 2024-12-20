@@ -1109,10 +1109,6 @@ function showUnreadCount(totalUnread) {
 					</sec:authorize>
 				</div>
 			</div>
-			<div id="member">
-				<img id="member_img" src="<%= request.getContextPath() %>/resources/img/member1.jpeg" alt="회사원1">
-				<div id="member_name">JJ417976 홍길자</div>
-			</div>
 		</div>
 		<hr>
 		<div id="modal">

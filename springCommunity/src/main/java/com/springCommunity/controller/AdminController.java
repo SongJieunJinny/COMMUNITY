@@ -14,12 +14,15 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.springCommunity.service.AdminService;
 import com.springCommunity.service.ExcelUserService;
 import com.springCommunity.service.NaverEmailService;
 import com.springCommunity.service.UserService;
+import com.springCommunity.util.PagingUtil;
+import com.springCommunity.vo.SearchVO;
 import com.springCommunity.vo.UserInfoVO;
 
 @RequestMapping("/admin")
@@ -148,9 +151,30 @@ public class AdminController {
     }
     
     @RequestMapping(value="/list.do", method = RequestMethod.GET)
-    public String list() {
-        return "admin/list";
-    }
+    public String userList(Model model, SearchVO searchVO
+			, @RequestParam(value="nowPage", required = false, defaultValue = "1") int nowPage) {
+		
+    	if(searchVO.getFirst_date() != null && searchVO.getFirst_date().trim().isEmpty()) {
+            searchVO.setFirst_date(null);
+        }
+        if(searchVO.getSecond_date() != null && searchVO.getSecond_date().trim().isEmpty()) {
+            searchVO.setSecond_date(null);
+        }
+    	
+		int total = adminService.selectCount(searchVO);
+		System.out.println("회원 수:" + total);
+		
+		PagingUtil paging = new PagingUtil(nowPage,total,10);
+		
+		searchVO.setStart(paging.getStart());
+		searchVO.setPerPage(paging.getPerPage());
+		
+		List<UserInfoVO> userList = adminService.selectAll(searchVO);
+		model.addAttribute("userList", userList);
+		model.addAttribute("paging", paging);
+		
+		return "admin/list";
+	}
     
     private List<String> sendEmailToUsers(List<UserInfoVO> users) {
 	    List<String> failedEmails = new ArrayList<>();
@@ -173,5 +197,17 @@ public class AdminController {
 	    }
 
 	    return failedEmails;
+	}
+    
+    @ResponseBody
+	@PostMapping("/updateUser.do")
+	public UserInfoVO updateUser(UserInfoVO vo) {
+		UserInfoVO user = null;
+		int result = adminService.updateUser(vo);
+		if(result > 0) {
+			System.out.println("수정성공");
+			user = adminService.selectById(vo.getUser_id());
+		}
+		return user;
 	}
 }
