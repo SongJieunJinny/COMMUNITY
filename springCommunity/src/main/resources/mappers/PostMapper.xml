@@ -63,8 +63,7 @@
     <update id="update" parameterType="postVO">
         UPDATE POST
         SET POST_TITLE = #{post_title},
-            POST_CONTENT = #{post_content},
-            POST_DATE = NOW()
+            POST_CONTENT = #{post_content}
         WHERE POST_NO = #{post_no}
     </update>
 	
