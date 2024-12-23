@@ -69,6 +69,13 @@ public class PostController {
 		
 		vo.setUser_id(principal.getName());
 		
+		if(request.getAttribute("post_title") != null && !request.getAttribute("post_title").equals("")) {
+    		vo.setPost_title((String)request.getAttribute("post_title"));
+    	}
+    	if(request.getAttribute("post_content") != null && !request.getAttribute("post_content").equals("")) {
+    		vo.setPost_content((String)request.getAttribute("post_content"));
+    	}
+		
 		int result = postService.insert(vo);
 		
 		if(result>0) {
@@ -96,8 +103,15 @@ public class PostController {
 		return "post/modify";
 	}
 	
-    @RequestMapping(value="/modify.do", method=RequestMethod.POST)
-    public String modify(PostVO vo) {
+    @RequestMapping(value="/modifyOk.do", method=RequestMethod.POST)
+    public String modify(PostVO vo,HttpServletRequest request) {
+    	
+    	if(request.getAttribute("post_title") != null && !request.getAttribute("post_title").equals("")) {
+    		vo.setPost_title((String)request.getAttribute("post_title"));
+    	}
+    	if(request.getAttribute("post_content") != null && !request.getAttribute("post_content").equals("")) {
+    		vo.setPost_content((String)request.getAttribute("post_content"));
+    	}
     	
         int result = postService.update(vo);
         

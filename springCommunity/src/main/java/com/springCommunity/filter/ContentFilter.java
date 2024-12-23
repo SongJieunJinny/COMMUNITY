@@ -13,8 +13,7 @@ import javax.servlet.annotation.WebFilter;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
-@Order(1) 
-@WebFilter({"/board/writeOk.do"}) 
+@WebFilter({"/post/writeOk.do","/post/modifyOk.do"})
 @Component
 public class ContentFilter implements Filter {
 
@@ -25,29 +24,61 @@ public class ContentFilter implements Filter {
 
 	@Override
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
-			throws IOException, ServletException {
-		String title = request.getParameter("title");
-		title = title.replaceAll("<", "&lt;");
-		title = title.replaceAll(">", "&gt;");
-		
-		request.setAttribute("title", title);
-		
-		
-		System.out.println("Filter request title =>" + title);
-		String content = request.getParameter("content");
-		content = content.replaceAll("<", "&lt;");
-		content = content.replaceAll(">", "&gt;");
-		content = content.replaceAll("\n", "<br>");
-		
-		
-		
-		request.setAttribute("content", content);
-		
-		
-		System.out.println("Filter request content =>" + content);
-		
-		
-		chain.doFilter(request, response); 
+	        throws IOException, ServletException {
+		String post_title = "";
+		if(request.getParameter("post_title") != null && !request.getParameter("post_title").equals("")) {
+			post_title = request.getParameter("post_title");
+		    post_title = sanitizeInput(post_title);       // XSS 방지 필터링
+		    post_title = filterProfanity(post_title);     // 비속어 처리
+		    request.setAttribute("post_title", post_title);
+		    System.out.println("Filter post_title: " + post_title);
+		}
+		String post_content = "";
+		if(request.getParameter("post_content") != null && !request.getParameter("post_content").equals("")) {
+			post_content = request.getParameter("post_content");
+			post_content = sanitizeInput(post_content);   // XSS 방지 필터링
+		    post_content = filterProfanity(post_content); // 비속어 처리
+		    request.setAttribute("post_content", post_content);
+		    System.out.println("Filter post_content: " + post_content);
+		}
+
+
+	    chain.doFilter(request, response);
+	}
+
+	private String sanitizeInput(String input) {
+	    if(input == null) {
+	        return null;
+	    }
+	    return input
+	            .replaceAll("<", "&lt;")
+	            .replaceAll(">", "&gt;")
+	            .replaceAll("\"", "&quot;")
+	            .replaceAll("'", "&#x27;")
+	            .replaceAll("&", "&amp;")
+	            .replaceAll("\n", "<br>"); 
+	}
+
+	private String filterProfanity(String input) {
+	    if(input == null) {
+	        return null;
+	    }
+	    // 비속어 목록
+	    String[] list = {
+	    	    "ㅅㅂ", "ㅆㅂ", "ㅂㅅ", "ㅄ", "ㅈㄹ", "ㅉㅉ",
+	    	    "씨발", "씨바", "씨빨", "시발", "시빨", "씨1발", "시1발",
+	    	    "ㅅㅐ끼", "새끼", "썅", "병신", "ㅂㅕㅇ신", "멍청이",
+	    	    "개새끼", "개새", "좆", "ㅈㄱㅊ", "ㅈ같", "ㅈ까",
+	    	    "똘추", "또라이", "닭대가리", "미친놈", "미친년",
+	    	    "애미", "애비", "닥쳐", "꺼져", "죽어", "꺼지",
+	    	    "빡대가리", "좆같", "엿", "느금", "느금마", "느개비",
+	    	    "ㄴㄱㅁ", "ㄱㅅㄲ", "ㄱㅐㅅㅐㄲㅣ", "잡것"
+	    	};
+
+	    for(String word : list) {
+	        input = input.replaceAll("(?i)" + word, "****");
+	    }
+	    return input;
 	}
 
 	@Override

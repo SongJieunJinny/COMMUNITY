@@ -10,7 +10,7 @@
 				<c:if test="${param.post_type eq 0}">
 					<h2 class="write-title">사내커뮤니티 수정하기</h2>
 				</c:if>
-				<form action="modify.do" method="post">
+				<form action="modifyOk.do" method="post">
 					<input type="hidden" name="post_no" value="${vo.post_no }">
 					<input type="hidden" name="post_type" value="${param.post_type }">
 					<table class="write-table">
