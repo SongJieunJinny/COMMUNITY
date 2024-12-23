@@ -24,7 +24,7 @@ import com.springCommunity.vo.*;
 
 @RequestMapping(value="/chat")
 @Controller
-public class CharController {
+public class ChatController {
 	
 	@Autowired
 	ChatService chatService;
@@ -238,6 +238,17 @@ public class CharController {
     @ResponseBody
     @RequestMapping(value = "/addUser.do", method = RequestMethod.POST, produces = "application/text; charset=utf-8")
     public String addChatUser(@RequestBody Map<String, Object> data) {
+    	Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		String loginUser = null;
+		if(authentication != null && authentication.isAuthenticated()) {
+			Object principal = authentication.getPrincipal();
+			if(principal instanceof UserDetails) {
+				loginUser = ((UserDetails)principal).getUsername();
+			}else {
+				loginUser = principal.toString();
+			}
+		}
+    	
         List<String> users = (List<String>)data.get("users"); // 초대할 사용자 리스트
         int chat_no = (Integer)data.get("chat_no");          // 채팅방 번호
         String chat_users_name = (String)data.get("chat_users_name"); // 채팅방 이름
@@ -281,7 +292,15 @@ public class CharController {
             ChatVO message = new ChatVO();
             message.setChat_no(chat_no);
             message.setChat_message_content(afterUserName + "님이 초대되었습니다.");
-            chatService.sendSystemMessage(message);
+            int result2 = chatService.sendSystemMessage(message);
+            if(result2 > 0) {
+            	ChatVO readVO = new ChatVO();
+            	readVO.setChat_no(chat_no);
+            	readVO.setUser_id(loginUser);
+            	readVO.setChat_message_no(message.getChat_message_no());
+            	chatService.sendMessageAfterFirst(readVO);
+        		chatService.sendMessageAfterSecond(readVO);
+            }
         }
 
         return "Success"; 

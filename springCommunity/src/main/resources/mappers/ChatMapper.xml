@@ -194,8 +194,13 @@
 	
 	<insert id="sendSystemMessage" parameterType="chatVO">
 	    INSERT INTO CHAT_MESSAGE (CHAT_NO, CHAT_MESSAGE_CONTENT, USER_ID)
-	    VALUES (#{chat_no}, #{chat_message_content}, 'SYSTEM')
+	    VALUES (#{chat_no}, #{chat_message_content}, 'SYSTEM') 
+	    <selectKey order="AFTER" resultType="int" keyProperty="chat_message_no">
+	        SELECT LAST_INSERT_ID() AS CHAT_MESSAGE_NO
+	    </selectKey>
 	</insert>
+	
+	
 	
 	<!-- 1대1 채팅을 그룹채팅으로 수정 -->
 	<update id="updateChatGroup" parameterType="int">
