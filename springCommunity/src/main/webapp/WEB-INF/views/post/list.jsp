@@ -3,7 +3,12 @@
 <%@ include file="../include/header.jsp" %>
 	<section>
 		<div class="board-container">
-			<h2>공지사항</h2>
+			<c:if test="${param.post_type eq 1}">
+				<h2>공지사항</h2>
+			</c:if>
+			<c:if test="${param.post_type eq 0}">
+				<h2>사내커뮤니티</h2>
+			</c:if>
 			<div class="search-container">
 				<form action="list.do" method="get">
 					<select name="search_type">
@@ -22,35 +27,41 @@
 				</tr>
 				<c:forEach items="${list}" var="vo">
 					<tr>
-						<td>${vo.post_no }</td>
-						<td><a href="view.do?post_no=${vo.post_no }">${vo.post_title }</a></td>
-						<td>${vo.user_id }</td>
-						<td>${vo.post_date }</td>
+						<td>${vo.no}</td>
+						<td><a href="view.do?post_no=${vo.post_no }&post_type=${param.post_type}">${vo.post_title }</a></td>
+						<td>${vo.user_name} ${vo.job_position_name}[${vo.department_name}]</td>
+						<td>${vo.post_date}</td>
 					</tr>
 				</c:forEach>
 			</table>
 			
 			<div class="board_writebtn">
-				<button onclick="location.href='<%=request.getContextPath() %>/notice/write.do'">글 등록</button>
+				<button onclick="location.href='write.do?post_type=${param.post_type}'">글 등록</button>
 			</div>
 			
 			<!-- 페이징 영역 -->
 			<div class="pagination">
 				<c:if test="${paging.startPage > 1 }">
-					<a href="list.do?nowpage=${paging.startPage-1 }">&lt;</a>
+					<a href="list.do?nowpage=${paging.startPage-1 }&post_type=${param.post_type}
+					&search_value=${param.search_value}
+					&search_type=${param.search_type}">&lt;</a>
 				</c:if>
 				
 				<c:forEach begin="${paging.startPage }" end="${paging.endPage }" var="cnt">
 					<c:if test="${paging.nowPage eq cnt }">
-						<b>${cnt }</b>
+						<a id="default" style="color:#FF5722; cursor:default;">${cnt }</a>
 					</c:if>
 					<c:if test="${paging.nowPage ne cnt }">
-						<a href="list.do?nowpage=${cnt }">${cnt }</a>
+						<a href="list.do?nowpage=${cnt }&post_type=${param.post_type}
+						&search_value=${param.search_value}
+						&search_type=${param.search_type}">${cnt }</a>
 					</c:if>
 				</c:forEach>
 				
 				<c:if test="${paging.endPage < paging.lastPage }">
-					<a href="list.do?nowpage=${paging.endPage+1 }">&gt;</a>
+					<a href="list.do?nowpage=${paging.endPage+1 }&post_type=${param.post_type}
+					&search_value=${param.search_value}
+					&search_type=${param.search_type}">&gt;</a>
 				</c:if>
 			</div>
 	</div>

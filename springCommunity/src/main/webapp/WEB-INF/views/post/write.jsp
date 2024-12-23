@@ -4,8 +4,14 @@
 	<section>
 		<div class="write-container">
 			<div class="write-view">
-				<h2 class="write-title">공지글 작성하기</h2>
+				<c:if test="${param.post_type eq 1}">
+					<h2 class="write-title">공지글 작성하기</h2>
+				</c:if>
+				<c:if test="${param.post_type eq 0}">
+					<h2 class="write-title">사내커뮤니티 작성하기</h2>
+				</c:if>
 				<form action="writeOk.do" method="post">
+					<input type="hidden" name="post_type" value="${param.post_type}">
 					<table class="write-table">
 						<tr>
 							<th>글제목</th>
@@ -18,7 +24,7 @@
 					</table>
 					<button class="write-action">작성</button>
 				</form>
-					<button class="write-action" onclick="location.href='<%=request.getContextPath() %>/notice/list.do'">취소</button>
+					<button class="write-action" onclick="location.href='<%=request.getContextPath() %>/post/list.do?post_type=${param.post_type}'">취소</button>
 			</div>
 		</div>
 	</section>

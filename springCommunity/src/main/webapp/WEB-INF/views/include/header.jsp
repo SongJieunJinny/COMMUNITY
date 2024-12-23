@@ -1212,9 +1212,9 @@ function checkOut() {
 		
 		<table class="mainTable" style="font-size:18px; text-decoration: none; color:black; font-weight: bold;">
 	        <tr>
-	            <th class="existValue"><a href="<%=request.getContextPath() %>/notice/list.do">공지사항</a></th>
+	            <th class="existValue"><a href="<%=request.getContextPath() %>/post/list.do?post_type=1">공지사항</a></th>
 	            <th>|</th>
-	            <th class="existValue"><a href="<%=request.getContextPath() %>/board/list.do">사내 커뮤니티</a></th>
+	            <th class="existValue"><a href="<%=request.getContextPath() %>/post/list.do?post_type=0">사내 커뮤니티</a></th>
 	            <th>|</th>
 	            <th class="existValue"><a href="user/myDepartment.do">나의 부서 업무 상황</a></th>
 	        </tr>

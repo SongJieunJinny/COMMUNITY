@@ -130,8 +130,12 @@
 }
 
 .pagination a:hover {
-    background: #A2A2A2;
-    color: white;
+    background: #E2E2E2;
+    /* color: white; */
+}
+
+#default:hover{
+	background: white;
 }
 
 .board_writebtn {
