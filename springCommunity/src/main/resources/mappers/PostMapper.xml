@@ -49,7 +49,8 @@
 	</insert>
 	
 	<select id="selectOne" parameterType="int" resultType="postVO">
-		SELECT POST_TITLE, POST_CONTENT, u.USER_ID, u.USER_NAME, POST_NO, 
+		SELECT POST_TITLE, POST_CONTENT, POST_TYPE, 
+		  u.USER_ID, u.USER_NAME, POST_NO, 
 		  DEPARTMENT_NAME, JOB_POSITION_NAME,
 		  DATE_FORMAT(POST_DATE, '%Y.%m.%d %H:%i') AS POST_DATE  
 		  FROM POST p, USER u
