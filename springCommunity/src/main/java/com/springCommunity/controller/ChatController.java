@@ -6,6 +6,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.apache.commons.collections4.map.HashedMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -184,8 +186,13 @@ public class ChatController {
     // 메시지 전송
     @ResponseBody
     @RequestMapping(value ="/sendMessage.do", method = RequestMethod.POST, produces = "application/text; charset=utf-8")
-    public void sendMessage(@RequestBody ChatMessageVO chatMessageVO) {
+    public void sendMessage(ChatMessageVO chatMessageVO,HttpServletRequest request) {
     	System.out.println("chatMessageVO "+chatMessageVO.getChat_message_content());
+    	
+    	if(request.getAttribute("chat_message_content") != null 
+    			&& !request.getAttribute("chat_message_content").equals("")) {
+    		chatMessageVO.setChat_message_content((String)request.getAttribute("chat_message_content"));
+    	}
     	
     	int result = chatService.sendMessage(chatMessageVO);
     	
@@ -226,13 +233,24 @@ public class ChatController {
     // 채팅방 이름 변경(참가자 각자변경)
     @ResponseBody
     @PostMapping("/updateChatUserName.do")
-    public String updateChatUserName(ChatVO vo) {
+    public Map<String,Object> updateChatUserName(ChatVO vo,HttpServletRequest request) {
+    	if(request.getAttribute("chat_users_name") != null 
+    			&& !request.getAttribute("chat_users_name").equals("")) {
+    		vo.setChat_users_name((String)request.getAttribute("chat_users_name"));
+    	}
+    	
         int result = chatService.updateChatUserName(vo);
+        
+        Map<String,Object> map = new HashMap<String, Object>();
+        
         if(result > 0) {
-        	return "Success";
+        	ChatVO aVO = chatName(vo);
+        	map.put("result", "Success");
+        	map.put("vo", aVO);
         }else {
-        	return "Fail";
+        	map.put("result", "Fail");
         }
+        return map;
     }
     
     @ResponseBody

@@ -13,7 +13,7 @@ import javax.servlet.annotation.WebFilter;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
-@WebFilter({"/post/writeOk.do","/post/modifyOk.do"})
+@WebFilter({"/post/writeOk.do","/post/modifyOk.do","/chat/sendMessage.do","/chat/updateChatUserName.do"})
 @Component
 public class ContentFilter implements Filter {
 
@@ -25,6 +25,7 @@ public class ContentFilter implements Filter {
 	@Override
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
 	        throws IOException, ServletException {
+		System.out.println("필터실행=>"+request.getParameter("chat_message_content"));
 		String post_title = "";
 		if(request.getParameter("post_title") != null && !request.getParameter("post_title").equals("")) {
 			post_title = request.getParameter("post_title");
@@ -41,7 +42,27 @@ public class ContentFilter implements Filter {
 		    request.setAttribute("post_content", post_content);
 		    System.out.println("Filter post_content: " + post_content);
 		}
-
+		
+		String chat_message_content = "";
+		if(request.getParameter("chat_message_content") != null 
+				&& !request.getParameter("chat_message_content").equals("")) {
+			System.out.println("request chat_message_content" + request.getParameter("chat_message_content"));
+			chat_message_content = request.getParameter("chat_message_content");
+			chat_message_content = sanitizeInput(chat_message_content);   // XSS 방지 필터링
+			chat_message_content = filterProfanity(chat_message_content); // 비속어 처리
+		    request.setAttribute("chat_message_content", chat_message_content);
+		    System.out.println("Filter chat_message_content: " + chat_message_content);
+		}
+		
+		String chat_users_name = "";
+		if(request.getParameter("chat_users_name") != null 
+				&& !request.getParameter("chat_users_name").equals("")) {
+			chat_users_name = request.getParameter("chat_users_name");
+			chat_users_name = sanitizeInput(chat_users_name);   // XSS 방지 필터링
+			chat_users_name = filterProfanity(chat_users_name); // 비속어 처리
+		    request.setAttribute("chat_users_name", chat_users_name);
+		    System.out.println("Filter chat_users_name: " + chat_users_name);
+		}
 
 	    chain.doFilter(request, response);
 	}

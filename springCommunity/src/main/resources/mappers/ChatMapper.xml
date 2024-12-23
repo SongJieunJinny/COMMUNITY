@@ -217,7 +217,7 @@
 	</update>
 	
 	<!-- 채팅방 이름 1개 확인 -->
-	<select id="chatName" parameterType="int" resultType="chatVO">
+	<select id="chatName" parameterType="chatVO" resultType="chatVO">
 		SELECT CHAT_USERS_NAME   
 		FROM CHAT_USERS 
 		WHERE CHAT_NO = #{chat_no} AND USER_ID = #{user_id}  

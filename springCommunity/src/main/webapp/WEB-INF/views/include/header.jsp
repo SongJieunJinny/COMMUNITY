@@ -699,8 +699,8 @@ function sendMessage(chat_no) {
         $.ajax({
             url: '<%= request.getContextPath() %>/chat/sendMessage.do',
             method: 'POST',
-            contentType: 'application/json',
-            data: JSON.stringify({ chat_no, user_id, chat_message_content }),
+            //contentType: 'application/json',
+            data: { chat_no : chat_no, user_id : user_id, chat_message_content : chat_message_content },
             success: function() {
                 console.log('메시지가 저장되었습니다.');
             },
@@ -842,11 +842,11 @@ function saveChatName(chat_no, newName, inputElement) {
             chat_users_name: newName,
             user_id: user_id
         },
-        success: function(result) {
-        	if(result.trim() === "Success"){
+        success: function(data) {
+        	if(data.result === "Success"){
 	            // 성공적으로 저장된 경우 이름 업데이트
 	            const updatedElement = $(`<h2 id="chatName_\${chat_no}" onclick="modifyChatName(\${chat_no})"></h2>`)
-	                .text(newName);
+	                .text(data.vo.chat_users_name);
 	            inputElement.replaceWith(updatedElement);
         	}else {
                 alert("저장 실패: 다시 시도해주세요.");
