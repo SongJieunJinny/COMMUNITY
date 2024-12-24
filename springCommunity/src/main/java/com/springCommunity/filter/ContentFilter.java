@@ -13,7 +13,9 @@ import javax.servlet.annotation.WebFilter;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
-@WebFilter({"/post/writeOk.do","/post/modifyOk.do","/chat/sendMessage.do","/chat/updateChatUserName.do"})
+@WebFilter({"/post/writeOk.do","/post/modifyOk.do"
+	,"/chat/sendMessage.do","/chat/updateChatUserName.do"
+	,"/comment/write.do","/comment/modify.do"})
 @Component
 public class ContentFilter implements Filter {
 
@@ -25,7 +27,7 @@ public class ContentFilter implements Filter {
 	@Override
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
 	        throws IOException, ServletException {
-		System.out.println("필터실행=>"+request.getParameter("chat_message_content"));
+		System.out.println("필터실행");
 		String post_title = "";
 		if(request.getParameter("post_title") != null && !request.getParameter("post_title").equals("")) {
 			post_title = request.getParameter("post_title");
@@ -62,6 +64,16 @@ public class ContentFilter implements Filter {
 			chat_users_name = filterProfanity(chat_users_name); // 비속어 처리
 		    request.setAttribute("chat_users_name", chat_users_name);
 		    System.out.println("Filter chat_users_name: " + chat_users_name);
+		}
+		
+		String comment_content = "";
+		if(request.getParameter("comment_content") != null 
+				&& !request.getParameter("comment_content").equals("")) {
+			comment_content = request.getParameter("comment_content");
+			comment_content = sanitizeInput(comment_content);   // XSS 방지 필터링
+			comment_content = filterProfanity(comment_content); // 비속어 처리
+		    request.setAttribute("comment_content", comment_content);
+		    System.out.println("Filter comment_content: " + comment_content);
 		}
 
 	    chain.doFilter(request, response);

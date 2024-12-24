@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.springCommunity.service.ChatService;
 import com.springCommunity.vo.*;
 
+
 @RequestMapping(value="/chat")
 @Controller
 public class ChatController {
@@ -60,7 +61,10 @@ public class ChatController {
         Map<String,Object> map = new HashMap<String, Object>();
 		
 		List<ChatVO> list = chatService.selectAll(searchVO);
-		
+		for(ChatVO vo : list) {
+			vo.setChat_message_content(restoreSanitizedInput(vo.getChat_message_content()));
+			vo.setChat_users_name(restoreSanitizedInput(vo.getChat_users_name()));
+		}
 		model.addAttribute("list", list);
     	
 		if(list.isEmpty()) {
@@ -210,6 +214,9 @@ public class ChatController {
     @RequestMapping(value="/loadMessage.do", method = RequestMethod.GET, produces = "application/json; charset=utf-8")
     public List<ChatMessageVO> loadMessage(int chat_no){
     	List<ChatMessageVO> list = chatService.loadMessage(chat_no);
+    	for(ChatMessageVO vo : list) {
+    		vo.setChat_message_content(restoreSanitizedInput(vo.getChat_message_content()));
+    	}
     	return list;
     }
     
@@ -327,7 +334,11 @@ public class ChatController {
     @ResponseBody
     @PostMapping("/chatName.do")
     public ChatVO chatName(ChatVO vo) {
-        return chatService.chatName(vo);
+    	
+    	ChatVO resultVO = chatService.chatName(vo);
+    	resultVO.setChat_users_name(restoreSanitizedInput(resultVO.getChat_users_name()));
+    	
+        return resultVO;
     }
     
     @ResponseBody
@@ -345,5 +356,19 @@ public class ChatController {
     @RequestMapping(value = "/unreadMessageCounts.do", method = RequestMethod.GET, produces = "application/json; charset=utf-8")
     public int unreadMessageCounts(String user_id) {
         return chatService.unreadMessageCounts(user_id);
+    }
+    
+    private String restoreSanitizedInput(String input) {
+        if(input == null) {
+            return null;
+        }
+        input = input
+                .replaceAll("&lt;", "<")
+                .replaceAll("&gt;", ">")
+                .replaceAll("&quot;", "\"")
+                .replaceAll("&#x27;", "'")
+                .replaceAll("&amp;", "&")
+                .replaceAll("<br>", "\n");
+        return input;
     }
 }

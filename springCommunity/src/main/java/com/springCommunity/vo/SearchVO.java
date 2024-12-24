@@ -13,6 +13,7 @@ public class SearchVO extends PagingUtil {
     private String first_date;     
     private String second_date;    
     private int post_type = 0;    
+    private int post_no = 0;    
 	
 	
 	public String getSearch_type()  { return search_type;    }
@@ -25,6 +26,7 @@ public class SearchVO extends PagingUtil {
 	public String getFirst_date()   { return first_date;     }
 	public String getSecond_date()  { return second_date;    }
 	public int getPost_type()       { return post_type;      }
+	public int getPost_no()         { return post_no;        }
 	
 	public void setSearch_type(String search_type)      { this.search_type = search_type;        }
 	public void setSearch_value(String search_value)    { this.search_value = search_value;      }
@@ -36,4 +38,5 @@ public class SearchVO extends PagingUtil {
 	public void setFirst_date(String first_date)        { this.first_date = first_date;          }
 	public void setSecond_date(String second_date)      { this.second_date = second_date;        }
 	public void setPost_type(int post_type)             { this.post_type = post_type;            }
+	public void setPost_no(int post_no)                 { this.post_no = post_no;                }
 }

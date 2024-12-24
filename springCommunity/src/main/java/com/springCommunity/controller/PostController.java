@@ -47,6 +47,8 @@ public class PostController {
 	    int displayNo = total - (nowpage - 1) * paging.getPerPage();
 	    for(PostVO vo : list) {
 	        vo.setNo(displayNo--); // 각 게시물 번호 설정
+	        vo.setPost_title(restoreSanitizedInput(vo.getPost_title()));
+	        vo.setPost_content(restoreSanitizedInput(vo.getPost_content()));
 	    }
 		
 		model.addAttribute("list",list);
@@ -128,7 +130,8 @@ public class PostController {
 	public String view(int post_no, Model model) {
 		
 		PostVO vo = postService.selectOne(post_no);
-		
+		vo.setPost_title(restoreSanitizedInput(vo.getPost_title()));
+        vo.setPost_content(restoreSanitizedInput(vo.getPost_content()));
 		model.addAttribute("vo", vo);
 		
 		return "post/view";
@@ -141,4 +144,18 @@ public class PostController {
 		
 		return "redirect:list.do";
 	}
+	
+	private String restoreSanitizedInput(String input) {
+        if(input == null) {
+            return null;
+        }
+        input = input
+                .replaceAll("&lt;", "<")
+                .replaceAll("&gt;", ">")
+                .replaceAll("&quot;", "\"")
+                .replaceAll("&#x27;", "'")
+                .replaceAll("&amp;", "&")
+                .replaceAll("<br>", "\n");
+        return input;
+    }
 }
