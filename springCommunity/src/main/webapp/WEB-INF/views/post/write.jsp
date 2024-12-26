@@ -23,8 +23,8 @@
 						</tr>
 					</table>
 					<button class="write-action">작성</button>
+					<button type="button" class="write-action" onclick="location.href='<%=request.getContextPath() %>/post/list.do?post_type=${param.post_type}'">취소</button>
 				</form>
-					<button class="write-action" onclick="location.href='<%=request.getContextPath() %>/post/list.do?post_type=${param.post_type}'">취소</button>
 			</div>
 		</div>
 	</section>
