@@ -1123,7 +1123,7 @@ function checkOut() {
             <img src="<%= request.getContextPath() %>/resources/img/메인.jpg" alt="메인 이미지" 
             style="width: 100%; height: 820px;">
             <div class="log_Info" style="font-size: 18px; text-decoration: none; color: white; font-weight: bold; margin-top: 20px;">
-                <a href="join.do" style="color:white;">회원가입</a> | 
+                <!-- <a href="join.do" style="color:white;">회원가입</a> | --> 
                 <a id="loginBtn" style="color:white;">로그인</a><br>
             </div>
         </div>

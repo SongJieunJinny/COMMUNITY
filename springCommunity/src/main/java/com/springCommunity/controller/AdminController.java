@@ -58,7 +58,6 @@ public class AdminController {
                 String randomPassword = generateRandom(6);
                 userInfoVO.setUser_password(randomPassword); // 암호화 전 비밀번호 저장
                 userInfoVO.setUser_password(encoder.encode(randomPassword));
-                userInfoVO.setUser_id("jj" + userInfoVO.getUser_id());
 
                 // 사용자 정보 등록
                 int result = userService.insertUser(userInfoVO);
