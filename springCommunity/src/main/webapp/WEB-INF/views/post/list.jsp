@@ -28,7 +28,14 @@
 				<c:forEach items="${list}" var="vo">
 					<tr>
 						<td>${vo.no}</td>
-						<td><a href="view.do?post_no=${vo.post_no }&post_type=${param.post_type}">${vo.post_title }</a></td>
+						<td>
+							<a href="view.do?post_no=${vo.post_no }&post_type=${param.post_type}">
+								${vo.post_title } 
+								<c:if test="${vo.comment_count > 0}">
+									<span style="color:#FF5722;">(${vo.comment_count })</span>
+								</c:if>
+							</a>
+						</td>
 						<td>${vo.user_name} ${vo.job_position_name}[${vo.department_name}]</td>
 						<td>${vo.post_date}</td>
 					</tr>
