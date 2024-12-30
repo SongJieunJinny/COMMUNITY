@@ -44,7 +44,7 @@
 			</table>
 			
 			<div class="board_writebtn">
-				<button onclick="location.href='write.do?post_type=${param.post_type}'">글 등록</button>
+				<button class="write_btn" onclick="location.href='write.do?post_type=${param.post_type}'">글 등록</button>
 			</div>
 			
 			<!-- 페이징 영역 -->
