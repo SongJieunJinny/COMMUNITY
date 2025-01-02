@@ -2,21 +2,13 @@
 	pageEncoding="UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://www.springframework.org/security/tags" prefix="sec" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ include file="./include/header.jsp" %>
 <link rel="stylesheet" type="text/css" href="<%= request.getContextPath() %>/resources/css/home.css" />
 	<hr>
 	<sec:authorize access="isAuthenticated()">
 		<div style="font-size:18px; text-decoration: none; color:black; font-weight: bold;">
 			<br>
-			<table class="mainTable">
-		        <tr>
-		            <th class="existValue"><a href="user/companyCommunity.do"></a>공지사항</th>
-		            <th>|</th>
-		            <th class="existValue"><a href="user/companyCommunity.do">사내 커뮤니티</a></th>
-		            <th>|</th>
-		            <th class="existValue"><a href="user/myDepartment.do">나의 부서 업무 상황</a></th>
-		        </tr>
-		    </table>
 			<!-- 근무시간 나타내기  -->
 			 <div class="summaryContainer">
 			    <div>근무 관련 요약 </div>

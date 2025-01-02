@@ -63,7 +63,7 @@ public class ScheduleController {
     }
 
     //일정 삽입
-    @PostMapping("/api/schedule.do")
+    @PostMapping("/api/scheduleInsert.do")
     public ResponseEntity<Map<String, Object>> insertSchedule(@RequestBody ScheduleVO scheduleVO) {
         Map<String, Object> response = new HashMap<>();
         try {
@@ -84,6 +84,7 @@ public class ScheduleController {
     public ResponseEntity<Map<String, Object>> updateSchedule(@RequestBody ScheduleVO scheduleVO) {
         Map<String, Object> response = new HashMap<>();
         try {
+        	 System.out.println("Received delete request for schedule: " + scheduleVO.getSchedule_no());
             int result = scheduleService.updateSchedule(scheduleVO);  // 반환 타입을 int로 변경
             response.put("status", "success");
             response.put("data", result);

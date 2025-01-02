@@ -33,8 +33,8 @@ public class ScheduleServiceImpl implements ScheduleService{
     }
 
     // 일정 삭제
-    public void deleteSchedule(ScheduleVO scheduleVO) {
-
+    public int deleteSchedule(ScheduleVO scheduleVO) {
+    	return scheduleServiceDAO.deleteSchedule(scheduleVO);
     }
 
 }

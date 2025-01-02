@@ -35,8 +35,8 @@ public class ScheduleServiceDAO {
     }
 
     // 일정 삭제
-    public void deleteSchedule(ScheduleVO scheduleVO) {
-        sqlSession.delete(namespace + "deleteSchedule", scheduleVO);
+    public int deleteSchedule(ScheduleVO scheduleVO) {
+        return sqlSession.delete(namespace + "deleteSchedule", scheduleVO);
     }
 
 }

@@ -60,19 +60,4 @@ public class MyDepartmentController {
 			return "home";
 		 	}
     	}
-	
-		
-		
-		// 추가
-		
-		// 수정
-		
-		// 삭제
-		
-		
-		
-		
-		
-		
-	
 }

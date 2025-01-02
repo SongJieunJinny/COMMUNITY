@@ -10,7 +10,6 @@
 <select id="selectSchedulesByDepartment" parameterType="ScheduleVO" resultType="ScheduleVO">
         SELECT * FROM schedule 
         WHERE department_id = #{department_id}
-        ORDER BY schedule_start_date DESC
 </select>
 
 <insert id="insertSchedule" parameterType="ScheduleVO">
@@ -33,14 +32,13 @@
 		schedule_name = #{schedule_name},
 		schedule_start_date = #{schedule_start_date},
 		schedule_end_date = #{schedule_end_date},
-		schedule_state = #{schedule_state},
 		department_id = #{department_id},
 		job_position_id = #{job_position_id},
 		user_id = #{user_id}
 	WHERE SCHEDULE_NO  = #{schedule_no}
 </update>
 
-<delete id="deleteSchedule" parameterType="int">
+<delete id="deleteSchedule" parameterType="ScheduleVO">
 	DELETE FROM schedule WHERE SCHEDULE_NO = #{schedule_no}
 </delete>
 <!-- 해당 코드도 render로 의해서 필요 없음
