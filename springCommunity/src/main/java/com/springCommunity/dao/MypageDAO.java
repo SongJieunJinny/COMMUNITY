@@ -1,5 +1,7 @@
 package com.springCommunity.dao;
 
+import java.util.List;
+
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -16,7 +18,7 @@ public class MypageDAO {
 	
 	public int userUpdate (MypageVO mypageVO) {
 		return sqlSession.update(namespace+"userUpdate",mypageVO);
-	}
+	} 
 	
 	public int userPwUpdate (MypageVO mypageVO) {
 		return sqlSession.update(namespace+"userPwUpdate",mypageVO);
@@ -41,4 +43,21 @@ public class MypageDAO {
 	public MypageVO selectOneRequest (int request_no) {
 		return sqlSession.selectOne(namespace+"selectOneRequest",request_no);
 	}
+	
+	public List<MypageVO> selectAll (MypageVO mypageVO){
+		return sqlSession.selectList(namespace+"selectAll", mypageVO);
+	}
+	
+	public List<MypageVO> selectAllBene (MypageVO mypageVO){
+		return sqlSession.selectList(namespace+"selectAllBene", mypageVO);
+	}
+	
+	public List<MypageVO> selectAllMedi (MypageVO mypageVO){
+		return sqlSession.selectList(namespace+"selectAllMedi", mypageVO);
+	}
+	
+	public int updateRequest(MypageVO mypageVO) {
+		return sqlSession.update(namespace+"updateRequest",mypageVO);
+	}
+	
 }

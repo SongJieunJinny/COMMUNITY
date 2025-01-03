@@ -12,9 +12,13 @@ public class MypageVO {
 	private String user_account;
 	private int bank_id;
 	private String user_address;
-	private String department_name;
 	private String mail_key;
 	private String mail_auth;
+	
+	private String department_name; //부서명
+	private int job_position_id; //직책코드
+	private String job_position_name; //직책명
+	private int department_id; //부서코드
 	
 	private String years;  // 일자계산 위한 근속 년수
 	
@@ -48,17 +52,24 @@ public class MypageVO {
 	private String file_name;  //원래파일명
 	private String attach_name;  //변경되는파일명
 	
-	private String task_name;  //업무명
-	private String task_start_date; //업무 시작일
-	private String task_end_date;  //업무마감일
-	private String task_state;  //상태 (0대기/1진행중)
-	
-	
-	
-	
-	
-	
-
+	public int getJob_position_id() {
+		return job_position_id;
+	}
+	public void setJob_position_id(int job_position_id) {
+		this.job_position_id = job_position_id;
+	}
+	public String getJob_position_name() {
+		return job_position_name;
+	}
+	public void setJob_position_name(String job_position_name) {
+		this.job_position_name = job_position_name;
+	}
+	public int getDepartment_id() {
+		return department_id;
+	}
+	public void setDepartment_id(int department_id) {
+		this.department_id = department_id;
+	}
 	public String getRequest_approve_money() {
 		return request_approve_money;
 	}
@@ -214,30 +225,6 @@ public class MypageVO {
 	}
 	public void setRequest_repuse(String request_repuse) {
 		this.request_repuse = request_repuse;
-	}
-	public String getTask_name() {
-		return task_name;
-	}
-	public void setTask_name(String task_name) {
-		this.task_name = task_name;
-	}
-	public String getTask_start_date() {
-		return task_start_date;
-	}
-	public void setTask_start_date(String task_start_date) {
-		this.task_start_date = task_start_date;
-	}
-	public String getTask_end_date() {
-		return task_end_date;
-	}
-	public void setTask_end_date(String task_end_date) {
-		this.task_end_date = task_end_date;
-	}
-	public String getTask_state() {
-		return task_state;
-	}
-	public void setTask_state(String task_state) {
-		this.task_state = task_state;
 	}
 	public String getYears() {
 		return years;

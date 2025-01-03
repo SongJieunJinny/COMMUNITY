@@ -6,7 +6,7 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <script src="<%= request.getContextPath() %>/resources/js/jquery-3.7.1.js"></script>
-  <script>
+  <%-- <script>
 	function addMedicalTable() {//행 추가
 	  var form = new FormData();
 	  form.append( "medical_name", $("#medical_name").val() );
@@ -28,7 +28,6 @@
 	  	data: form,      // 폼 데이터를 전송
 	  	success: function(data){
 			console.log("등록에 성공했습니다.");
-			alert("의료비 신청이 완료 됐습니다."); 
 
 			let requestApproveState1 = "";
 			let requestApproveState2 = "";
@@ -66,7 +65,7 @@
 	  	}
 	  });
 	}
-</script>
+</script> --%>
   <style>
     body{
       width: 80%;
@@ -155,7 +154,7 @@
     	<img id="logo_img" src="<%= request.getContextPath() %>/resources/img/logo.png" alt="회사로고" >
     </a>
     <div id = "login_info">
-      <a href="logout.do">로그아웃</a>
+      <a href="<%= request.getContextPath() %>/logout.do">로그아웃</a>
       |
       <a href="info.do">마이페이지</a>
     </div>
@@ -167,13 +166,17 @@
     <a href="benefit.do">경조금 신청</a>
     |
     <a href="medical.do">의료비 신청</a>
+    <c:if test="${vo.job_position_id >= 5 }">
+    |
+    <a href="form.do">신청내용 확인</a>
+    </c:if>
   </div>
   <hr>
 	<div id="mypage_medical">
     <div id="mypage_medical_top">
       <form action="medical.do" method="post" enctype="multipart/form-data">
 				<br>
-        <input id="medicalBtn" type="button" value="신청" onclick="addMedicalTable()">
+        <input id="medicalBtn" type="submit" value="신청">
         <br>
         <br>
         <div id="medical_table_div">
@@ -250,10 +253,11 @@
   	<div id="mypage_medical_bottom">
     	<table id="medical_check_table" border="1">
 				<tr>
-					<th colspan="9"style="text-align: left; background-color: lightgray;"> >의료비신청/진행현황</th>
+					<th colspan="8"style="text-align: left; background-color: lightgray;"> >의료비신청/진행현황</th>
 				</tr>
 				<tr style="background-color: lightgray;">
 					<th>번호</th>
+					<th>구분</th>
 					<th style="width: 200px;">신청일자</th>
 					<th>신청금액</th>
 					<th>1차결제</th>
@@ -261,6 +265,35 @@
 					<th>지원금액</th>
 					<th>비고</th>
 				</tr>
+			<c:forEach items="${list}" var="vo">
+				<tr>
+					<td>${vo.request_no}</td>
+					<td>
+						<c:choose>
+      					<c:when test="${vo.medical_type eq 1}">입원</c:when>
+      					<c:when test="${vo.medical_type eq 2}">외래</c:when>
+      				</c:choose>
+					</td>
+					<td>${vo.medical_start_date}</td>
+					<td>${vo.medical_money}</td>
+					<td>
+      				<c:choose>
+      					<c:when test="${vo.request_approve_state1 eq 0}">대기</c:when>
+      					<c:when test="${vo.request_approve_state1 eq 1}">승인</c:when>
+      					<c:when test="${vo.request_approve_state1 eq 2}">거절</c:when>
+      				</c:choose>
+      			</td>
+      			<td>
+      				<c:choose>
+      					<c:when test="${vo.request_approve_state2 eq 0}">대기</c:when>
+      					<c:when test="${vo.request_approve_state2 eq 1}">승인</c:when>
+      					<c:when test="${vo.request_approve_state2 eq 2}">거절</c:when>
+      				</c:choose>
+      			</td>
+					<td>${vo.medical_money}</td>
+					<td>${vo.request_repuse}</td>
+				</tr>
+			</c:forEach>
 			</table>
   	</div>
   </div>

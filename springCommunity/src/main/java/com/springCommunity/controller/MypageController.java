@@ -47,7 +47,7 @@ public class MypageController {
 	}
 	
 	@RequestMapping(value="/mypage/info.do", method = RequestMethod.POST)
-	public String info(MypageVO mypageVO,Principal principal,HttpServletRequest request,HttpServletResponse response) throws IOException {
+	public String info(MypageVO mypageVO,Principal principal) {
 		
 		String userId = principal.getName();
 		mypageVO.setUser_id(userId);
@@ -56,24 +56,12 @@ public class MypageController {
 			
 		if(rs>0) {
 			System.out.println("회원정보 수정 성공.");
-			response.setCharacterEncoding("UTF-8");
-			response.setContentType("text/html;charset=UTF-8");
-			response.getWriter().append("<script>alert('회원정보 수정에 성공했습니다.');"
-										+"location.href='"
-										+request.getContextPath()
-										+"/mypage/info.do'</script>").flush();
+			return "redirect:info.do";
 			
 		}else {
 			System.out.println("회원정보 수정 실패.");
-			response.setCharacterEncoding("UTF-8");
-			response.setContentType("text/html;charset=UTF-8");
-			response.getWriter().append("<script>alert('회원정보 수정 실패했습니다. 다시확인해주세요');"
-										+"location.href='"
-										+request.getContextPath()
-										+"/mypage/info.do'</script>").flush();
-			
+			return "redirect:info.do";
 		}
-		return "redirect:info.do";
 	}
 		
 	@ResponseBody
@@ -113,8 +101,8 @@ public class MypageController {
         return Integer.toString(checkNum);
 	}
 	
-	@ResponseBody
-	@RequestMapping(value="/mypage/info/pwChange.do")
+	
+	@RequestMapping(value="/mypage/info/pwChange.do", method = RequestMethod.POST)
 	public String pwChange(MypageVO mypageVO,Principal principal) {
 		
 		String userId = principal.getName();
@@ -138,19 +126,23 @@ public class MypageController {
 	
 	//--------------------------------------------------------------info끝 benefit시작
 	@RequestMapping(value="/mypage/benefit.do", method = RequestMethod.GET)
-	public String benefit(Principal principal, Model model) {
+	public String benefit(Principal principal, Model model, MypageVO mypageVO) {
 		String userId = principal.getName();
 		
 		MypageVO vo = mypageService.selectOne(userId);
+		
+		List<MypageVO> list = mypageService.selectAll(mypageVO);
+
 		model.addAttribute("vo",vo);
+		
+		model.addAttribute("list",list);
 		
 		return "mypage/benefit";
 	}
 	
-	@ResponseBody
 	@RequestMapping(value="/mypage/benefit.do", method = RequestMethod.POST, produces="application/json;charset=UTF8")
-	public MypageVO benefit(MypageVO mypageVO,Principal principal,@RequestParam(value="fileName")List<MultipartFile> multiFile
-			,HttpServletRequest request,HttpServletResponse response) throws IllegalStateException, IOException {
+	public String benefit(MypageVO mypageVO,Principal principal,@RequestParam(value="fileName")List<MultipartFile> multiFile
+			,HttpServletRequest request,HttpServletResponse response, Model model ) throws IllegalStateException, IOException {
 		
 		String userId = principal.getName();
 		mypageVO.setUser_id(userId);
@@ -165,7 +157,7 @@ public class MypageController {
 			dir.mkdirs();
 		}
 		
-		for(MultipartFile file : multiFile) { 
+		for(MultipartFile file : multiFile) {
 			if(!file.getOriginalFilename().isEmpty()) {
 				UUID uuid = UUID.randomUUID();
 				String fileRealName=uuid.toString()+file.getOriginalFilename();
@@ -177,27 +169,34 @@ public class MypageController {
 			}
 		}
 		
-		if(rs>0) {
-			System.out.println("등록완료");
-			MypageVO vo = mypageService.selectOneRequest(mypageVO.getRequest_no());
-			return vo;
-			
-		}else {
-		}
-		return null;
+		List<MypageVO> list = mypageService.selectAllBene(mypageVO);
+		
+		model.addAttribute("list",list);
+		
+		return "redirect:/mypage/benefit.do";
 	}
 	
 	//--------------------------------------------------------------benefit끝 medical시작
 	
 	@RequestMapping(value="/mypage/medical.do", method = RequestMethod.GET)
-	public String medical() {
+	public String medical(Principal principal, Model model, MypageVO mypageVO) {
+		
+		String userId = principal.getName();
+		
+		MypageVO vo = mypageService.selectOne(userId);
+		
+		List<MypageVO> list = mypageService.selectAll(mypageVO);
+
+		model.addAttribute("vo",vo);
+		
+		model.addAttribute("list",list);
+		
 		return "mypage/medical";
 	}
 	
-	@ResponseBody
 	@RequestMapping(value="/mypage/medical.do", method = RequestMethod.POST, produces="application/json;charset=UTF8")
-	public MypageVO medical(MypageVO mypageVO,Principal principal,@RequestParam(value="fileName")List<MultipartFile> multiFile
-			,HttpServletRequest request,HttpServletResponse response) throws IllegalStateException, IOException {
+	public String medical(MypageVO mypageVO,Principal principal,@RequestParam(value="fileName")List<MultipartFile> multiFile
+			,HttpServletRequest request,HttpServletResponse response, Model model) throws IllegalStateException, IOException {
 		
 		String userId = principal.getName();
 		mypageVO.setUser_id(userId);
@@ -225,14 +224,50 @@ public class MypageController {
 			}
 		}
 		
-		if(rs>0) {
-			System.out.println("등록완료");
-			MypageVO vo = mypageService.selectOneRequest(mypageVO.getRequest_no());
-			return vo;
-			
-		}else {
-		}
-		return null;
+		MypageVO vo = mypageService.selectOne(userId);
+		
+		List<MypageVO> list = mypageService.selectAllMedi(mypageVO);
+
+		model.addAttribute("vo",vo);
+		
+		model.addAttribute("list",list);
+		
+		return "redirect:/mypage/medical.do";
 	}
+	
+	//--------------------------form신청내용 확인
+	
+	@RequestMapping(value="/mypage/form.do", method = RequestMethod.GET)
+	public String form(Principal principal, Model model, MypageVO mypageVO) {
+		
+		String userId = principal.getName();
+		
+		MypageVO vo = mypageService.selectOne(userId);
+		
+		List<MypageVO> list = mypageService.selectAll(mypageVO);
+
+		model.addAttribute("vo",vo);
+		
+		model.addAttribute("list",list);
+		
+		
+		return "mypage/form";
+	}
+	
+
+	@RequestMapping(value="/mypage/form.do", method = RequestMethod.POST)
+	public String form(MypageVO mypageVO) {
+		
+		int rs = mypageService.updateRequest(mypageVO);
+		
+		if (rs > 0) {
+			System.out.println("success");
+			return "redirect:/mypage/form.do";
+		} else {
+			System.out.println("error");
+			return "redirect:/mypage/form.do";
+		}
+	}
+
 	
 }

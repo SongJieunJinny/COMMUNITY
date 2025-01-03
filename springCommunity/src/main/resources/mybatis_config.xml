@@ -16,5 +16,6 @@
 		<typeAlias type="com.springCommunity.vo.MydepartmentVO" alias="mydepartmentVO"/>
 		<typeAlias type="com.springCommunity.vo.TaskVO" alias="TaskVO"/>
 		<typeAlias type="com.springCommunity.vo.ScheduleVO" alias="scheduleVO"/>
+		<typeAlias type="com.springCommunity.vo.VacationVO" alias="vacationVO"/>
 	</typeAliases>
 </configuration>

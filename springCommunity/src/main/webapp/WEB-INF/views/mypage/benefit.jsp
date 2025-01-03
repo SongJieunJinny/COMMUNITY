@@ -227,12 +227,109 @@
       console.log("cost::"+cost);
 
       if (cost !== null) {
-    	  $("#benefit_money").val(`\${cost}원`);
+    	  $("#benefit_money").val(`\${cost}`);
       } else {
     	  $("#benefit_money").val(' ');
       }
     }
 	</script>
+<%-- 	<script>
+  	function addBenefitTable() {//행 추가
+  		var form = new FormData();
+  	    form.append( "benefit_sub", $("#benefit_sub").val() );
+  	    form.append( "benefit_date", $("#benefit_date").val() );
+  	    form.append( "benefit_tour", $("#benefit_tour").val() );
+  	    form.append( "benefit_type", $("#benefit_type").val() );
+  	    form.append( "benefit_money", $("#benefit_money").val() );
+  	    form.append( "benefit_content", $("#benefit_content").val() );
+  	    form.append( "fileName", $("#file_name")[0].files[0] );
+  	    
+  	  $.ajax({
+  	  	url : '<%= request.getContextPath() %>/mypage/benefit.do',
+  	    type : "POST",
+  	    processData : false,
+  	    contentType : false,
+  	    data: form,      // 폼 데이터를 전송
+  	    success: function(data){
+					console.log("등록에 성공했습니다.");
+						
+						let benefitType = "";
+						let benefitSub = "";
+						let requestApproveState1 = "";
+						let requestApproveState2 = "";
+						
+						if(data.benefit_type == 1){
+							benefitType = "결혼";
+						}else if(data.benefit_type == 2){
+							benefitType = "회갑";
+						}else if(data.benefit_type == 3){
+							benefitType = "칠순";
+						}else if(data.benefit_type == 4){
+							benefitType = "출산";
+						}else if(data.benefit_type == 5){
+							benefitType = "사망";
+						}else if(data.benefit_type == 0){
+							benefitType = "미선택";
+						}
+						
+						if(data.benefit_sub == 1){
+							benefitSub = "본인";
+						}else if(data.benefit_sub == 2){
+							benefitSub = "부";
+						}else if(data.benefit_sub == 3){
+							benefitSub = "모";
+						}else if(data.benefit_sub == 4){
+							benefitSub = "형제";
+						}else if(data.benefit_sub == 5){
+							benefitSub = "자매";
+						}else if(data.benefit_sub == 6){
+							benefitSub = "조부";
+						}else if(data.benefit_sub == 7){
+							benefitSub = "조모";
+						}else if(data.benefit_sub == 8){
+							benefitSub = "자녀";
+						}else if(data.benefit_sub == 9){
+							benefitSub = "배우자";
+						}else if(data.benefit_type == 0){
+							benefitType = "미선택";
+						}
+						
+						if(data.request_approve_state1 == 0){
+							requestApproveState1 = "대기";
+						}else if(data.request_approve_state1 == 1){
+							requestApproveState1 = "승인";
+						}else if(data.request_approve_state1 == 2){
+							requestApproveState1 = "거절";
+						}
+						
+						if(data.request_approve_state2 == 0){
+							requestApproveState2 = "대기";
+						}else if(data.request_approve_state2 == 1){
+							requestApproveState2 = "승인";
+						}else if(data.request_approve_state2 == 2){
+							requestApproveState2 = "거절";
+						}
+						
+						let html = "";
+						html += "<tr>";
+						html += "<td>"+data.request_no+"</td>";
+						html += "<td>"+benefitType+"</td>";
+						html += "<td>"+data.request_date+"</td>";
+						html += "<td>"+benefitSub+"</td>";
+						html += "<td>"+data.benefit_tour+"</td>";
+						html += "<td>"+data.benefit_money+"</td>";
+						html += "<td>"+requestApproveState1+"</td>";
+						html += "<td>"+requestApproveState2+"</td>";
+						html += "<td>"+data.request_repuse+"</td>";
+						html += "</tr>";
+						$("#benefit_check_table").append(html);
+				},
+  	    error: function (xml,error){ 
+  	      alert("등록에 실패했습니다. 다시시도하세요."); 
+  	    }
+  	  });
+  	}
+  </script> --%>
   <style>
     body{
       width: 80%;
@@ -313,7 +410,7 @@
     	<img id="logo_img" src="<%= request.getContextPath() %>/resources/img/logo.png" alt="회사로고" >
     </a>
     <div id = "login_info">
-      <a href="logout.do">로그아웃</a>
+      <a href="<%= request.getContextPath() %>/logout.do">로그아웃</a>
       |
       <a href="info.do">마이페이지</a>
     </div>
@@ -325,13 +422,17 @@
     <a href="benefit.do">경조금 신청</a>
     |
     <a href="medical.do">의료비 신청</a>
+    <c:if test="${vo.job_position_id >= 5 }">
+    |
+    <a href="form.do">신청내용 확인</a>
+    </c:if>
   </div>
   <hr>
   <div id="mypage_benefit">
     <div id="mypage_benefit_top">
       <form action="benefit.do" name="benefit" method="post" enctype="multipart/form-data">
         <br>
-        <button type="button" id="benefit_btn" onclick="addBenefitTable()">신청</button>
+        <button type="submit" id="benefit_btn" >신청</button>
         <br>
         <br>
         <table id="benefit_table" border="1">
@@ -387,7 +488,7 @@
           	<th>근속기준</th>
           	<td>
           		<input type="hidden" name="years" value="${vo.years}">
-          		<input type="text" name="benefit_tour" id="benefit_tour" value="${benefit_tour=vo.years}" disabled="disabled">
+          		<input type="text" name="benefit_tour" id="benefit_tour" value="${vo.years}" readonly="readonly" style="background:lightgray;">
           	</td>
           	<th style="background-color: lightgray;">경조금신청금액</th>
           	<td>
@@ -408,104 +509,6 @@
         	</tr>
     		</table>
   		</form>
-  		<script>
-  	  function addBenefitTable() {//행 추가
-  		  var form = new FormData();
-  	      form.append( "benefit_sub", $("#benefit_sub").val() );
-  	      form.append( "benefit_date", $("#benefit_date").val() );
-  	      form.append( "benefit_tour", $("#benefit_tour").val() );
-  	      form.append( "benefit_type", $("#benefit_type").val() );
-  	      form.append( "benefit_money", $("#benefit_money").val() );
-  	      form.append( "benefit_content", $("#benefit_content").val() );
-  	      form.append( "fileName", $("#file_name")[0].files[0] );
-  	  	$.ajax({
-  	  		url : '<%= request.getContextPath() %>/mypage/benefit.do',
-  	      type : "POST",
-  	      processData : false,
-  	      contentType : false,
-  	      data: form,      // 폼 데이터를 전송
-  	      success: function(data){
-						console.log("등록에 성공했습니다.");
-						alert("경조금 신청이 완료 됐습니다.");
-						
-						let benefitType = "";
-						let benefitSub = "";
-						let requestApproveState1 = "";
-						let requestApproveState2 = "";
-						
-						if(data.benefit_type == 1){
-							benefitType = "결혼";
-						}else if(data.benefit_type == 2){
-							benefitType = "회갑";
-						}else if(data.benefit_type == 3){
-							benefitType = "칠순";
-						}else if(data.benefit_type == 4){
-							benefitType = "출산";
-						}else if(data.benefit_type == 5){
-							benefitType = "사망";
-						}else if(data.benefit_type == 0){
-							benefitType = "미선택";
-						}
-						
-						if(data.benefit_sub == 1){
-							benefitSub = "본인";
-						}else if(data.benefit_sub == 2){
-							benefitSub = "부";
-						}else if(data.benefit_sub == 3){
-							benefitSub = "모";
-						}else if(data.benefit_sub == 4){
-							benefitSub = "형제";
-						}else if(data.benefit_sub == 5){
-							benefitSub = "자매";
-						}else if(data.benefit_sub == 6){
-							benefitSub = "조부";
-						}else if(data.benefit_sub == 7){
-							benefitSub = "조모";
-						}else if(data.benefit_sub == 8){
-							benefitSub = "자녀";
-						}else if(data.benefit_sub == 9){
-							benefitSub = "배우자";
-						}else if(data.benefit_type == 0){
-							benefitType = "미선택";
-						}
-						
-						if(data.request_approve_state1 == 0){
-							requestApproveState1 = "대기";
-						}else if(data.request_approve_state1 == 1){
-							requestApproveState1 = "승인";
-						}else if(data.request_approve_state1 == 2){
-							requestApproveState1 = "거절";
-						}
-						
-						if(data.request_approve_state2 == 0){
-							requestApproveState2 = "대기";
-						}else if(data.request_approve_state2 == 1){
-							requestApproveState2 = "승인";
-						}else if(data.request_approve_state2 == 2){
-							requestApproveState2 = "거절";
-						}
-											
-						
-						let html = "";
-						html += "<tr>";
-						html += "<td>"+data.request_no+"</td>";
-						html += "<td>"+benefitType+"</td>";
-						html += "<td>"+data.request_date+"</td>";
-						html += "<td>"+benefitSub+"</td>";
-						html += "<td>"+data.benefit_tour+"</td>";
-						html += "<td>"+data.benefit_money+"</td>";
-						html += "<td>"+requestApproveState1+"</td>";
-						html += "<td>"+requestApproveState2+"</td>";
-						html += "<td>"+data.request_repuse+"</td>";
-						html += "</tr>";
-						$("#benefit_check_table").append(html);
-					},
-  	      error: function (xml,error){ 
-  	        alert("등록에 실패했습니다. 다시시도하세요."); 
-  	      }
-  	    });
-  		} 
-  		</script>
   	</div>
   	<div id="mypage_benefit_mid">
     	<div id="benefit_info_list">
@@ -534,6 +537,52 @@
         		<th style="width: 100px;">2차결제</th>
         		<th style="width: 80px;">비고</th>
       		</tr>
+      	<c:forEach items="${list}" var="vo">
+      		<tr>
+      			<td>${vo.request_no}</td>
+      			<td>
+      				<c:choose>
+      					<c:when test="${vo.benefit_type eq 1}">결혼</c:when>
+      					<c:when test="${vo.benefit_type eq 2}">회갑</c:when>
+      					<c:when test="${vo.benefit_type eq 3}">칠순</c:when>
+      					<c:when test="${vo.benefit_type eq 4}">출산</c:when>
+      					<c:when test="${vo.benefit_type eq 5}">사망</c:when>
+      				</c:choose>
+      			</td>
+      			<td>${vo.benefit_date}</td>
+      			<td>
+      				<c:choose>
+      					<c:when test="${vo.benefit_sub eq 1}">본인</c:when>
+      					<c:when test="${vo.benefit_sub eq 2}">부</c:when>
+      					<c:when test="${vo.benefit_sub eq 3}">모</c:when>
+      					<c:when test="${vo.benefit_sub eq 4}">형제</c:when>
+      					<c:when test="${vo.benefit_sub eq 5}">자매</c:when>
+      					<c:when test="${vo.benefit_sub eq 6}">조부</c:when>
+      					<c:when test="${vo.benefit_sub eq 7}">조모</c:when>
+      					<c:when test="${vo.benefit_sub eq 8}">자녀</c:when>
+      					<c:when test="${vo.benefit_sub eq 9}">배우자</c:when>
+      				</c:choose>
+      			</td>
+      			<td>${vo.benefit_tour}</td>
+      			<td>${vo.benefit_money}</td>
+      			<td>
+      				<c:choose>
+      					<c:when test="${vo.request_approve_state1 eq 0}">대기</c:when>
+      					<c:when test="${vo.request_approve_state1 eq 1}">승인</c:when>
+      					<c:when test="${vo.request_approve_state1 eq 2}">거절</c:when>
+      				</c:choose>
+      			</td>
+      			<td>
+      				<c:choose>
+      					<c:when test="${vo.request_approve_state2 eq 0}">대기</c:when>
+      					<c:when test="${vo.request_approve_state2 eq 1}">승인</c:when>
+      					<c:when test="${vo.request_approve_state2 eq 2}">거절</c:when>
+      				</c:choose>
+      				
+      			</td>
+      			<td>${vo.request_repuse}</td>
+      		</tr>
+      	</c:forEach>
     	</table>
   	</div>
   </div>

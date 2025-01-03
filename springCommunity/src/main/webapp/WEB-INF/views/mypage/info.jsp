@@ -98,7 +98,7 @@
     	<img id="logo_img" src="<%= request.getContextPath() %>/resources/img/logo.png" alt="회사로고" >
     </a>
     <div id = "login_info">
-      <a href="logout.do">로그아웃</a>
+      <a href="<%= request.getContextPath() %>/logout.do">로그아웃</a>
       |
       <a href="info.do">마이페이지</a>
     </div>
@@ -110,6 +110,10 @@
     <a href="benefit.do">경조금 신청</a>
     |
     <a href="medical.do">의료비 신청</a>
+    <c:if test="${vo.job_position_id >= 5 }">
+    |
+    <a href="form.do">신청내용 확인</a>
+    </c:if>
   </div>
   <hr>
   <div id="mypage_info">
@@ -291,6 +295,7 @@
 	    		user_password: $("#pUpw").val()
 	    	},
 	    	success:function(result){
+	    						
 	    		result = result.trim();
 		        switch(result) {
 		            case "success":
@@ -304,6 +309,8 @@
 	              		break;
 	       		 }
 	    	}
+	    	
+	    	
 	    });
 	}
   </script>

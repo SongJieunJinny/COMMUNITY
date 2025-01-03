@@ -99,4 +99,27 @@
 		)
 	</insert>
 	
+	<select id="selectAll" resultType="mypageVO">
+		SELECT * FROM REQUEST
+	</select>
+	
+	<select id="selectAllBene" resultType="mypageVO">
+		SELECT * 
+			FROM REQUEST
+		 WHERE BENEFIT_TYPE = #{benefit_type}
+	</select>
+	
+	<select id="selectAllMedi" resultType="mypageVO">
+		SELECT * 
+			FROM REQUEST
+		 WHERE MEDICAL_TYPE = #{medical_type} 
+	</select>
+	
+		<update id="updateRequest" parameterType="mypageVO">
+		UPDATE REQUEST 
+			 SET REQUEST_APPROVE_STATE1 = #{request_approve_state1}
+			   , REQUEST_REPUSE = #{request_repuse}
+		 WHERE REQUEST_NO = #{request_no}
+	</update>
+	
 </mapper>
