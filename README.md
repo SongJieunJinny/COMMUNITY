@@ -98,10 +98,10 @@
 ![시퀀스(로그인)](https://github.com/user-attachments/assets/4bea14c2-65b7-4fa0-9c9f-66a298afe42b)
 
 ### 프로토타입
-- [📎B팀 심화(프로토타입1205.수정).pptx](https://github.com/SongJieunJinny/second-COMMUNITY/blob/main/springCommunity/src/main/webapp/resources/upload/b팀-심화(프로토타입1205.수정).pptx?raw=true)
+- [📎Prototype.pptx](https://github.com/SongJieunJinny/second-COMMUNITY/blob/main/springCommunity/src/main/webapp/resources/upload/Prototype.pptx?raw=true)
 
 ### 최종PPT
-- [📎B팀 프로젝트 최종발표.pptx](https://github.com/SongJieunJinny/second-COMMUNITY/blob/main/springCommunity/src/main/webapp/resources/upload/B팀-프로젝트-최종발표.pptx?raw=true)
+- [📎Presentation.pptx](https://github.com/SongJieunJinny/second-COMMUNITY/blob/main/springCommunity/src/main/webapp/resources/upload/Presentation.pptx?raw=true)
 
 --- 
 ## 🖥담당기능
