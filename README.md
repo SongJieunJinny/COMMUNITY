@@ -89,6 +89,7 @@
 
 ### ERD
 ![ERD(최종)](https://github.com/user-attachments/assets/9e1e0c63-627a-48ae-947c-a5d8e32af8ea)
+![추가ERD](https://github.com/user-attachments/assets/55299086-2ad7-4484-9765-2b0a13b858f4)
 
 ### UseCase
 ![useCase 수정](https://github.com/user-attachments/assets/864c86c4-3f02-45fd-8998-2a1e22bdf793)
@@ -97,10 +98,10 @@
 ![시퀀스(로그인)](https://github.com/user-attachments/assets/4bea14c2-65b7-4fa0-9c9f-66a298afe42b)
 
 ### 프로토타입
-
+(./b팀_심화(프로토타입1205.수정).pptx)
 
 ### 최종PPT
-
+(./B팀_프로젝트_최종발표.pptx)
 
 --- 
 ## 🖥담당기능
