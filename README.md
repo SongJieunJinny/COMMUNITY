@@ -205,10 +205,49 @@ if (benefitSub.equals("1") && benefitType.equals("1")) {
     benefitMoney = 1000000;
 }
 ```
-
 💭 **알게 된 점**
  - 클라이언트 계산 결과만 믿지 않고, 서버 검증을 반드시 병행해야 데이터 신뢰성을 확보할 수 있음을 배웠다.
 
+### 3️⃣ 주소 검색 시 상세주소 누락
+
+**문제 배경**
+ - Daum Postcode API를 통해 주소 검색 후 상세주소가 저장되지 않았다.
+ - 리턴되는 필드명이 roadAddress와 detailAddress로 나뉘어 있는데, 이 중 하나가 누락되어 DB에 null이 저장되는 문제가 있었다.
+
+**해결 방법**
+ - API 반환값을 점검해 roadAddress, jibunAddress, detailAddress를 구분하고 빈 문자열('')은 null로 변환해 저장하도록 수정했다.
+
+**코드 비교**
+
+```java
+// 수정 전
+document.getElementById("sample4_roadAddress").value = data.address;
+
+// 수정 후
+document.getElementById("sample4_roadAddress").value = data.roadAddress || '';
+document.getElementById("sample4_detailAddress").value = data.buildingName || '';
+```
+💭 **알게 된 점**
+ - 외부 API는 반환 필드가 바뀔 수 있으므로 null-safe 처리와 예외 검증을 반드시 해야 한다는 점을 배웠다.
+
+### 4️⃣ 파일 업로드 시 500 오류
+
+**문제 배경**
+ - 복지 관리(경조금/의료비 신청)에서 사용자가 5MB 이상의 대용량 파일을 업로드할 때 서버에서 500 Internal Server Error가 발생했다.
+ - Spring의 기본 업로드 용량 제한(1MB)을 초과한 것이 원인이었다.
+
+**해결 방법**
+ - application.properties에 업로드 한도를 명시적으로 설정하고, 파일 크기·확장자·MIME 타입 검증 로직을 추가했다.
+
+**코드 비교**
+
+```java
+// 수정 진행 
+spring.servlet.multipart.max-file-size=10MB
+spring.servlet.multipart.max-request-size=20MB
+```
+💭 **알게 된 점**
+ - 파일 업로드 기능은 단순히 동작하는 것뿐 아니라, 용량·형식·예외처리를 함께 고려해야 안정적임을 배웠다.
 
 --- 
 ## 📖개선할 부분
