@@ -1,4 +1,4 @@
-# second-COMMUNITY
+# COMMUNITY
 
 ## 📑 목차
 
