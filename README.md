@@ -98,10 +98,10 @@
 ![시퀀스(로그인)](https://github.com/user-attachments/assets/4bea14c2-65b7-4fa0-9c9f-66a298afe42b)
 
 ### 프로토타입
-- [📎 Prototype.pptx](https://github.com/SongJieunJinny/second-COMMUNITY/blob/main/springCommunity/src/main/webapp/resources/upload/Prototype.pptx?raw=true)
+- [📎 Prototype.pptx](https://github.com/SongJieunJinny/COMMUNITY/blob/main/springCommunity/src/main/webapp/resources/upload/Prototype.pptx?raw=true)
 
 ### 최종PPT
-- [📎 Presentation.pptx](https://github.com/SongJieunJinny/second-COMMUNITY/blob/main/springCommunity/src/main/webapp/resources/upload/Presentation.pptx?raw=true)
+- [📎 Presentation.pptx](https://github.com/SongJieunJinny/COMMUNITY/blob/main/springCommunity/src/main/webapp/resources/upload/Presentation.pptx?raw=true)
 
 --- 
 ## 🖥담당기능
